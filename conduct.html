@@ -25,32 +25,10 @@
   body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
   code,input,select{font-family:'JetBrains Mono',monospace;}
 
-  /* TOAST */
-  .toast {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-80px);
-    background: linear-gradient(135deg, #1B5E20, #00C853);
-    color: #fff;
-    padding: 12px 24px;
-    border-radius: 30px;
-    font-size: 13px;
-    font-weight: 700;
-    z-index: 999999;
-    box-shadow: 0 6px 24px rgba(0,200,83,0.4);
-    transition: transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
-    white-space: nowrap;
-    max-width: 90vw;
-    text-align: center;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
-
   /* ── CONNECTING ── */
   #connecting-screen{
     position:fixed;inset:0;background:var(--bg);
     display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;
-    transition: opacity 0.3s;
   }
   .connecting-logo{font-size:20px;font-weight:800;letter-spacing:2px;color:var(--text);margin-bottom:10px;}
   .connecting-badge{font-size:10px;font-weight:700;color:var(--green);letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;}
@@ -157,7 +135,7 @@
     color:var(--muted);cursor:pointer;transition:all 0.2s;
   }
   .logout-btn:hover{border-color:var(--red);color:var(--red);}
-  .content-body{padding:24px;flex:1;position:relative;z-index:1;}
+  .content-body{padding:24px;flex:1;}
 
   /* PANELS */
   .panel{display:none;}
@@ -268,9 +246,8 @@
     inset: 0;
     background: rgba(0,0,0,0.6);
     z-index: 99;
-    pointer-events: none;
   }
-  .sidebar-overlay.show { display: block; pointer-events: all; }
+  .sidebar-overlay.show { display: block; }
 
   @media(max-width:768px){
     .hamburger { display: block; }
@@ -289,9 +266,6 @@
 </style>
 </head>
 <body>
-
-<!-- TOAST -->
-<div class="toast" id="admin-toast"></div>
 
 <!-- ── CONNECTING ── -->
 <div id="connecting-screen">
@@ -653,11 +627,6 @@
   };
   const app = initializeApp(firebaseConfig);
   const db  = getDatabase(app);
-
-  // Expose for global savePackage function
-  window._db  = db;
-  window._ref = ref;
-  window._set = set;
 
   let currentAdmin = null;
   let allUsers = {}, allDeposits = {}, allWithdrawals = {}, allMachines = {};
@@ -1040,8 +1009,9 @@
 
   function renderPackages() {
     const grid = document.getElementById('packages-grid');
+    // Only render once — don't wipe edits on re-render
     if (packagesRendered) return;
-    packagesRendered = true;
+    packagesRendered = false;
 
     // Render defaults immediately
     grid.innerHTML = defaultPackages.map(pkg => {
@@ -1086,7 +1056,9 @@
       </div>`;
     }).join('');
 
-    // Update with Firebase saved values after rendering
+    packagesRendered = true;
+
+    // Then update with Firebase saved values
     get(ref(db, 'packages')).then(snap => {
       if (!snap.exists()) return;
       const saved = snap.val();
@@ -1104,6 +1076,24 @@
       });
     });
   }
+
+  window.calcReturn = function(id) {
+    const daily    = parseFloat(document.getElementById('pkg-daily-' + id).value) || 0;
+    const duration = parseFloat(document.getElementById('pkg-duration-' + id).value) || 0;
+    const total    = daily * duration;
+    document.getElementById('pkg-return-' + id).textContent = fmtUGX(total);
+  };
+
+  window.savePackage = async function(id) {
+    const price    = parseFloat(document.getElementById('pkg-price-' + id).value);
+    const daily    = parseFloat(document.getElementById('pkg-daily-' + id).value);
+    const duration = parseFloat(document.getElementById('pkg-duration-' + id).value);
+    if (!price || !daily || !duration) { alert('All fields are required.'); return; }
+    const totalReturn = daily * duration;
+    await set(ref(db, 'packages/' + id), { price, daily, duration, totalReturn });
+    document.getElementById('pkg-return-' + id).textContent = fmtUGX(totalReturn);
+    alert('✅ ' + id.toUpperCase() + ' saved! App updated instantly.');
+  };
 
   // ── ANNOUNCEMENTS ──
   window.sendAnnouncement = function() {
@@ -1141,49 +1131,6 @@
     document.getElementById('set-new-pass').value  = '';
     document.getElementById('set-confirm-pass').value = '';
   };
-</script>
-
-<!-- Global package functions — must be outside module for inline onclick -->
-<script>
-  function fmtUGXg(n) { return 'UGX ' + Number(n||0).toLocaleString(); }
-
-  function calcReturn(id) {
-    const daily    = parseFloat(document.getElementById('pkg-daily-' + id).value) || 0;
-    const duration = parseFloat(document.getElementById('pkg-duration-' + id).value) || 0;
-    document.getElementById('pkg-return-' + id).textContent = fmtUGXg(daily * duration);
-  }
-
-  const _toastMsgs = {
-    nob1:'🌱 NOB 1 saved! Starter pack is live.',
-    nob2:'⚡ NOB 2 updated! Basic miners are ready.',
-    nob3:'🔥 NOB 3 saved! Pro machines locked and loaded.',
-    nob4:'💎 NOB 4 updated! Elite earners are live.',
-    nob5:'🚀 NOB 5 saved! Master pack is now live.',
-    nob6:'🏆 NOB 6 updated! Legend machines running.',
-    nob7:'⭐ NOB 7 saved! Supreme earners active.',
-    nob8:'🔱 NOB 8 updated! Titan machines online.',
-    nob9:'🌌 NOB 9 saved! Galaxy pack live and earning.',
-    nob10:'👑 NOB 10 updated! Omega — ultimate machine set!',
-  };
-
-  function _showToast(msg) {
-    const t = document.getElementById('admin-toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3500);
-  }
-
-  async function savePackage(id) {
-    const price    = parseFloat(document.getElementById('pkg-price-'    + id).value);
-    const daily    = parseFloat(document.getElementById('pkg-daily-'    + id).value);
-    const duration = parseFloat(document.getElementById('pkg-duration-' + id).value);
-    if (!price || !daily || !duration) { _showToast('⚠️ All fields are required!'); return; }
-    if (!window._db) { _showToast('⚠️ Firebase not ready. Try again.'); return; }
-    const totalReturn = daily * duration;
-    document.getElementById('pkg-return-' + id).textContent = fmtUGXg(totalReturn);
-    await window._set(window._ref(window._db, 'packages/' + id), { price, daily, duration, totalReturn });
-    _showToast(_toastMsgs[id] || '✅ ' + id.toUpperCase() + ' saved!');
-  }
 </script>
 </body>
 </html>
