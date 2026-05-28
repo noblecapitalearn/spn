@@ -1793,69 +1793,20 @@
 
     await set(ref(db, 'users/' + uid), userData);
 
-    // ── MULTI-LEVEL REFERRAL ──
+    // Save to upline's referrals list (no bonus — bonuses happen on machine purchase)
     if (refCode) {
       const allSnap = await get(ref(db, 'users'));
       if (allSnap.exists()) {
-        // Build refCode → user map
-        const refMap = {};
-        allSnap.forEach(child => { refMap[child.val().refCode] = { key: child.key, ...child.val() }; });
-
-        // Level 1 — direct inviter (registration bonus only, machine bonus handled on purchase)
-        const l1 = refMap[refCode];
-        if (l1) {
-          const bonus = 500; // registration bonus to inviter
-          await update(ref(db, 'users/' + l1.key), {
-            income: (l1.income||0) + bonus,
-            totalEarned: (l1.totalEarned||0) + bonus
-          });
-          await push(ref(db, 'users/' + l1.key + '/bonuses'), {
-            desc: '🎉 Level 1 Referral — ' + name,
-            amount: bonus,
-            date: new Date().toLocaleDateString('en-GB')
-          });
-          // Add to inviter's referrals list
-          await push(ref(db, 'users/' + l1.key + '/referrals'), {
-            name, phone, uid,
-            maskedPhone: phone.substring(0,2) + 'XXXXX' + phone.substring(7),
-            date: new Date().toLocaleDateString('en-GB'),
-            level: 1, machines: 0
-          });
-
-          // Level 2 — inviter's inviter
-          if (l1.referredBy) {
-            const l2 = refMap[l1.referredBy];
-            if (l2) {
-              const bonus2 = 200;
-              await update(ref(db, 'users/' + l2.key), {
-                income: (l2.income||0) + bonus2,
-                totalEarned: (l2.totalEarned||0) + bonus2
-              });
-              await push(ref(db, 'users/' + l2.key + '/bonuses'), {
-                desc: '🎉 Level 2 Referral — ' + name,
-                amount: bonus2,
-                date: new Date().toLocaleDateString('en-GB')
-              });
-
-              // Level 3
-              if (l2.referredBy) {
-                const l3 = refMap[l2.referredBy];
-                if (l3) {
-                  const bonus3 = 100;
-                  await update(ref(db, 'users/' + l3.key), {
-                    income: (l3.income||0) + bonus3,
-                    totalEarned: (l3.totalEarned||0) + bonus3
-                  });
-                  await push(ref(db, 'users/' + l3.key + '/bonuses'), {
-                    desc: '🎉 Level 3 Referral — ' + name,
-                    amount: bonus3,
-                    date: new Date().toLocaleDateString('en-GB')
-                  });
-                }
-              }
-            }
+        allSnap.forEach(child => {
+          if (child.val().refCode === refCode) {
+            push(ref(db, 'users/' + child.key + '/referrals'), {
+              name, phone, uid,
+              maskedPhone: phone.substring(0,2) + 'XXXXX' + phone.substring(7),
+              date: new Date().toLocaleDateString('en-GB'),
+              level: 1, machines: 0
+            });
           }
-        }
+        });
       }
     }
 
