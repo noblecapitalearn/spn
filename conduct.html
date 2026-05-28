@@ -369,6 +369,9 @@
       </div>
 
       <div class="nav-section-label">Tools</div>
+      <div class="sidebar-item" onclick="showPanel('packages');closeSidebar()">
+        📦 Package Settings
+      </div>
       <div class="sidebar-item" onclick="showPanel('announce');closeSidebar()">
         📢 Announcements
       </div>
@@ -518,6 +521,14 @@
               <tbody id="machines-tbody"><tr><td colspan="7" class="empty-state">No active machines</td></tr></tbody>
             </table>
           </div>
+        </div>
+      </div>
+
+      <!-- ── PACKAGE SETTINGS ── -->
+      <div class="panel" id="panel-packages">
+        <div style="margin-bottom:14px;font-size:13px;color:var(--muted);">Edit machine packages — changes save to Firebase and update the user app instantly.</div>
+        <div id="packages-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;">
+          <!-- Rendered by JS -->
         </div>
       </div>
 
@@ -783,6 +794,7 @@
     else if (currentPanel === 'deposits')     renderDeposits();
     else if (currentPanel === 'withdrawals')  renderWithdrawals();
     else if (currentPanel === 'machines')     renderMachines();
+    else if (currentPanel === 'packages')     renderPackages();
   }
 
   function updateStats() {
@@ -806,7 +818,7 @@
   const panelTitles = {
     dashboard:'Dashboard', users:'All Users', deposits:'Deposits',
     withdrawals:'Withdrawals', machines:'Active Machines',
-    announce:'Announcements', settings:'Settings'
+    packages:'Package Settings', announce:'Announcements', settings:'Settings'
   };
 
   window.showPanel = function(name) {
@@ -976,6 +988,90 @@
       if (c.val().amount === amount && c.val().status === 'Pending')
         update(ref(db, 'users/' + uid + '/withdrawals/' + c.key), { status:'Rejected' });
     });
+  };
+
+  // ── PACKAGE SETTINGS ──
+  const defaultPackages = [
+    { id:'nob1',  name:'NOB 1',  badge:'STARTER', price:50000,      daily:5000,      duration:30 },
+    { id:'nob2',  name:'NOB 2',  badge:'BASIC',   price:150000,     daily:15000,     duration:30 },
+    { id:'nob3',  name:'NOB 3',  badge:'PRO',     price:500000,     daily:50000,     duration:30 },
+    { id:'nob4',  name:'NOB 4',  badge:'ELITE',   price:1000000,    daily:100000,    duration:30 },
+    { id:'nob5',  name:'NOB 5',  badge:'MASTER',  price:2000000,    daily:200000,    duration:30 },
+    { id:'nob6',  name:'NOB 6',  badge:'LEGEND',  price:5000000,    daily:500000,    duration:30 },
+    { id:'nob7',  name:'NOB 7',  badge:'SUPREME', price:10000000,   daily:1000000,   duration:30 },
+    { id:'nob8',  name:'NOB 8',  badge:'TITAN',   price:20000000,   daily:2000000,   duration:30 },
+    { id:'nob9',  name:'NOB 9',  badge:'GALAXY',  price:50000000,   daily:5000000,   duration:30 },
+    { id:'nob10', name:'NOB 10', badge:'OMEGA',   price:100000000,  daily:10000000,  duration:30 },
+  ];
+
+  async function renderPackages() {
+    const grid = document.getElementById('packages-grid');
+    grid.innerHTML = '<div style="color:var(--muted);font-size:13px;">Loading...</div>';
+
+    // Load from Firebase, fallback to defaults
+    const snap = await get(ref(db, 'packages'));
+    const saved = snap.exists() ? snap.val() : {};
+
+    grid.innerHTML = defaultPackages.map(pkg => {
+      const p = saved[pkg.id] || pkg;
+      const totalReturn = (p.daily || pkg.daily) * (p.duration || pkg.duration);
+      return `
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div style="font-size:15px;font-weight:800;color:var(--text);">${pkg.name}</div>
+          <span class="chip green">${pkg.badge}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+          <div>
+            <label style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">Price (UGX)</label>
+            <input type="number" id="pkg-price-${pkg.id}" value="${p.price || pkg.price}"
+              oninput="calcReturn('${pkg.id}')"
+              style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text);outline:none;">
+          </div>
+          <div>
+            <label style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">Daily Income (UGX)</label>
+            <input type="number" id="pkg-daily-${pkg.id}" value="${p.daily || pkg.daily}"
+              oninput="calcReturn('${pkg.id}')"
+              style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text);outline:none;">
+          </div>
+          <div>
+            <label style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">Duration (Days)</label>
+            <input type="number" id="pkg-duration-${pkg.id}" value="${p.duration || pkg.duration}"
+              oninput="calcReturn('${pkg.id}')"
+              style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text);outline:none;">
+          </div>
+          <div>
+            <label style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">Total Return (UGX)</label>
+            <div id="pkg-return-${pkg.id}"
+              style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--green);font-weight:700;">
+              ${fmtUGX(totalReturn)}
+            </div>
+          </div>
+        </div>
+        <button onclick="savePackage('${pkg.id}')"
+          style="width:100%;padding:10px;background:var(--green);border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--bg);cursor:pointer;">
+          💾 Save ${pkg.name}
+        </button>
+      </div>`;
+    }).join('');
+  }
+
+  window.calcReturn = function(id) {
+    const daily    = parseFloat(document.getElementById('pkg-daily-' + id).value) || 0;
+    const duration = parseFloat(document.getElementById('pkg-duration-' + id).value) || 0;
+    const total    = daily * duration;
+    document.getElementById('pkg-return-' + id).textContent = fmtUGX(total);
+  };
+
+  window.savePackage = async function(id) {
+    const price    = parseFloat(document.getElementById('pkg-price-' + id).value);
+    const daily    = parseFloat(document.getElementById('pkg-daily-' + id).value);
+    const duration = parseFloat(document.getElementById('pkg-duration-' + id).value);
+    if (!price || !daily || !duration) { alert('All fields are required.'); return; }
+    const totalReturn = daily * duration;
+    await set(ref(db, 'packages/' + id), { price, daily, duration, totalReturn });
+    document.getElementById('pkg-return-' + id).textContent = fmtUGX(totalReturn);
+    alert('✅ ' + id.toUpperCase() + ' saved! App updated instantly.');
   };
 
   // ── ANNOUNCEMENTS ──

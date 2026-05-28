@@ -1837,14 +1837,67 @@
     enterDashboard();
   };
 
+  // ── INACTIVITY AUTO LOGOUT (2 hours) ──
+  const INACTIVE_LIMIT = 2 * 60 * 60 * 1000; // 2 hours
+  let inactivityTimer = null;
+
+  function resetInactivityTimer() {
+    if (!currentUser) return;
+    localStorage.setItem('nc_last_active', Date.now().toString());
+    if (inactivityTimer) clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(() => {
+      alert('You have been logged out due to inactivity.');
+      doLogout();
+    }, INACTIVE_LIMIT);
+  }
+
+  function startInactivityWatcher() {
+    ['click','scroll','touchstart','keydown'].forEach(evt => {
+      document.addEventListener(evt, resetInactivityTimer, { passive: true });
+    });
+    resetInactivityTimer();
+  }
+
+  function stopInactivityWatcher() {
+    if (inactivityTimer) clearTimeout(inactivityTimer);
+    ['click','scroll','touchstart','keydown'].forEach(evt => {
+      document.removeEventListener(evt, resetInactivityTimer);
+    });
+  }
+
+  // ── LOAD PACKAGES FROM FIREBASE ──
+  async function loadPackages() {
+    const snap = await get(ref(db, 'packages'));
+    if (!snap.exists()) return;
+    const pkgs = snap.val();
+    Object.entries(pkgs).forEach(([id, p]) => {
+      // Update buy button onclick with new price and daily
+      const btn = document.querySelector(`.${id} .buy-btn`);
+      if (btn) {
+        const name = btn.textContent.replace('Buy ','').trim();
+        btn.setAttribute('onclick', `confirmBuy('${id}','${name}',${p.price},${p.daily})`);
+      }
+      // Update stat display values
+      const card = document.querySelector(`.machine-card.${id}`);
+      if (card) {
+        const stats = card.querySelectorAll('.stat-value.hi');
+        if (stats[0]) stats[0].textContent = 'UGX ' + Number(p.price).toLocaleString();
+        if (stats[1]) stats[1].textContent = 'UGX ' + Number(p.daily).toLocaleString();
+        const allStats = card.querySelectorAll('.stat-value');
+        if (allStats[2]) allStats[2].textContent = p.duration + ' Days';
+        if (allStats[3]) allStats[3].textContent = 'UGX ' + Number(p.totalReturn).toLocaleString();
+      }
+    });
+  }
+
   window.enterDashboard = function() {
     document.getElementById('success-overlay').classList.remove('show');
     document.getElementById('auth-screen').style.display = 'none';
     document.getElementById('main-app').style.display = 'flex';
     const u = currentUser;
     if (u) {
-      // Save session
       localStorage.setItem('nc_user_session', JSON.stringify({ uid: u.uid }));
+      localStorage.setItem('nc_last_active', Date.now().toString());
       const masked = u.code + ' ' + u.phone.substring(0,2) + 'XX XXX ' + u.phone.substring(6);
       document.getElementById('profile-name').textContent         = u.name;
       document.getElementById('profile-name-display').textContent = u.name;
@@ -1852,13 +1905,17 @@
       document.getElementById('profile-date').textContent         = u.date;
       listenUserState(u.uid);
       listenRecords(u.uid);
+      startInactivityWatcher();
+      loadPackages();
     }
     updateBalances();
   };
 
   window.doLogout = function() {
     if (earningsTimer) clearInterval(earningsTimer);
+    stopInactivityWatcher();
     localStorage.removeItem('nc_user_session');
+    localStorage.removeItem('nc_last_active');
     currentUser = null;
     window._userData = null;
     state = { spn:0, income:0, withdrawn:0, totalEarned:0, machines:{} };
@@ -2156,23 +2213,23 @@
     window._deposits = []; window._withdrawals = [];
     window._bonuses  = [{ desc:'Registration Bonus', amount:2600, date: new Date().toLocaleDateString('en-GB') }];
 
-    // Check referral param FIRST — always open register tab if ref present
-    const params = new URLSearchParams(window.location.search);
+    const params   = new URLSearchParams(window.location.search);
     const refParam = params.get('ref');
-    if (refParam) {
-      document.getElementById('reg-referral').value = refParam;
-      localStorage.removeItem('nc_user_session');
-      hideConnecting();
-      document.getElementById('auth-screen').style.display = 'flex';
-      switchAuth('register');
-      return;
-    }
 
-    // Restore session if exists
+    // Try restoring session first
     const saved = localStorage.getItem('nc_user_session');
     if (saved) {
       try {
         const { uid } = JSON.parse(saved);
+
+        // Check inactivity — if last active > 2 hours ago, force logout
+        const lastActive = parseInt(localStorage.getItem('nc_last_active') || '0');
+        if (Date.now() - lastActive > INACTIVE_LIMIT) {
+          localStorage.removeItem('nc_user_session');
+          localStorage.removeItem('nc_last_active');
+          throw new Error('Session expired');
+        }
+
         const snap = await get(ref(db, 'users/' + uid));
         if (snap.exists()) {
           currentUser = snap.val();
@@ -2184,16 +2241,25 @@
           state.machines    = currentUser.machines    || {};
           await processDailyEarnings(uid);
           hideConnecting();
+          // If referral link but already logged in → go to dashboard
           enterDashboard();
           return;
         }
-      } catch(e) {}
-      localStorage.removeItem('nc_user_session');
+      } catch(e) {
+        localStorage.removeItem('nc_user_session');
+        localStorage.removeItem('nc_last_active');
+      }
     }
 
-    // No session — show login
+    // No valid session — check for referral param
     hideConnecting();
     document.getElementById('auth-screen').style.display = 'flex';
+    if (refParam) {
+      document.getElementById('reg-referral').value = refParam;
+      switchAuth('register');
+    } else {
+      switchAuth('login');
+    }
   });
 </script>
 </body>
