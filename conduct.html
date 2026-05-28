@@ -1033,9 +1033,8 @@
 
   function renderPackages() {
     const grid = document.getElementById('packages-grid');
-    // Only render once — don't wipe edits on re-render
     if (packagesRendered) return;
-    packagesRendered = false;
+    packagesRendered = true;
 
     // Render defaults immediately
     grid.innerHTML = defaultPackages.map(pkg => {
@@ -1101,44 +1100,6 @@
     });
   }
 
-  function showToast(msg) {
-    const t = document.getElementById('admin-toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3500);
-  }
-
-  window.calcReturn = function(id) {
-    const daily    = parseFloat(document.getElementById('pkg-daily-' + id).value) || 0;
-    const duration = parseFloat(document.getElementById('pkg-duration-' + id).value) || 0;
-    const total    = daily * duration;
-    document.getElementById('pkg-return-' + id).textContent = fmtUGX(total);
-  };
-
-  const toastMessages = {
-    nob1:  '🌱 NOB 1 saved! Starter pack is live for users.',
-    nob2:  '⚡ NOB 2 updated! Basic miners are ready to go.',
-    nob3:  '🔥 NOB 3 saved! Pro machines are locked and loaded.',
-    nob4:  '💎 NOB 4 updated! Elite earners are live.',
-    nob5:  '🚀 NOB 5 saved! Master pack is now live.',
-    nob6:  '🏆 NOB 6 updated! Legend machines are running.',
-    nob7:  '⭐ NOB 7 saved! Supreme earners are active.',
-    nob8:  '🔱 NOB 8 updated! Titan machines are online.',
-    nob9:  '🌌 NOB 9 saved! Galaxy pack is live and earning.',
-    nob10: '👑 NOB 10 updated! Omega — the ultimate machine is set!',
-  };
-
-  window.savePackage = async function(id) {
-    const price    = parseFloat(document.getElementById('pkg-price-' + id).value);
-    const daily    = parseFloat(document.getElementById('pkg-daily-' + id).value);
-    const duration = parseFloat(document.getElementById('pkg-duration-' + id).value);
-    if (!price || !daily || !duration) { showToast('⚠️ All fields are required!'); return; }
-    const totalReturn = daily * duration;
-    await set(ref(db, 'packages/' + id), { price, daily, duration, totalReturn });
-    document.getElementById('pkg-return-' + id).textContent = fmtUGX(totalReturn);
-    showToast(toastMessages[id] || '✅ ' + id.toUpperCase() + ' saved successfully!');
-  };
-
   // ── ANNOUNCEMENTS ──
   window.sendAnnouncement = function() {
     const msg  = document.getElementById('announce-text').value.trim();
@@ -1175,6 +1136,56 @@
     document.getElementById('set-new-pass').value  = '';
     document.getElementById('set-confirm-pass').value = '';
   };
+</script>
+
+<!-- Global package functions — must be outside module for inline onclick -->
+<script>
+  function fmtUGXg(n) { return 'UGX ' + Number(n||0).toLocaleString(); }
+
+  function calcReturn(id) {
+    const daily    = parseFloat(document.getElementById('pkg-daily-' + id).value) || 0;
+    const duration = parseFloat(document.getElementById('pkg-duration-' + id).value) || 0;
+    document.getElementById('pkg-return-' + id).textContent = fmtUGXg(daily * duration);
+  }
+
+  const _toastMsgs = {
+    nob1:'🌱 NOB 1 saved! Starter pack is live.',
+    nob2:'⚡ NOB 2 updated! Basic miners are ready.',
+    nob3:'🔥 NOB 3 saved! Pro machines locked and loaded.',
+    nob4:'💎 NOB 4 updated! Elite earners are live.',
+    nob5:'🚀 NOB 5 saved! Master pack is now live.',
+    nob6:'🏆 NOB 6 updated! Legend machines running.',
+    nob7:'⭐ NOB 7 saved! Supreme earners active.',
+    nob8:'🔱 NOB 8 updated! Titan machines online.',
+    nob9:'🌌 NOB 9 saved! Galaxy pack live and earning.',
+    nob10:'👑 NOB 10 updated! Omega — ultimate machine set!',
+  };
+
+  function _showToast(msg) {
+    const t = document.getElementById('admin-toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  async function savePackage(id) {
+    const price    = parseFloat(document.getElementById('pkg-price-'    + id).value);
+    const daily    = parseFloat(document.getElementById('pkg-daily-'    + id).value);
+    const duration = parseFloat(document.getElementById('pkg-duration-' + id).value);
+    if (!price || !daily || !duration) { _showToast('⚠️ All fields are required!'); return; }
+    const totalReturn = daily * duration;
+    document.getElementById('pkg-return-' + id).textContent = fmtUGXg(totalReturn);
+
+    // Use Firebase from the module via window reference
+    const { initializeApp, getApps } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+    const { getDatabase, ref, set }  = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js');
+    const apps = getApps();
+    const app  = apps.length ? apps[0] : null;
+    if (!app) { _showToast('⚠️ Firebase not ready. Try again.'); return; }
+    const db = getDatabase(app);
+    await set(ref(db, 'packages/' + id), { price, daily, duration, totalReturn });
+    _showToast(_toastMsgs[id] || '✅ ' + id.toUpperCase() + ' saved!');
+  }
 </script>
 </body>
 </html>
