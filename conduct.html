@@ -652,6 +652,11 @@
   const app = initializeApp(firebaseConfig);
   const db  = getDatabase(app);
 
+  // Expose for global savePackage function
+  window._db  = db;
+  window._ref = ref;
+  window._set = set;
+
   let currentAdmin = null;
   let allUsers = {}, allDeposits = {}, allWithdrawals = {}, allMachines = {};
 
@@ -1079,9 +1084,7 @@
       </div>`;
     }).join('');
 
-    packagesRendered = true;
-
-    // Then update with Firebase saved values
+    // Update with Firebase saved values after rendering
     get(ref(db, 'packages')).then(snap => {
       if (!snap.exists()) return;
       const saved = snap.val();
@@ -1173,17 +1176,10 @@
     const daily    = parseFloat(document.getElementById('pkg-daily-'    + id).value);
     const duration = parseFloat(document.getElementById('pkg-duration-' + id).value);
     if (!price || !daily || !duration) { _showToast('⚠️ All fields are required!'); return; }
+    if (!window._db) { _showToast('⚠️ Firebase not ready. Try again.'); return; }
     const totalReturn = daily * duration;
     document.getElementById('pkg-return-' + id).textContent = fmtUGXg(totalReturn);
-
-    // Use Firebase from the module via window reference
-    const { initializeApp, getApps } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
-    const { getDatabase, ref, set }  = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js');
-    const apps = getApps();
-    const app  = apps.length ? apps[0] : null;
-    if (!app) { _showToast('⚠️ Firebase not ready. Try again.'); return; }
-    const db = getDatabase(app);
-    await set(ref(db, 'packages/' + id), { price, daily, duration, totalReturn });
+    await window._set(window._ref(window._db, 'packages/' + id), { price, daily, duration, totalReturn });
     _showToast(_toastMsgs[id] || '✅ ' + id.toUpperCase() + ' saved!');
   }
 </script>
