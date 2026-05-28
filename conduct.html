@@ -25,6 +25,27 @@
   body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
   code,input,select{font-family:'JetBrains Mono',monospace;}
 
+  /* TOAST */
+  .toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-80px);
+    background: linear-gradient(135deg, #1B5E20, #00C853);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 700;
+    z-index: 999999;
+    box-shadow: 0 6px 24px rgba(0,200,83,0.4);
+    transition: transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+    white-space: nowrap;
+    max-width: 90vw;
+    text-align: center;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
   /* ── CONNECTING ── */
   #connecting-screen{
     position:fixed;inset:0;background:var(--bg);
@@ -266,6 +287,9 @@
 </style>
 </head>
 <body>
+
+<!-- TOAST -->
+<div class="toast" id="admin-toast"></div>
 
 <!-- ── CONNECTING ── -->
 <div id="connecting-screen">
@@ -1077,6 +1101,13 @@
     });
   }
 
+  function showToast(msg) {
+    const t = document.getElementById('admin-toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
   window.calcReturn = function(id) {
     const daily    = parseFloat(document.getElementById('pkg-daily-' + id).value) || 0;
     const duration = parseFloat(document.getElementById('pkg-duration-' + id).value) || 0;
@@ -1084,15 +1115,28 @@
     document.getElementById('pkg-return-' + id).textContent = fmtUGX(total);
   };
 
+  const toastMessages = {
+    nob1:  '🌱 NOB 1 saved! Starter pack is live for users.',
+    nob2:  '⚡ NOB 2 updated! Basic miners are ready to go.',
+    nob3:  '🔥 NOB 3 saved! Pro machines are locked and loaded.',
+    nob4:  '💎 NOB 4 updated! Elite earners are live.',
+    nob5:  '🚀 NOB 5 saved! Master pack is now live.',
+    nob6:  '🏆 NOB 6 updated! Legend machines are running.',
+    nob7:  '⭐ NOB 7 saved! Supreme earners are active.',
+    nob8:  '🔱 NOB 8 updated! Titan machines are online.',
+    nob9:  '🌌 NOB 9 saved! Galaxy pack is live and earning.',
+    nob10: '👑 NOB 10 updated! Omega — the ultimate machine is set!',
+  };
+
   window.savePackage = async function(id) {
     const price    = parseFloat(document.getElementById('pkg-price-' + id).value);
     const daily    = parseFloat(document.getElementById('pkg-daily-' + id).value);
     const duration = parseFloat(document.getElementById('pkg-duration-' + id).value);
-    if (!price || !daily || !duration) { alert('All fields are required.'); return; }
+    if (!price || !daily || !duration) { showToast('⚠️ All fields are required!'); return; }
     const totalReturn = daily * duration;
     await set(ref(db, 'packages/' + id), { price, daily, duration, totalReturn });
     document.getElementById('pkg-return-' + id).textContent = fmtUGX(totalReturn);
-    alert('✅ ' + id.toUpperCase() + ' saved! App updated instantly.');
+    showToast(toastMessages[id] || '✅ ' + id.toUpperCase() + ' saved successfully!');
   };
 
   // ── ANNOUNCEMENTS ──

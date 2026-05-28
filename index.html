@@ -38,6 +38,27 @@
     position: relative;
   }
 
+  /* TOAST */
+  .toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-80px);
+    background: linear-gradient(135deg, #1B5E20, #00C853);
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 700;
+    z-index: 999999;
+    box-shadow: 0 6px 24px rgba(0,200,83,0.4);
+    transition: transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+    white-space: nowrap;
+    max-width: 90vw;
+    text-align: center;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
   /* CONNECTING SCREEN */
   #connecting-screen {
     position: fixed;
@@ -1865,28 +1886,42 @@
     });
   }
 
-  // ── LOAD PACKAGES FROM FIREBASE ──
-  async function loadPackages() {
-    const snap = await get(ref(db, 'packages'));
-    if (!snap.exists()) return;
-    const pkgs = snap.val();
-    Object.entries(pkgs).forEach(([id, p]) => {
-      // Update buy button onclick with new price and daily
-      const btn = document.querySelector(`.${id} .buy-btn`);
-      if (btn) {
-        const name = btn.textContent.replace('Buy ','').trim();
-        btn.setAttribute('onclick', `confirmBuy('${id}','${name}',${p.price},${p.daily})`);
-      }
-      // Update stat display values
-      const card = document.querySelector(`.machine-card.${id}`);
-      if (card) {
-        const stats = card.querySelectorAll('.stat-value.hi');
-        if (stats[0]) stats[0].textContent = 'UGX ' + Number(p.price).toLocaleString();
-        if (stats[1]) stats[1].textContent = 'UGX ' + Number(p.daily).toLocaleString();
-        const allStats = card.querySelectorAll('.stat-value');
-        if (allStats[2]) allStats[2].textContent = p.duration + ' Days';
-        if (allStats[3]) allStats[3].textContent = 'UGX ' + Number(p.totalReturn).toLocaleString();
-      }
+  // ── PACKAGES — REAL-TIME LISTENER ──
+  function listenPackages() {
+    onValue(ref(db, 'packages'), snap => {
+      const pkgs = snap.exists() ? snap.val() : {};
+      // Default values for display if admin hasn't set
+      const defaults = {
+        nob1:{price:0,daily:0,duration:0,totalReturn:0},
+        nob2:{price:0,daily:0,duration:0,totalReturn:0},
+        nob3:{price:0,daily:0,duration:0,totalReturn:0},
+        nob4:{price:0,daily:0,duration:0,totalReturn:0},
+        nob5:{price:0,daily:0,duration:0,totalReturn:0},
+        nob6:{price:0,daily:0,duration:0,totalReturn:0},
+        nob7:{price:0,daily:0,duration:0,totalReturn:0},
+        nob8:{price:0,daily:0,duration:0,totalReturn:0},
+        nob9:{price:0,daily:0,duration:0,totalReturn:0},
+        nob10:{price:0,daily:0,duration:0,totalReturn:0},
+      };
+      const merged = Object.assign({}, defaults, pkgs);
+      Object.entries(merged).forEach(([id, p]) => {
+        // Update stat display values on machine cards
+        const card = document.querySelector('.machine-card.' + id);
+        if (card) {
+          const hiStats  = card.querySelectorAll('.stat-value.hi');
+          const allStats = card.querySelectorAll('.stat-value');
+          if (hiStats[0])  hiStats[0].textContent  = 'UGX ' + Number(p.price).toLocaleString();
+          if (hiStats[1])  hiStats[1].textContent  = 'UGX ' + Number(p.daily).toLocaleString();
+          if (allStats[2]) allStats[2].textContent = (p.duration || 0) + ' Days';
+          if (allStats[3]) allStats[3].textContent = 'UGX ' + Number(p.totalReturn || p.daily * p.duration || 0).toLocaleString();
+          // Update buy button with live price/daily
+          const btn = card.querySelector('.buy-btn');
+          if (btn) {
+            const name = btn.textContent.replace('Buy ','').trim();
+            btn.setAttribute('onclick', `confirmBuy('${id}','${name}',${p.price||0},${p.daily||0})`);
+          }
+        }
+      });
     });
   }
 
@@ -1906,7 +1941,7 @@
       listenUserState(u.uid);
       listenRecords(u.uid);
       startInactivityWatcher();
-      loadPackages();
+      listenPackages();
     }
     updateBalances();
   };
