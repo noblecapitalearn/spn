@@ -822,6 +822,7 @@
   };
 
   window.showPanel = function(name) {
+    if (currentPanel === 'packages' && name !== 'packages') packagesRendered = false;
     currentPanel = name;
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
@@ -1004,17 +1005,17 @@
     { id:'nob10', name:'NOB 10', badge:'OMEGA',   price:100000000,  daily:10000000,  duration:30 },
   ];
 
-  async function renderPackages() {
+  let packagesRendered = false;
+
+  function renderPackages() {
     const grid = document.getElementById('packages-grid');
-    grid.innerHTML = '<div style="color:var(--muted);font-size:13px;">Loading...</div>';
+    // Only render once — don't wipe edits on re-render
+    if (packagesRendered) return;
+    packagesRendered = false;
 
-    // Load from Firebase, fallback to defaults
-    const snap = await get(ref(db, 'packages'));
-    const saved = snap.exists() ? snap.val() : {};
-
+    // Render defaults immediately
     grid.innerHTML = defaultPackages.map(pkg => {
-      const p = saved[pkg.id] || pkg;
-      const totalReturn = (p.daily || pkg.daily) * (p.duration || pkg.duration);
+      const totalReturn = pkg.daily * pkg.duration;
       return `
       <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
@@ -1024,19 +1025,19 @@
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
           <div>
             <label style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">Price (UGX)</label>
-            <input type="number" id="pkg-price-${pkg.id}" value="${p.price || pkg.price}"
+            <input type="number" id="pkg-price-${pkg.id}" value="${pkg.price}"
               oninput="calcReturn('${pkg.id}')"
               style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text);outline:none;">
           </div>
           <div>
             <label style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">Daily Income (UGX)</label>
-            <input type="number" id="pkg-daily-${pkg.id}" value="${p.daily || pkg.daily}"
+            <input type="number" id="pkg-daily-${pkg.id}" value="${pkg.daily}"
               oninput="calcReturn('${pkg.id}')"
               style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text);outline:none;">
           </div>
           <div>
             <label style="font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:4px;">Duration (Days)</label>
-            <input type="number" id="pkg-duration-${pkg.id}" value="${p.duration || pkg.duration}"
+            <input type="number" id="pkg-duration-${pkg.id}" value="${pkg.duration}"
               oninput="calcReturn('${pkg.id}')"
               style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text);outline:none;">
           </div>
@@ -1054,6 +1055,26 @@
         </button>
       </div>`;
     }).join('');
+
+    packagesRendered = true;
+
+    // Then update with Firebase saved values
+    get(ref(db, 'packages')).then(snap => {
+      if (!snap.exists()) return;
+      const saved = snap.val();
+      defaultPackages.forEach(pkg => {
+        const p = saved[pkg.id];
+        if (!p) return;
+        const priceEl    = document.getElementById('pkg-price-'    + pkg.id);
+        const dailyEl    = document.getElementById('pkg-daily-'    + pkg.id);
+        const durationEl = document.getElementById('pkg-duration-' + pkg.id);
+        const returnEl   = document.getElementById('pkg-return-'   + pkg.id);
+        if (priceEl)    priceEl.value    = p.price;
+        if (dailyEl)    dailyEl.value    = p.daily;
+        if (durationEl) durationEl.value = p.duration;
+        if (returnEl)   returnEl.textContent = fmtUGX(p.daily * p.duration);
+      });
+    });
   }
 
   window.calcReturn = function(id) {
