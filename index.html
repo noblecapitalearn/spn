@@ -1591,7 +1591,7 @@
   </div>
   <!-- INVITE MODAL -->
   <div class="modal-overlay" id="modal-invite">
-    <div class="modal-box">
+    <div class="modal-box" style="max-height:90vh;overflow-y:auto;">
       <div class="modal-title">Invite Friends</div>
       <div class="modal-sub">Share your referral link & earn together</div>
 
@@ -1607,20 +1607,37 @@
         <div id="invite-link-display" style="font-size:11px;color:#80CBC4;word-break:break-all;line-height:1.5;">—</div>
       </div>
 
-      <!-- Stats row -->
+      <!-- Overall Stats -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
         <div style="background:#1C2833;border-radius:12px;padding:12px;text-align:center;border:1px solid #2E3D44;">
-          <div style="font-size:10px;font-weight:700;color:#546E7A;text-transform:uppercase;margin-bottom:4px;">Referred</div>
+          <div style="font-size:10px;font-weight:700;color:#546E7A;text-transform:uppercase;margin-bottom:4px;">Total Referred</div>
           <div style="font-size:20px;font-weight:800;color:#E8F5E9;" id="invite-count">0</div>
         </div>
         <div style="background:#1C2833;border-radius:12px;padding:12px;text-align:center;border:1px solid #2E3D44;">
-          <div style="font-size:10px;font-weight:700;color:#546E7A;text-transform:uppercase;margin-bottom:4px;">Bonus Earned</div>
+          <div style="font-size:10px;font-weight:700;color:#546E7A;text-transform:uppercase;margin-bottom:4px;">Total Earned</div>
           <div style="font-size:14px;font-weight:800;color:#00C853;" id="invite-bonus">UGX 0</div>
         </div>
       </div>
 
+      <!-- Level Tabs -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;">
+        <button class="modal-btn-confirm" style="padding:8px;font-size:12px;background:#00C853;" id="level1-btn" onclick="showReferralLevel(1)">Level 1</button>
+        <button class="modal-btn-cancel" style="padding:8px;font-size:12px;" id="level2-btn" onclick="showReferralLevel(2)">Level 2</button>
+        <button class="modal-btn-cancel" style="padding:8px;font-size:12px;" id="level3-btn" onclick="showReferralLevel(3)">Level 3</button>
+      </div>
+
+      <!-- Referral Members Table -->
+      <div style="background:#1C2833;border-radius:8px;border:1px solid #2E3D44;overflow:hidden;">
+        <div style="padding:12px;border-bottom:1px solid #2E3D44;">
+          <div style="font-size:12px;font-weight:700;color:#80CBC4;" id="level-title">Level 1 Members</div>
+        </div>
+        <div id="referral-members-list" style="max-height:300px;overflow-y:auto;padding:12px;">
+          <div style="text-align:center;color:#546E7A;padding:20px;">No members yet</div>
+        </div>
+      </div>
+
       <!-- Buttons -->
-      <div class="modal-btn-row">
+      <div class="modal-btn-row" style="margin-top:16px;">
         <button class="modal-btn-cancel" id="invite-copy-btn" onclick="copyInviteLink()">
           Copy Link
         </button>
@@ -2067,14 +2084,124 @@
   }
 
   // ── INVITE ──
+  let currentReferralLevel = 1;
+
   window.openInvite = function() {
     const u = currentUser;
     const code = u ? u.refCode : 'NC000000';
     const link = 'https://noblecapitalearn.github.io/spn/?ref=' + code;
     document.getElementById('invite-code-display').textContent = code;
     document.getElementById('invite-link-display').textContent = link;
+    currentReferralLevel = 1;
+    updateReferralStats();
+    showReferralLevel(1);
     document.getElementById('modal-invite').classList.add('show');
   };
+
+  async function updateReferralStats() {
+    if (!currentUser) return;
+    const uid = currentUser.uid;
+    
+    // Get all users
+    const usersSnap = await get(ref(db, 'users'));
+    if (!usersSnap.exists()) return;
+    
+    const allUsers = usersSnap.val();
+    let totalReferred = 0;
+    let totalEarned = 0;
+
+    // Count all referrals and earnings across all levels
+    Object.entries(allUsers).forEach(([key, user]) => {
+      if (user.referredBy === currentUser.refCode) {
+        totalReferred++;
+        totalEarned += 1000; // Referral bonus per person
+      }
+    });
+
+    document.getElementById('invite-count').textContent = totalReferred;
+    document.getElementById('invite-bonus').textContent = fmt(totalEarned);
+  }
+
+  async function showReferralLevel(level) {
+    currentReferralLevel = level;
+    
+    // Update button styles
+    ['level1-btn', 'level2-btn', 'level3-btn'].forEach((btn, idx) => {
+      if (idx + 1 === level) {
+        document.getElementById(btn).style.background = '#00C853';
+        document.getElementById(btn).style.color = '#000';
+      } else {
+        document.getElementById(btn).style.background = 'rgba(255,255,255,0.1)';
+        document.getElementById(btn).style.color = '#80CBC4';
+      }
+    });
+
+    document.getElementById('level-title').textContent = 'Level ' + level + ' Members';
+
+    if (!currentUser) return;
+
+    const usersSnap = await get(ref(db, 'users'));
+    if (!usersSnap.exists()) {
+      document.getElementById('referral-members-list').innerHTML = '<div style="text-align:center;color:#546E7A;padding:20px;">No members yet</div>';
+      return;
+    }
+
+    const allUsers = usersSnap.val();
+    let levelMembers = [];
+
+    if (level === 1) {
+      // Direct referrals
+      Object.entries(allUsers).forEach(([key, user]) => {
+        if (user.referredBy === currentUser.refCode) {
+          levelMembers.push({ name: user.name || user.phone, earned: 1000 });
+        }
+      });
+    } else if (level === 2) {
+      // Level 2: People referred by Level 1
+      Object.entries(allUsers).forEach(([key, user]) => {
+        if (user.referredBy === currentUser.refCode) {
+          // This is a Level 1 member, find their referrals
+          Object.entries(allUsers).forEach(([key2, user2]) => {
+            if (user2.referredBy === user.refCode) {
+              levelMembers.push({ name: user2.name || user2.phone, earned: 500, parent: user.name || user.phone });
+            }
+          });
+        }
+      });
+    } else if (level === 3) {
+      // Level 3: People referred by Level 2
+      Object.entries(allUsers).forEach(([key, user]) => {
+        if (user.referredBy === currentUser.refCode) {
+          Object.entries(allUsers).forEach(([key2, user2]) => {
+            if (user2.referredBy === user.refCode) {
+              Object.entries(allUsers).forEach(([key3, user3]) => {
+                if (user3.referredBy === user2.refCode) {
+                  levelMembers.push({ name: user3.name || user3.phone, earned: 250, parent: user2.name || user2.phone });
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+
+    if (levelMembers.length === 0) {
+      document.getElementById('referral-members-list').innerHTML = '<div style="text-align:center;color:#546E7A;padding:20px;">No members at this level</div>';
+      return;
+    }
+
+    let html = levelMembers.map((m, i) => `
+      <div style="padding:10px;border-bottom:1px solid #2E3D44;display:grid;grid-template-columns:2fr 1fr;gap:10px;align-items:center;">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#E8F5E9;">${m.name}</div>
+          ${m.parent ? '<div style="font-size:10px;color:#546E7A;">via ' + m.parent + '</div>' : ''}
+        </div>
+        <div style="text-align:right;font-size:12px;font-weight:700;color:#00C853;">+${fmt(m.earned)}</div>
+      </div>
+    `).join('');
+
+    document.getElementById('referral-members-list').innerHTML = html;
+  }
 
   window.copyInviteLink = function() {
     const link = document.getElementById('invite-link-display').textContent;
