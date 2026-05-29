@@ -1065,7 +1065,7 @@
       <div class="section-head">Mining Machines</div>
 
       <!-- NOB 1 -->
-      <div class="machine-card nob1">
+      <div class="machine-card nob1" data-product="nob1">
         <div class="machine-visual nob1">
           <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
           <div class="glow-ring"></div>
@@ -1084,17 +1084,17 @@
         <div class="machine-body">
           <div class="machine-name">NOB 1</div>
           <div class="machine-stats">
-            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 50,000</div></div>
-            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 5,000</div></div>
-            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
-            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 150,000</div></div>
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi" id="price-nob1">UGX 50,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi" id="daily-nob1">UGX 5,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value" id="duration-nob1">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value" id="total-nob1">UGX 150,000</div></div>
           </div>
-          <button class="buy-btn" onclick="confirmBuy('nob1','NOB 1',50000,5000)">Buy NOB 1</button>
+          <button class="buy-btn" id="btn-nob1" onclick="confirmBuy('nob1','NOB 1',50000,5000)">Buy NOB 1</button>
         </div>
       </div>
 
       <!-- NOB 2 -->
-      <div class="machine-card nob2">
+      <div class="machine-card nob2" data-product="nob2">
         <div class="machine-visual nob2">
           <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
           <div class="glow-ring"></div>
@@ -1113,17 +1113,17 @@
         <div class="machine-body">
           <div class="machine-name">NOB 2</div>
           <div class="machine-stats">
-            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 150,000</div></div>
-            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 15,000</div></div>
-            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
-            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 450,000</div></div>
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi" id="price-nob2">UGX 150,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi" id="daily-nob2">UGX 15,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value" id="duration-nob2">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value" id="total-nob2">UGX 450,000</div></div>
           </div>
-          <button class="buy-btn" onclick="confirmBuy('nob2','NOB 2',150000,15000)">Buy NOB 2</button>
+          <button class="buy-btn" id="btn-nob2" onclick="confirmBuy('nob2','NOB 2',150000,15000)">Buy NOB 2</button>
         </div>
       </div>
 
       <!-- NOB 3 -->
-      <div class="machine-card nob3">
+      <div class="machine-card nob3" data-product="nob3">
         <div class="machine-visual nob3">
           <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
           <div class="glow-ring"></div>
@@ -1141,17 +1141,17 @@
         <div class="machine-body">
           <div class="machine-name">NOB 3</div>
           <div class="machine-stats">
-            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 500,000</div></div>
-            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 50,000</div></div>
-            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
-            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 1,500,000</div></div>
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi" id="price-nob3">UGX 500,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi" id="daily-nob3">UGX 50,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value" id="duration-nob3">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value" id="total-nob3">UGX 1,500,000</div></div>
           </div>
-          <button class="buy-btn" onclick="confirmBuy('nob3','NOB 3',500000,50000)">Buy NOB 3</button>
+          <button class="buy-btn" id="btn-nob3" onclick="confirmBuy('nob3','NOB 3',500000,50000)">Buy NOB 3</button>
         </div>
       </div>
 
       <!-- NOB 4 -->
-      <div class="machine-card nob4">
+      <div class="machine-card nob4" data-product="nob4">
         <div class="machine-visual nob4">
           <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
           <div class="glow-ring"></div>
@@ -1170,17 +1170,17 @@
         <div class="machine-body">
           <div class="machine-name">NOB 4</div>
           <div class="machine-stats">
-            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 1,000,000</div></div>
-            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 100,000</div></div>
-            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
-            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 3,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi" id="price-nob4">UGX 1,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi" id="daily-nob4">UGX 100,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value" id="duration-nob4">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value" id="total-nob4">UGX 3,000,000</div></div>
           </div>
-          <button class="buy-btn" onclick="confirmBuy('nob4','NOB 4',1000000,100000)">Buy NOB 4</button>
+          <button class="buy-btn" id="btn-nob4" onclick="confirmBuy('nob4','NOB 4',1000000,100000)">Buy NOB 4</button>
         </div>
       </div>
 
       <!-- NOB 5 -->
-      <div class="machine-card nob5">
+      <div class="machine-card nob5" data-product="nob5">
         <div class="machine-visual nob5">
           <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
           <div class="glow-ring"></div>
@@ -1199,17 +1199,17 @@
         <div class="machine-body">
           <div class="machine-name">NOB 5</div>
           <div class="machine-stats">
-            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 2,000,000</div></div>
-            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 200,000</div></div>
-            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
-            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 6,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi" id="price-nob5">UGX 2,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi" id="daily-nob5">UGX 200,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value" id="duration-nob5">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value" id="total-nob5">UGX 6,000,000</div></div>
           </div>
-          <button class="buy-btn" onclick="confirmBuy('nob5','NOB 5',2000000,200000)">Buy NOB 5</button>
+          <button class="buy-btn" id="btn-nob5" onclick="confirmBuy('nob5','NOB 5',2000000,200000)">Buy NOB 5</button>
         </div>
       </div>
 
       <!-- NOB 6 -->
-      <div class="machine-card nob6">
+      <div class="machine-card nob6" data-product="nob6">
         <div class="machine-visual nob6">
           <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
           <div class="glow-ring"></div>
@@ -1228,17 +1228,17 @@
         <div class="machine-body">
           <div class="machine-name">NOB 6</div>
           <div class="machine-stats">
-            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 5,000,000</div></div>
-            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 500,000</div></div>
-            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
-            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 15,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi" id="price-nob6">UGX 5,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi" id="daily-nob6">UGX 500,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value" id="duration-nob6">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value" id="total-nob6">UGX 15,000,000</div></div>
           </div>
-          <button class="buy-btn" onclick="confirmBuy('nob6','NOB 6',5000000,500000)">Buy NOB 6</button>
+          <button class="buy-btn" id="btn-nob6" onclick="confirmBuy('nob6','NOB 6',5000000,500000)">Buy NOB 6</button>
         </div>
       </div>
 
       <!-- NOB 7 -->
-      <div class="machine-card nob7">
+      <div class="machine-card nob7" data-product="nob7">
         <div class="machine-visual nob7">
           <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
           <div class="glow-ring"></div>
@@ -1257,17 +1257,17 @@
         <div class="machine-body">
           <div class="machine-name">NOB 7</div>
           <div class="machine-stats">
-            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 10,000,000</div></div>
-            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 1,000,000</div></div>
-            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
-            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 30,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi" id="price-nob7">UGX 10,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi" id="daily-nob7">UGX 1,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value" id="duration-nob7">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value" id="total-nob7">UGX 30,000,000</div></div>
           </div>
-          <button class="buy-btn" onclick="confirmBuy('nob7','NOB 7',10000000,1000000)">Buy NOB 7</button>
+          <button class="buy-btn" id="btn-nob7" onclick="confirmBuy('nob7','NOB 7',10000000,1000000)">Buy NOB 7</button>
         </div>
       </div>
 
       <!-- NOB 8 -->
-      <div class="machine-card nob8">
+      <div class="machine-card nob8" data-product="nob8">
         <div class="machine-visual nob8">
           <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
           <div class="glow-ring"></div>
@@ -1289,17 +1289,17 @@
         <div class="machine-body">
           <div class="machine-name">NOB 8</div>
           <div class="machine-stats">
-            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 20,000,000</div></div>
-            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 2,000,000</div></div>
-            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
-            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 60,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi" id="price-nob8">UGX 20,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi" id="daily-nob8">UGX 2,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value" id="duration-nob8">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value" id="total-nob8">UGX 60,000,000</div></div>
           </div>
-          <button class="buy-btn" onclick="confirmBuy('nob8','NOB 8',20000000,2000000)">Buy NOB 8</button>
+          <button class="buy-btn" id="btn-nob8" onclick="confirmBuy('nob8','NOB 8',20000000,2000000)">Buy NOB 8</button>
         </div>
       </div>
 
       <!-- NOB 9 -->
-      <div class="machine-card nob9">
+      <div class="machine-card nob9" data-product="nob9">
         <div class="machine-visual nob9">
           <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
           <div class="glow-ring"></div>
@@ -1321,17 +1321,17 @@
         <div class="machine-body">
           <div class="machine-name">NOB 9</div>
           <div class="machine-stats">
-            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 50,000,000</div></div>
-            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 5,000,000</div></div>
-            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
-            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 150,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi" id="price-nob9">UGX 50,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi" id="daily-nob9">UGX 5,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value" id="duration-nob9">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value" id="total-nob9">UGX 150,000,000</div></div>
           </div>
-          <button class="buy-btn" onclick="confirmBuy('nob9','NOB 9',50000000,5000000)">Buy NOB 9</button>
+          <button class="buy-btn" id="btn-nob9" onclick="confirmBuy('nob9','NOB 9',50000000,5000000)">Buy NOB 9</button>
         </div>
       </div>
 
       <!-- NOB 10 -->
-      <div class="machine-card nob10">
+      <div class="machine-card nob10" data-product="nob10">
         <div class="machine-visual nob10">
           <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
           <div class="glow-ring"></div>
@@ -1355,12 +1355,12 @@
         <div class="machine-body">
           <div class="machine-name">NOB 10</div>
           <div class="machine-stats">
-            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 100,000,000</div></div>
-            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 10,000,000</div></div>
-            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
-            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 300,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi" id="price-nob10">UGX 100,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi" id="daily-nob10">UGX 10,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value" id="duration-nob10">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value" id="total-nob10">UGX 300,000,000</div></div>
           </div>
-          <button class="buy-btn" onclick="confirmBuy('nob10','NOB 10',100000000,10000000)">Buy NOB 10</button>
+          <button class="buy-btn" id="btn-nob10" onclick="confirmBuy('nob10','NOB 10',100000000,10000000)">Buy NOB 10</button>
         </div>
       </div>
 
@@ -1719,6 +1719,32 @@
       updateBalances();
       // Restore badges
       Object.keys(state.machines).forEach(id => updateBadge(id));
+    });
+    // Listen to products changes
+    listenProducts();
+  }
+
+  let productsData = {};
+  function listenProducts() {
+    onValue(ref(db, 'products'), snap => {
+      if (snap.exists()) {
+        productsData = snap.val();
+        updateMachineButtons();
+      }
+    });
+  }
+
+  function updateMachineButtons() {
+    const productIds = ['nob1','nob2','nob3','nob4','nob5','nob6','nob7','nob8','nob9','nob10'];
+    productIds.forEach(id => {
+      if (productsData[id]) {
+        const p = productsData[id];
+        document.getElementById('price-' + id).textContent = 'UGX ' + p.price.toLocaleString();
+        document.getElementById('daily-' + id).textContent = 'UGX ' + p.daily.toLocaleString() + ' / day';
+        document.getElementById('duration-' + id).textContent = p.duration + ' Days';
+        document.getElementById('total-' + id).textContent = 'UGX ' + p.total.toLocaleString();
+        document.getElementById('btn-' + id).onclick = () => confirmBuy(id, 'NOB ' + id.slice(3).toUpperCase(), p.price, p.daily);
+      }
     });
   }
 

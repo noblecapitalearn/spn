@@ -367,6 +367,9 @@
       <div class="sidebar-item" onclick="showPanel('machines');closeSidebar()">
         🖥️ Active Machines
       </div>
+      <div class="sidebar-item" onclick="showPanel('products-set');closeSidebar()">
+        ⚙️ Products Set
+      </div>
 
       <div class="nav-section-label">Tools</div>
       <div class="sidebar-item" onclick="showPanel('announce');closeSidebar()">
@@ -545,6 +548,16 @@
             <div id="announcements-list" style="padding:16px;">
               <div class="empty-state">No announcements sent</div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PRODUCTS SET ── -->
+      <div class="panel" id="panel-products-set">
+        <div style="padding:16px;">
+          <h3 style="margin-bottom:20px;">Products Configuration</h3>
+          <div id="products-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;">
+            <!-- Products will be loaded here -->
           </div>
         </div>
       </div>
@@ -783,6 +796,7 @@
     else if (currentPanel === 'deposits')     renderDeposits();
     else if (currentPanel === 'withdrawals')  renderWithdrawals();
     else if (currentPanel === 'machines')     renderMachines();
+    else if (currentPanel === 'products-set') renderProducts();
   }
 
   function updateStats() {
@@ -806,7 +820,7 @@
   const panelTitles = {
     dashboard:'Dashboard', users:'All Users', deposits:'Deposits',
     withdrawals:'Withdrawals', machines:'Active Machines',
-    announce:'Announcements', settings:'Settings'
+    announce:'Announcements', settings:'Settings', 'products-set':'Products Set'
   };
 
   window.showPanel = function(name) {
@@ -928,6 +942,92 @@
       </tr>`).join('') :
       '<tr><td colspan="7" class="empty-state">No active machines</td></tr>';
   }
+
+  // ── PRODUCTS SET ──
+  const products = [
+    {id:'nob1',name:'NOB 1'},
+    {id:'nob2',name:'NOB 2'},
+    {id:'nob3',name:'NOB 3'},
+    {id:'nob4',name:'NOB 4'},
+    {id:'nob5',name:'NOB 5'},
+    {id:'nob6',name:'NOB 6'},
+    {id:'nob7',name:'NOB 7'},
+    {id:'nob8',name:'NOB 8'},
+    {id:'nob9',name:'NOB 9'},
+    {id:'nob10',name:'NOB 10'}
+  ];
+
+  function renderProducts() {
+    let html = '';
+    products.forEach(p => {
+      html += `
+        <div style="border:1px solid rgba(200,180,120,0.2);border-radius:8px;padding:16px;background:rgba(0,0,0,0.2);">
+          <h4 style="margin:0 0 12px 0;color:var(--gold);">${p.name}</h4>
+          <div style="display:grid;gap:10px;margin-bottom:12px;">
+            <div>
+              <label style="font-size:12px;color:var(--subtle);">Price (UGX)</label>
+              <input type="number" class="admin-input" id="price-${p.id}" style="margin-top:4px;">
+            </div>
+            <div>
+              <label style="font-size:12px;color:var(--subtle);">Daily Income (UGX)</label>
+              <input type="number" class="admin-input" id="daily-${p.id}" style="margin-top:4px;">
+            </div>
+            <div>
+              <label style="font-size:12px;color:var(--subtle);">Duration (Days)</label>
+              <input type="number" class="admin-input" id="duration-${p.id}" style="margin-top:4px;">
+            </div>
+            <div>
+              <label style="font-size:12px;color:var(--subtle);">Total Return (UGX)</label>
+              <div id="total-${p.id}" style="padding:8px;background:rgba(0,0,0,0.3);border-radius:4px;color:var(--green);font-weight:700;">0</div>
+            </div>
+          </div>
+          <button class="submit-btn" onclick="saveProduct('${p.id}')" style="width:100%;">Save ${p.name}</button>
+        </div>
+      `;
+    });
+    document.getElementById('products-list').innerHTML = html;
+    loadProducts();
+  }
+
+  async function loadProducts() {
+    const snap = await get(ref(db, 'products'));
+    if (snap.exists()) {
+      const prods = snap.val();
+      products.forEach(p => {
+        if (prods[p.id]) {
+          document.getElementById('price-' + p.id).value = prods[p.id].price || 0;
+          document.getElementById('daily-' + p.id).value = prods[p.id].daily || 0;
+          document.getElementById('duration-' + p.id).value = prods[p.id].duration || 0;
+          updateTotal(p.id);
+        }
+      });
+    }
+    // Add change listeners for automatic total calculation
+    products.forEach(p => {
+      document.getElementById('daily-' + p.id).addEventListener('input', () => updateTotal(p.id));
+      document.getElementById('duration-' + p.id).addEventListener('input', () => updateTotal(p.id));
+    });
+  }
+
+  function updateTotal(productId) {
+    const daily = parseInt(document.getElementById('daily-' + productId).value) || 0;
+    const duration = parseInt(document.getElementById('duration-' + productId).value) || 0;
+    const total = daily * duration;
+    document.getElementById('total-' + productId).textContent = fmtUGX(total);
+  }
+
+  window.saveProduct = async function(productId) {
+    const price = parseInt(document.getElementById('price-' + productId).value) || 0;
+    const daily = parseInt(document.getElementById('daily-' + productId).value) || 0;
+    const duration = parseInt(document.getElementById('duration-' + productId).value) || 0;
+    const total = daily * duration;
+
+    await set(ref(db, 'products/' + productId), {
+      price, daily, duration, total,
+      updated: new Date().toLocaleString('en-GB')
+    });
+    alert(productId.toUpperCase() + ' updated successfully!');
+  };
 
   // ── APPROVE/REJECT DEPOSITS ──
   window.approveDeposit = async function(key, uid, amount) {
