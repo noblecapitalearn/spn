@@ -1,497 +1,1498 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NOBLECAPITAL — Invest Smart</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box;}
-    :root{
-      --bg:#0D1F1E;
-      --surface:#0F2624;
-      --card:#122B28;
-      --border:#1A3D3A;
-      --green:#00C853;
-      --green-dim:#1B5E20;
-      --text:#E8F5E9;
-      --muted:#4CAF50;
-    }
-    html,body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
-    input,select,textarea{font-family:'Fira Code',monospace;}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>NOBLECAPITAL</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    #connecting-screen{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;}
-    .connecting-logo{font-size:24px;font-weight:900;letter-spacing:2px;color:var(--text);margin-bottom:12px;}
-    .connecting-spinner{display:flex;gap:8px;margin-bottom:16px;}
-    .connecting-spinner span{width:10px;height:10px;background:var(--green);border-radius:50%;animation:spin 1.2s ease-in-out infinite;}
-    .connecting-spinner span:nth-child(2){animation-delay:0.2s;}
-    .connecting-spinner span:nth-child(3){animation-delay:0.4s;}
-    @keyframes spin{0%,80%,100%{transform:scale(0.6);opacity:0.4;}40%{transform:scale(1);opacity:1;}}
-    .connecting-text{font-size:13px;color:var(--muted);letter-spacing:1px;}
+  :root {
+    --green: #00C853;
+    --green-light: #69F0AE;
+    --green-dark: #1B5E20;
+    --green-mid: #2E7D32;
+    --bg: #1C2833;
+    --card-bg: #263238;
+    --text: #E8F5E9;
+    --text-muted: #80CBC4;
+  }
 
-    #auth-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:99998;width:100vw;overflow:hidden;}
-    #main-app{display:flex;flex-direction:column;height:100vh;max-width:430px;margin:0 auto;background:var(--bg);}
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #1C2833;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+  }
 
-    .auth-header{background:linear-gradient(135deg,#0D1F1E 0%,#1B5E20 50%,#00C853 100%);padding:36px 24px 28px;text-align:center;position:relative;overflow:hidden;flex-shrink:0;}
-    .auth-header::before{content:'';position:absolute;top:-30px;right:-30px;width:140px;height:140px;background:radial-gradient(circle,rgba(255,255,255,0.1) 0%,transparent 70%);border-radius:50%;}
-    .auth-logo{font-size:26px;font-weight:900;color:#fff;letter-spacing:2px;text-shadow:0 2px 12px rgba(0,0,0,0.3);margin-bottom:6px;}
-    .auth-tagline{font-size:11px;color:rgba(255,255,255,0.75);font-weight:500;letter-spacing:0.5px;}
-    .auth-icon{width:60px;height:60px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;}
-    .auth-icon svg{width:32px;height:32px;fill:#FFD700;}
+  .phone {
+    width: 100%;
+    max-width: 430px;
+    min-height: 100vh;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
 
-    .auth-tabs{display:flex;background:#263238;margin:0;}
-    .auth-tab{flex:1;padding:14px;text-align:center;font-size:14px;font-weight:700;color:#546E7A;cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s;}
-    .auth-tab.active{color:var(--green);border-bottom-color:var(--green);}
+  /* CONNECTING SCREEN */
+  #connecting-screen {
+    position: fixed;
+    inset: 0;
+    background: #1C2833;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+  }
+  .connecting-logo {
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+  }
+  .connecting-spinner {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .connecting-spinner span {
+    width: 12px; height: 12px;
+    background: #00C853;
+    border-radius: 50%;
+    animation: bounce 1.2s ease-in-out infinite;
+  }
+  .connecting-spinner span:nth-child(2) { animation-delay: 0.2s; }
+  .connecting-spinner span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+  .connecting-text {
+    font-size: 13px;
+    color: #80CBC4;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
 
-    .auth-form{display:none;padding:20px 20px 60px;flex-shrink:0;}
-    .auth-form.active{display:block;}
+  /* AUTH SCREEN */
+  #auth-screen {
+    width: 100%;
+    max-width: 430px;
+    min-height: 100vh;
+    background: #1C2833;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 50%; transform: translateX(-50%);
+    z-index: 9999;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    height: 100vh;
+  }
+  #auth-screen::-webkit-scrollbar { display: none; }
 
-    .form-group{margin-bottom:16px;}
-    .form-label{display:block;font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
-    .form-input{width:100%;background:#1C2833;border:1.5px solid #2E3D44;border-radius:12px;padding:14px 16px;font-family:'Poppins',sans-serif;font-size:14px;color:#E8F5E9;outline:none;transition:border-color 0.2s;-webkit-appearance:none;}
-    .form-input:focus{border-color:var(--green);}
-    .form-input::placeholder{color:#546E7A;}
+  .auth-header {
+    background: linear-gradient(135deg, #0D1F1E 0%, #1B5E20 50%, #00C853 100%);
+    padding: 36px 24px 28px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .auth-header::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 140px; height: 140px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .auth-logo {
+    font-size: 26px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    margin-bottom: 6px;
+  }
+  .auth-tagline {
+    font-size: 11px;
+    color: rgba(255,255,255,0.75);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  .auth-icon {
+    width: 60px; height: 60px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+  }
+  .auth-icon svg { width: 32px; height: 32px; fill: #FFD700; }
 
-    .phone-row{display:flex;gap:8px;align-items:center;}
-    .country-code{background:#1C2833;border:1.5px solid #2E3D44;border-radius:12px;padding:14px 10px;font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;color:var(--green);width:80px;flex-shrink:0;text-align:center;outline:none;}
-    .phone-input{flex:1;min-width:0;}
+  .auth-tabs {
+    display: flex;
+    background: #263238;
+    margin: 0;
+  }
+  .auth-tab {
+    flex: 1;
+    padding: 14px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #546E7A;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  .auth-tab.active { color: #00C853; border-bottom-color: #00C853; }
 
-    .country-select{width:100%;background:#1C2833;border:1.5px solid #2E3D44;border-radius:12px;padding:14px 16px;font-family:'Poppins',sans-serif;font-size:14px;color:#E8F5E9;outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;}
-    .country-select:focus{border-color:var(--green);}
-    .select-wrap{position:relative;}
-    .select-wrap::after{content:'';position:absolute;right:16px;top:50%;transform:translateY(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #546E7A;pointer-events:none;}
+  .auth-form { display: none; padding: 20px 20px 60px; flex-shrink: 0; }
+  .auth-form.active { display: block; }
 
-    .auth-btn{width:100%;padding:16px;background:linear-gradient(135deg,#1B5E20,#00C853);border:none;border-radius:14px;font-family:'Poppins',sans-serif;font-size:16px;font-weight:800;color:#fff;cursor:pointer;letter-spacing:0.5px;margin-top:10px;box-shadow:0 4px 20px rgba(0,200,83,0.35);transition:opacity 0.2s,transform 0.1s;-webkit-appearance:none;}
-    .auth-btn:active{transform:scale(0.98);opacity:0.9;}
+  .form-group { margin-bottom: 16px; }
+  .form-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #00C853;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .form-input {
+    width: 100%;
+    background: #1C2833;
+    border: 1.5px solid #2E3D44;
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #E8F5E9;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  .form-input:focus { border-color: #00C853; }
+  .form-input::placeholder { color: #546E7A; }
 
-    .auth-switch{text-align:center;margin-top:20px;font-size:13px;color:#546E7A;}
-    .auth-switch a{color:var(--green);font-weight:700;cursor:pointer;text-decoration:none;}
+  .phone-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .country-code {
+    background: #1C2833;
+    border: 1.5px solid #2E3D44;
+    border-radius: 12px;
+    padding: 14px 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #00C853;
+    width: 80px;
+    flex-shrink: 0;
+    text-align: center;
+    outline: none;
+  }
+  .phone-input {
+    flex: 1;
+    min-width: 0;
+  }
 
-    .bonus-banner{background:linear-gradient(135deg,#1B3A1B,#1B5E20);border:1px solid rgba(0,200,83,0.3);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:10px;margin-bottom:20px;}
-    .bonus-icon{font-size:22px;flex-shrink:0;}
-    .bonus-text{font-size:11px;color:#69F0AE;font-weight:600;line-height:1.5;}
-    .bonus-amount{font-size:15px;font-weight:800;color:var(--green);}
+  .country-select {
+    width: 100%;
+    background: #1C2833;
+    border: 1.5px solid #2E3D44;
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    color: #E8F5E9;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+  }
+  .country-select:focus { border-color: #00C853; }
+  .select-wrap { position: relative; }
+  .select-wrap::after {
+    content: '';
+    position: absolute;
+    right: 16px; top: 50%;
+    transform: translateY(-50%);
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #546E7A;
+    pointer-events: none;
+  }
 
-    .success-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:99999;align-items:center;justify-content:center;}
-    .success-overlay.show{display:flex;}
-    .success-box{background:#263238;border-radius:20px;padding:32px 28px;text-align:center;max-width:300px;border:1px solid rgba(0,200,83,0.3);animation:popIn 0.3s ease;}
-    @keyframes popIn{from{transform:scale(0.8);opacity:0;}to{transform:scale(1);opacity:1;}}
-    .success-check{width:64px;height:64px;background:linear-gradient(135deg,#1B5E20,#00C853);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
-    .success-check svg{width:32px;height:32px;fill:#fff;}
-    .success-title{font-size:18px;font-weight:800;color:#E8F5E9;margin-bottom:8px;}
-    .success-bonus{font-size:24px;font-weight:900;color:var(--green);margin-bottom:8px;}
-    .success-msg{font-size:12px;color:#80CBC4;line-height:1.6;margin-bottom:20px;}
-    .success-btn{width:100%;padding:13px;background:linear-gradient(135deg,#1B5E20,#00C853);border:none;border-radius:12px;font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;color:#fff;cursor:pointer;}
+  .auth-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #1B5E20, #00C853);
+    border: none;
+    border-radius: 14px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    margin-top: 10px;
+    box-shadow: 0 4px 20px rgba(0,200,83,0.35);
+    transition: opacity 0.2s, transform 0.1s;
+    -webkit-appearance: none;
+  }
+  .auth-btn:active { transform: scale(0.98); opacity: 0.9; }
 
-    .header{background:linear-gradient(135deg,#1B5E20 0%,#2E7D32 40%,#00C853 100%);padding:12px 18px 14px;display:flex;align-items:center;justify-content:space-between;}
-    .lang-btn{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.2);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:600;color:#fff;cursor:pointer;}
-    .logo{font-size:20px;font-weight:900;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.3);letter-spacing:1px;}
-    .notif-btn{width:36px;height:36px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .auth-switch {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 13px;
+    color: #546E7A;
+  }
+  .auth-switch a {
+    color: #00C853;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+  }
 
-    .page{display:none;flex:1;overflow-y:auto;padding-bottom:80px;}
-    .page.active{display:block;}
-    .page::-webkit-scrollbar{display:none;}
+  .bonus-banner {
+    background: linear-gradient(135deg, #1B3A1B, #1B5E20);
+    border: 1px solid rgba(0,200,83,0.3);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .bonus-icon { font-size: 22px; flex-shrink: 0; }
+  .bonus-text { font-size: 11px; color: #69F0AE; font-weight: 600; line-height: 1.5; }
+  .bonus-amount { font-size: 15px; font-weight: 800; color: #00C853; }
 
-    .banner{background:linear-gradient(135deg,#0D1F1E 0%,#1B5E20 50%,#00C853 100%);padding:20px 18px 20px;position:relative;overflow:hidden;min-height:130px;}
-    .banner::before{content:'';position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:radial-gradient(circle,rgba(255,255,255,0.12) 0%,transparent 70%);border-radius:50%;}
-    .banner-logo{position:absolute;top:12px;right:16px;font-size:13px;font-weight:900;color:rgba(255,255,255,0.85);letter-spacing:1px;}
-    .banner-icon{position:absolute;top:10px;left:14px;width:44px;height:44px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;}
-    .banner-icon svg{width:26px;height:26px;fill:#FFD700;}
-    .banner h2{text-align:center;font-size:22px;font-weight:900;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,0.3);letter-spacing:2px;margin-top:8px;}
-    .banner p{text-align:center;font-size:10px;font-weight:700;color:rgba(255,255,255,0.88);letter-spacing:0.5px;line-height:1.5;margin-top:8px;text-transform:uppercase;}
+  .success-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+  }
+  .success-overlay.show { display: flex; }
+  .success-box {
+    background: #263238;
+    border-radius: 20px;
+    padding: 32px 28px;
+    text-align: center;
+    max-width: 300px;
+    border: 1px solid rgba(0,200,83,0.3);
+    animation: popIn 0.3s ease;
+  }
+  @keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .success-check {
+    width: 64px; height: 64px;
+    background: linear-gradient(135deg, #1B5E20, #00C853);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+  }
+  .success-check svg { width: 32px; height: 32px; fill: #fff; }
+  .success-title { font-size: 18px; font-weight: 800; color: #E8F5E9; margin-bottom: 8px; }
+  .success-bonus { font-size: 24px; font-weight: 900; color: #00C853; margin-bottom: 8px; }
+  .success-msg { font-size: 12px; color: #80CBC4; line-height: 1.6; margin-bottom: 20px; }
+  .success-btn {
+    width: 100%;
+    padding: 13px;
+    background: linear-gradient(135deg, #1B5E20, #00C853);
+    border: none;
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+  }
 
-    .actions-wrap{padding:20px 14px 14px;}
-    .actions-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
-    .action-btn{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:transform 0.2s;}
-    .action-btn:active{transform:scale(0.93);}
-    .action-icon{width:60px;height:60px;background:linear-gradient(145deg,#2E7D32,#1B5E20);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,200,83,0.25);}
-    .action-icon svg{width:28px;height:28px;fill:#fff;}
-    .action-label{font-size:11px;font-weight:600;color:#B2DFDB;text-align:center;}
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 40%, #00C853 100%);
+    padding: 12px 18px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .lang-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+  }
+  .lang-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .logo {
+    font-size: 20px;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    letter-spacing: 1px;
+  }
+  .notif-btn {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .notif-btn svg { width: 20px; height: 20px; fill: #fff; }
 
-    .accounts-wrap{padding:0 14px 14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-    .account-card{background:#263238;border-radius:14px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:0 4px 12px rgba(0,0,0,0.2);border:1px solid #2E3D44;}
-    .account-icon{width:40px;height:40px;background:linear-gradient(145deg,#2E7D32,#1B5E20);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,200,83,0.2);}
-    .account-icon svg{width:22px;height:22px;fill:#fff;}
-    .account-info{display:flex;flex-direction:column;align-items:center;gap:4px;}
-    .account-name{font-size:10px;font-weight:600;color:#80CBC4;text-align:center;}
-    .account-balance{font-size:12px;font-weight:700;color:var(--green);text-align:center;}
+  /* PAGES */
+  .page { display: none; flex: 1; overflow-y: auto; padding-bottom: 80px; }
+  .page.active { display: block; }
+  .page::-webkit-scrollbar { display: none; }
 
-    .products-wrap{padding:16px 14px 14px;}
-    .section-head{font-size:13px;font-weight:700;color:#80CBC4;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
+  /* BANNER */
+  .banner {
+    background: linear-gradient(135deg, #0D1F1E 0%, #1B5E20 50%, #00C853 100%);
+    padding: 20px 18px 20px;
+    position: relative;
+    overflow: hidden;
+    min-height: 130px;
+  }
+  .banner::before {
+    content: '';
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .banner-logo {
+    position: absolute;
+    top: 12px; right: 16px;
+    font-size: 13px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 1px;
+  }
+  .banner-icon {
+    position: absolute;
+    top: 10px; left: 14px;
+    width: 44px; height: 44px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .banner-icon svg { width: 26px; height: 26px; fill: #FFD700; }
+  .banner h2 {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    letter-spacing: 2px;
+    margin-top: 8px;
+  }
+  .banner p {
+    text-align: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.88);
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+    margin-top: 8px;
+    text-transform: uppercase;
+  }
 
-    .machine-card{background:#263238;border-radius:18px;border:1px solid #2E3D44;overflow:hidden;margin-bottom:16px;box-shadow:0 6px 24px rgba(0,0,0,0.3);display:flex;flex-direction:row;align-items:stretch;}
-    .machine-visual{width:120px;flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-    .machine-visual.nob1{background:linear-gradient(135deg,#0A1A0A,#0D2B0D,#0A3A1A);}
-    .machine-visual.nob2{background:linear-gradient(135deg,#1A1000,#2A1A00,#3A2800);}
-    .machine-visual.nob3{background:linear-gradient(135deg,#0A1A1A,#0D2A2A,#003A2A);}
-    .machine-visual.nob4{background:linear-gradient(135deg,#1A001A,#2A002A,#1A0030);}
-    .machine-visual.nob5{background:linear-gradient(135deg,#1A0005,#2A000A,#3A0015);}
-    .machine-visual.nob6{background:linear-gradient(135deg,#001A14,#002A20,#003A2A);}
-    .machine-visual.nob7{background:linear-gradient(135deg,#00001A,#00052A,#000A3A);}
-    .machine-visual.nob8{background:linear-gradient(135deg,#1A0E00,#2A1800,#3A2400);}
-    .machine-visual.nob9{background:linear-gradient(135deg,#1A0018,#2A0028,#3A0038);}
-    .machine-visual.nob10{background:linear-gradient(135deg,#00101A,#001A2A,#00243A);}
+  /* ACTION BUTTONS */
+  .actions-wrap { padding: 20px 14px 14px; }
+  .actions-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .action-btn:active { transform: scale(0.93); }
+  .action-icon {
+    width: 60px; height: 60px;
+    background: linear-gradient(145deg, #2E7D32, #1B5E20);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,200,83,0.25);
+  }
+  .action-icon svg { width: 28px; height: 28px; fill: #fff; }
+  .action-label { font-size: 11px; font-weight: 600; color: #B2DFDB; text-align: center; }
 
-    .glow-ring{position:absolute;border-radius:16px;border:2px solid;animation:gpulse 2s ease-in-out infinite;}
-    .nob1 .glow-ring{border-color:rgba(0,200,83,0.6);width:80px;height:60px;box-shadow:0 0 24px rgba(0,200,83,0.3);}
-    .nob2 .glow-ring{border-color:rgba(255,165,0,0.6);width:80px;height:60px;box-shadow:0 0 24px rgba(255,165,0,0.3);}
-    .nob3 .glow-ring{border-color:rgba(0,229,255,0.6);width:80px;height:60px;box-shadow:0 0 24px rgba(0,229,255,0.3);}
-    .nob4 .glow-ring{border-color:rgba(206,147,216,0.6);width:80px;height:60px;box-shadow:0 0 24px rgba(206,147,216,0.3);}
-    .nob5 .glow-ring{border-color:rgba(255,23,68,0.6);width:80px;height:60px;box-shadow:0 0 24px rgba(255,23,68,0.3);}
-    .nob6 .glow-ring{border-color:rgba(29,233,182,0.6);width:80px;height:60px;box-shadow:0 0 24px rgba(29,233,182,0.3);}
-    .nob7 .glow-ring{border-color:rgba(68,138,255,0.6);width:80px;height:60px;box-shadow:0 0 24px rgba(68,138,255,0.3);}
-    .nob8 .glow-ring{border-color:rgba(255,145,0,0.7);width:80px;height:60px;box-shadow:0 0 28px rgba(255,145,0,0.4);}
-    .nob9 .glow-ring{border-color:rgba(224,64,251,0.7);width:80px;height:60px;box-shadow:0 0 28px rgba(224,64,251,0.4);}
-    .nob10 .glow-ring{border-color:rgba(0,176,255,0.7);width:80px;height:60px;box-shadow:0 0 28px rgba(0,176,255,0.4);}
+  /* ACCOUNT CARDS */
+  .accounts-wrap {
+    padding: 0 14px 14px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .account-card {
+    background: #263238;
+    border-radius: 14px;
+    padding: 14px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    border: 1px solid #2E3D44;
+  }
+  .account-icon {
+    width: 40px; height: 40px;
+    background: linear-gradient(145deg, #2E7D32, #1B5E20);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 3px 10px rgba(0,200,83,0.2);
+  }
+  .account-icon svg { width: 22px; height: 22px; fill: #fff; }
+  .account-info { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .account-name { font-size: 10px; font-weight: 600; color: #80CBC4; text-align: center; }
+  .account-balance { font-size: 12px; font-weight: 700; color: #00C853; text-align: center; }
 
-    @keyframes gpulse{0%,100%{opacity:0.7;transform:scale(1);}50%{opacity:1;transform:scale(1.05);}}
+  /* ===== PRODUCTS PAGE ===== */
+  .products-wrap { padding: 16px 14px 14px; }
+  .section-head {
+    font-size: 13px;
+    font-weight: 700;
+    color: #80CBC4;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
 
-    .machine-svg{position:relative;z-index:2;}
-    .machine-svg svg{width:56px;height:56px;}
-    .nob1 .machine-svg svg{fill:none;stroke:#00C853;stroke-width:1.2;}
-    .nob2 .machine-svg svg{fill:none;stroke:#FFA500;stroke-width:1.2;}
-    .nob3 .machine-svg svg{fill:none;stroke:#00E5FF;stroke-width:1.2;}
-    .nob4 .machine-svg svg{fill:none;stroke:#CE93D8;stroke-width:1.2;}
-    .nob5 .machine-svg svg{fill:none;stroke:#FF1744;stroke-width:1.2;}
-    .nob6 .machine-svg svg{fill:none;stroke:#1DE9B6;stroke-width:1.2;}
-    .nob7 .machine-svg svg{fill:none;stroke:#448AFF;stroke-width:1.2;}
-    .nob8 .machine-svg svg{fill:none;stroke:#FF9100;stroke-width:1.2;}
-    .nob9 .machine-svg svg{fill:none;stroke:#E040FB;stroke-width:1.2;}
-    .nob10 .machine-svg svg{fill:none;stroke:#00B0FF;stroke-width:1.2;}
+  .machine-card {
+    background: #263238;
+    border-radius: 18px;
+    border: 1px solid #2E3D44;
+    overflow: hidden;
+    margin-bottom: 16px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+  }
+  .machine-visual {
+    width: 120px;
+    flex-shrink: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .machine-visual.nob1 { background: linear-gradient(135deg, #0A1A0A, #0D2B0D, #0A3A1A); }
+  .machine-visual.nob2 { background: linear-gradient(135deg, #1A1000, #2A1A00, #3A2800); }
+  .machine-visual.nob3 { background: linear-gradient(135deg, #0A1A1A, #0D2A2A, #003A2A); }
+  .machine-visual.nob4 { background: linear-gradient(135deg, #1A001A, #2A002A, #1A0030); }
 
-    .dot{position:absolute;border-radius:50%;animation:dfloat 3s ease-in-out infinite;}
-    .nob1 .dot{background:#00C853;}.nob2 .dot{background:#FFA500;}.nob3 .dot{background:#00E5FF;}.nob4 .dot{background:#CE93D8;}
-    .nob5 .dot{background:#FF1744;}.nob6 .dot{background:#1DE9B6;}.nob7 .dot{background:#448AFF;}.nob8 .dot{background:#FF9100;}
-    .nob9 .dot{background:#E040FB;}.nob10 .dot{background:#00B0FF;}
-    .dot:nth-child(1){width:4px;height:4px;top:20%;left:15%;animation-delay:0s;opacity:.8;}
-    .dot:nth-child(2){width:3px;height:3px;top:60%;left:80%;animation-delay:.8s;opacity:.6;}
-    .dot:nth-child(3){width:5px;height:5px;top:75%;left:25%;animation-delay:1.5s;opacity:.7;}
-    .dot:nth-child(4){width:3px;height:3px;top:30%;left:70%;animation-delay:2s;opacity:.5;}
-    @keyframes dfloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+  .glow-ring {
+    position: absolute;
+    border-radius: 16px;
+    border: 2px solid;
+    animation: gpulse 2s ease-in-out infinite;
+  }
+  .nob1 .glow-ring { border-color: rgba(0,200,83,0.6); width: 110px; height: 80px; box-shadow: 0 0 24px rgba(0,200,83,0.3); }
+  .nob2 .glow-ring { border-color: rgba(255,165,0,0.6); width: 110px; height: 80px; box-shadow: 0 0 24px rgba(255,165,0,0.3); }
+  .nob3 .glow-ring { border-color: rgba(0,229,255,0.6); width: 110px; height: 80px; box-shadow: 0 0 24px rgba(0,229,255,0.3); }
+  .nob4 .glow-ring { border-color: rgba(206,147,216,0.6); width: 110px; height: 80px; box-shadow: 0 0 24px rgba(206,147,216,0.3); }
 
-    .machine-badge{position:absolute;top:8px;left:50%;transform:translateX(-50%);padding:2px 8px;border-radius:20px;font-size:9px;font-weight:700;letter-spacing:0.5px;white-space:nowrap;}
-    .nob1 .machine-badge{background:rgba(0,200,83,0.2);color:#00C853;border:1px solid rgba(0,200,83,0.4);}
-    .nob2 .machine-badge{background:rgba(255,165,0,0.2);color:#FFA500;border:1px solid rgba(255,165,0,0.4);}
-    .nob3 .machine-badge{background:rgba(0,229,255,0.2);color:#00E5FF;border:1px solid rgba(0,229,255,0.4);}
-    .nob4 .machine-badge{background:rgba(206,147,216,0.2);color:#CE93D8;border:1px solid rgba(206,147,216,0.4);}
-    .nob5 .machine-badge{background:rgba(255,23,68,0.2);color:#FF1744;border:1px solid rgba(255,23,68,0.4);}
-    .nob6 .machine-badge{background:rgba(29,233,182,0.2);color:#1DE9B6;border:1px solid rgba(29,233,182,0.4);}
-    .nob7 .machine-badge{background:rgba(68,138,255,0.2);color:#448AFF;border:1px solid rgba(68,138,255,0.4);}
-    .nob8 .machine-badge{background:rgba(255,145,0,0.2);color:#FF9100;border:1px solid rgba(255,145,0,0.4);}
-    .nob9 .machine-badge{background:rgba(224,64,251,0.2);color:#E040FB;border:1px solid rgba(224,64,251,0.4);}
-    .nob10 .machine-badge{background:rgba(0,176,255,0.2);color:#00B0FF;border:1px solid rgba(0,176,255,0.4);}
+  @keyframes gpulse {
+    0%,100% { opacity:0.7; transform:scale(1); }
+    50% { opacity:1; transform:scale(1.05); }
+  }
 
-    .machine-body{padding:12px 12px 12px;flex:1;display:flex;flex-direction:column;justify-content:space-between;}
-    .machine-name{font-size:15px;font-weight:800;color:#E8F5E9;margin-bottom:8px;}
-    .machine-stats{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:10px;}
-    .stat-item{background:#1C2833;border-radius:8px;padding:5px 7px;border:1px solid #2E3D44;}
-    .stat-label{font-size:8px;font-weight:600;color:#546E7A;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px;}
-    .stat-value{font-size:10px;font-weight:700;color:#E8F5E9;}
-    .nob1 .stat-value.hi{color:#00C853;}.nob2 .stat-value.hi{color:#FFA500;}.nob3 .stat-value.hi{color:#00E5FF;}.nob4 .stat-value.hi{color:#CE93D8;}
-    .nob5 .stat-value.hi{color:#FF1744;}.nob6 .stat-value.hi{color:#1DE9B6;}.nob7 .stat-value.hi{color:#448AFF;}.nob8 .stat-value.hi{color:#FF9100;}
-    .nob9 .stat-value.hi{color:#E040FB;}.nob10 .stat-value.hi{color:#00B0FF;}
+  .machine-svg { position: relative; z-index: 2; }
+  .machine-svg svg { width: 56px; height: 56px; }
+  .nob1 .glow-ring { border-color: rgba(0,200,83,0.6); width: 80px; height: 60px; box-shadow: 0 0 24px rgba(0,200,83,0.3); }
+  .nob2 .glow-ring { border-color: rgba(255,165,0,0.6); width: 80px; height: 60px; box-shadow: 0 0 24px rgba(255,165,0,0.3); }
+  .nob3 .glow-ring { border-color: rgba(0,229,255,0.6); width: 80px; height: 60px; box-shadow: 0 0 24px rgba(0,229,255,0.3); }
+  .nob4 .glow-ring { border-color: rgba(206,147,216,0.6); width: 80px; height: 60px; box-shadow: 0 0 24px rgba(206,147,216,0.3); }
+  .nob1 .machine-svg svg { fill: none; stroke: #00C853; stroke-width: 1.2; }
+  .nob2 .machine-svg svg { fill: none; stroke: #FFA500; stroke-width: 1.2; }
+  .nob3 .machine-svg svg { fill: none; stroke: #00E5FF; stroke-width: 1.2; }
+  .nob4 .machine-svg svg { fill: none; stroke: #CE93D8; stroke-width: 1.2; }
 
-    .buy-btn{width:100%;padding:8px;border:none;border-radius:10px;font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:0.5px;transition:opacity 0.2s,transform 0.1s;}
-    .buy-btn:active{transform:scale(0.97);opacity:0.9;}
-    .nob1 .buy-btn{background:linear-gradient(135deg,#1B5E20,#00C853);color:#fff;}
-    .nob2 .buy-btn{background:linear-gradient(135deg,#7A3A00,#FFA500);color:#fff;}
-    .nob3 .buy-btn{background:linear-gradient(135deg,#00474F,#00E5FF);color:#003038;}
-    .nob4 .buy-btn{background:linear-gradient(135deg,#4A1060,#CE93D8);color:#fff;}
-    .nob5 .buy-btn{background:linear-gradient(135deg,#7A0020,#FF1744);color:#fff;}
-    .nob6 .buy-btn{background:linear-gradient(135deg,#004D40,#1DE9B6);color:#003028;}
-    .nob7 .buy-btn{background:linear-gradient(135deg,#1A237E,#448AFF);color:#fff;}
-    .nob8 .buy-btn{background:linear-gradient(135deg,#7A4A00,#FF9100);color:#fff;}
-    .nob9 .buy-btn{background:linear-gradient(135deg,#4A0040,#E040FB);color:#fff;}
-    .nob10 .buy-btn{background:linear-gradient(135deg,#002040,#00B0FF);color:#fff;}
+  .dot {
+    position: absolute;
+    border-radius: 50%;
+    animation: dfloat 3s ease-in-out infinite;
+  }
+  .nob1 .dot { background: #00C853; }
+  .nob2 .dot { background: #FFA500; }
+  .nob3 .dot { background: #00E5FF; }
+  .nob4 .dot { background: #CE93D8; }
+  .dot:nth-child(1) { width:4px;height:4px;top:20%;left:15%;animation-delay:0s;opacity:.8; }
+  .dot:nth-child(2) { width:3px;height:3px;top:60%;left:80%;animation-delay:.8s;opacity:.6; }
+  .dot:nth-child(3) { width:5px;height:5px;top:75%;left:25%;animation-delay:1.5s;opacity:.7; }
+  .dot:nth-child(4) { width:3px;height:3px;top:30%;left:70%;animation-delay:2s;opacity:.5; }
+  @keyframes dfloat {
+    0%,100% { transform:translateY(0); }
+    50% { transform:translateY(-8px); }
+  }
 
-    .records-tabs{display:flex;background:#1C2833;border-radius:10px;padding:4px;margin-bottom:16px;gap:4px;}
-    .records-tab{flex:1;padding:8px 4px;text-align:center;font-size:11px;font-weight:700;color:#546E7A;cursor:pointer;border-radius:8px;transition:all 0.2s;}
-    .records-tab.active{background:#2E7D32;color:#fff;}
-    .records-list{max-height:320px;overflow-y:auto;}
-    .records-list::-webkit-scrollbar{display:none;}
-    .record-item{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #2E3D44;}
-    .record-item:last-child{border-bottom:none;}
-    .record-left{display:flex;align-items:center;gap:10px;}
-    .record-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-    .record-dot svg{width:18px;height:18px;fill:#fff;}
-    .record-dot.deposit{background:linear-gradient(135deg,#1B5E20,#00C853);}
-    .record-dot.withdraw{background:linear-gradient(135deg,#7A0000,#EF5350);}
-    .record-dot.bonus{background:linear-gradient(135deg,#7A4A00,#FFB300);}
-    .record-desc{font-size:13px;font-weight:700;color:#E8F5E9;}
-    .record-date{font-size:10px;color:#546E7A;margin-top:2px;}
-    .record-amount{font-size:13px;font-weight:800;}
-    .record-amount.green{color:var(--green);}
-    .record-amount.red{color:#EF5350;}
-    .record-empty{text-align:center;padding:30px 0;color:#546E7A;font-size:13px;}
+  .machine-badge {
+    position: absolute;
+    top: 8px; left: 50%;
+    transform: translateX(-50%);
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  .nob1 .machine-badge { background:rgba(0,200,83,0.2);color:#00C853;border:1px solid rgba(0,200,83,0.4); }
+  .nob2 .machine-badge { background:rgba(255,165,0,0.2);color:#FFA500;border:1px solid rgba(255,165,0,0.4); }
+  .nob3 .machine-badge { background:rgba(0,229,255,0.2);color:#00E5FF;border:1px solid rgba(0,229,255,0.4); }
+  .nob4 .machine-badge { background:rgba(206,147,216,0.2);color:#CE93D8;border:1px solid rgba(206,147,216,0.4); }
 
-    .active-badge{display:none;position:absolute;top:8px;left:8px;background:rgba(0,200,83,0.9);color:#fff;font-size:9px;font-weight:800;padding:3px 8px;border-radius:20px;letter-spacing:0.3px;z-index:10;}
-    .active-badge.show{display:block;}
+  .machine-body { padding: 12px 12px 12px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+  .machine-name { font-size: 15px; font-weight: 800; color: #E8F5E9; margin-bottom: 8px; }
 
-    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:99998;align-items:flex-end;justify-content:center;}
-    .modal-overlay.show{display:flex;}
-    .modal-box{background:#263238;border-radius:24px 24px 0 0;padding:24px 20px 40px;width:100%;max-width:430px;animation:slideUp 0.3s ease;}
-    @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
-    .modal-title{font-size:17px;font-weight:800;color:#E8F5E9;margin-bottom:4px;text-align:center;}
-    .modal-sub{font-size:12px;color:#80CBC4;text-align:center;margin-bottom:20px;}
-    .modal-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #2E3D44;}
-    .modal-row:last-of-type{border-bottom:none;}
-    .modal-row-label{font-size:12px;color:#80CBC4;font-weight:600;}
-    .modal-row-value{font-size:13px;color:#E8F5E9;font-weight:700;}
-    .modal-row-value.green{color:var(--green);}
-    .modal-row-value.red{color:#EF5350;}
-    .modal-btn-row{display:flex;gap:10px;margin-top:20px;}
-    .modal-btn-cancel{flex:1;padding:13px;background:transparent;border:1.5px solid #546E7A;border-radius:12px;font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;color:#80CBC4;cursor:pointer;}
-    .modal-btn-confirm{flex:2;padding:13px;background:linear-gradient(135deg,#1B5E20,#00C853);border:none;border-radius:12px;font-family:'Poppins',sans-serif;font-size:14px;font-weight:800;color:#fff;cursor:pointer;box-shadow:0 4px 16px rgba(0,200,83,0.3);}
-    .recharge-input{width:100%;background:#1C2833;border:1.5px solid #2E3D44;border-radius:12px;padding:14px 16px;font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;color:var(--green);outline:none;text-align:center;margin-bottom:6px;}
-    .recharge-input:focus{border-color:var(--green);}
-    .balance-note{text-align:center;font-size:11px;color:#546E7A;margin-bottom:16px;}
+  .machine-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+  .stat-item {
+    background: #1C2833;
+    border-radius: 8px;
+    padding: 5px 7px;
+    border: 1px solid #2E3D44;
+  }
+  .stat-label { font-size: 8px; font-weight: 600; color: #546E7A; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+  .stat-value { font-size: 10px; font-weight: 700; color: #E8F5E9; }
+  .nob1 .stat-value.hi { color: #00C853; }
+  .nob2 .stat-value.hi { color: #FFA500; }
+  .nob3 .stat-value.hi { color: #00E5FF; }
+  .nob4 .stat-value.hi { color: #CE93D8; }
 
-    .bottom-nav{background:#1A2328;border-top:1px solid #2E3D44;padding:10px 0 14px;display:flex;justify-content:space-around;align-items:center;position:fixed;bottom:0;left:0;right:0;z-index:999;max-width:430px;margin:0 auto;}
-    .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:4px 16px;border-radius:12px;transition:background 0.2s;}
-    .nav-item:active{background:#2E3D44;}
-    .nav-icon svg{width:22px;height:22px;fill:#546E7A;}
-    .nav-label{font-size:10px;font-weight:600;color:#546E7A;}
-    .nav-item.active .nav-label{color:var(--green);}
-    .nav-item.active .nav-icon svg{fill:var(--green);}
+  .buy-btn {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+  .buy-btn:active { transform: scale(0.97); opacity: 0.9; }
+  .nob1 .buy-btn { background: linear-gradient(135deg, #1B5E20, #00C853); color: #fff; }
+  .nob2 .buy-btn { background: linear-gradient(135deg, #7A3A00, #FFA500); color: #fff; }
+  .nob3 .buy-btn { background: linear-gradient(135deg, #00474F, #00E5FF); color: #003038; }
+  .nob4 .buy-btn { background: linear-gradient(135deg, #4A1060, #CE93D8); color: #fff; }
+  .nob5 .buy-btn { background: linear-gradient(135deg, #7A0020, #FF1744); color: #fff; }
+  .nob6 .buy-btn { background: linear-gradient(135deg, #004D40, #1DE9B6); color: #003028; }
+  .nob7 .buy-btn { background: linear-gradient(135deg, #1A237E, #448AFF); color: #fff; }
+  .nob8 .buy-btn { background: linear-gradient(135deg, #7A4A00, #FF9100); color: #fff; }
+  .nob9 .buy-btn { background: linear-gradient(135deg, #4A0040, #E040FB); color: #fff; }
+  .nob10 .buy-btn { background: linear-gradient(135deg, #002040, #00B0FF); color: #fff; }
 
-    .error-msg{color:#EF5350;font-size:12px;text-align:center;margin-top:10px;display:none;}
-  </style>
+  .machine-visual.nob8 { background: linear-gradient(135deg, #1A0E00, #2A1800, #3A2400); }
+  .machine-visual.nob9 { background: linear-gradient(135deg, #1A0018, #2A0028, #3A0038); }
+  .machine-visual.nob10 { background: linear-gradient(135deg, #00101A, #001A2A, #00243A); }
+  .nob8 .glow-ring { border-color: rgba(255,145,0,0.7); width: 80px; height: 60px; box-shadow: 0 0 28px rgba(255,145,0,0.4); }
+  .nob9 .glow-ring { border-color: rgba(224,64,251,0.7); width: 80px; height: 60px; box-shadow: 0 0 28px rgba(224,64,251,0.4); }
+  .nob10 .glow-ring { border-color: rgba(0,176,255,0.7); width: 80px; height: 60px; box-shadow: 0 0 28px rgba(0,176,255,0.4); }
+  .nob8 .machine-svg svg { fill: none; stroke: #FF9100; stroke-width: 1.2; }
+  .nob9 .machine-svg svg { fill: none; stroke: #E040FB; stroke-width: 1.2; }
+  .nob10 .machine-svg svg { fill: none; stroke: #00B0FF; stroke-width: 1.2; }
+  .nob8 .dot { background: #FF9100; }
+  .nob9 .dot { background: #E040FB; }
+  .nob10 .dot { background: #00B0FF; }
+  .nob8 .machine-badge { background:rgba(255,145,0,0.2);color:#FF9100;border:1px solid rgba(255,145,0,0.4); }
+  .nob9 .machine-badge { background:rgba(224,64,251,0.2);color:#E040FB;border:1px solid rgba(224,64,251,0.4); }
+  .nob10 .machine-badge { background:rgba(0,176,255,0.2);color:#00B0FF;border:1px solid rgba(0,176,255,0.4); }
+  .nob8 .stat-value.hi { color: #FF9100; }
+  .nob9 .stat-value.hi { color: #E040FB; }
+  .nob10 .stat-value.hi { color: #00B0FF; }
+
+  /* NOB 5, 6, 7 backgrounds */
+  .machine-visual.nob5 { background: linear-gradient(135deg, #1A0005, #2A000A, #3A0015); }
+  .machine-visual.nob6 { background: linear-gradient(135deg, #001A14, #002A20, #003A2A); }
+  .machine-visual.nob7 { background: linear-gradient(135deg, #00001A, #00052A, #000A3A); }
+  .nob5 .glow-ring { border-color: rgba(255,23,68,0.6); width: 80px; height: 60px; box-shadow: 0 0 24px rgba(255,23,68,0.3); }
+  .nob6 .glow-ring { border-color: rgba(29,233,182,0.6); width: 80px; height: 60px; box-shadow: 0 0 24px rgba(29,233,182,0.3); }
+  .nob7 .glow-ring { border-color: rgba(68,138,255,0.6); width: 80px; height: 60px; box-shadow: 0 0 24px rgba(68,138,255,0.3); }
+  .nob5 .machine-svg svg { fill: none; stroke: #FF1744; stroke-width: 1.2; }
+  .nob6 .machine-svg svg { fill: none; stroke: #1DE9B6; stroke-width: 1.2; }
+  .nob7 .machine-svg svg { fill: none; stroke: #448AFF; stroke-width: 1.2; }
+  .nob5 .dot { background: #FF1744; }
+  .nob6 .dot { background: #1DE9B6; }
+  .nob7 .dot { background: #448AFF; }
+  .nob5 .machine-badge { background:rgba(255,23,68,0.2);color:#FF1744;border:1px solid rgba(255,23,68,0.4); }
+  .nob6 .machine-badge { background:rgba(29,233,182,0.2);color:#1DE9B6;border:1px solid rgba(29,233,182,0.4); }
+  .nob7 .machine-badge { background:rgba(68,138,255,0.2);color:#448AFF;border:1px solid rgba(68,138,255,0.4); }
+  .nob5 .stat-value.hi { color: #FF1744; }
+  .nob6 .stat-value.hi { color: #1DE9B6; }
+  .nob7 .stat-value.hi { color: #448AFF; }
+
+  /* RECORDS MODAL */
+  .records-tabs {
+    display: flex;
+    background: #1C2833;
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 16px;
+    gap: 4px;
+  }
+  .records-tab {
+    flex: 1;
+    padding: 8px 4px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #546E7A;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+  .records-tab.active { background: #2E7D32; color: #fff; }
+  .records-list { max-height: 320px; overflow-y: auto; }
+  .records-list::-webkit-scrollbar { display: none; }
+  .record-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #2E3D44;
+  }
+  .record-item:last-child { border-bottom: none; }
+  .record-left { display: flex; align-items: center; gap: 10px; }
+  .record-dot {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .record-dot svg { width: 18px; height: 18px; fill: #fff; }
+  .record-dot.deposit { background: linear-gradient(135deg, #1B5E20, #00C853); }
+  .record-dot.withdraw { background: linear-gradient(135deg, #7A0000, #EF5350); }
+  .record-dot.bonus { background: linear-gradient(135deg, #7A4A00, #FFB300); }
+  .record-desc { font-size: 13px; font-weight: 700; color: #E8F5E9; }
+  .record-date { font-size: 10px; color: #546E7A; margin-top: 2px; }
+  .record-amount { font-size: 13px; font-weight: 800; }
+  .record-amount.green { color: #00C853; }
+  .record-amount.red { color: #EF5350; }
+  .record-empty { text-align: center; padding: 30px 0; color: #546E7A; font-size: 13px; }
+
+  /* ACTIVE BADGE */
+  .active-badge {
+    display: none;
+    position: absolute;
+    top: 8px; left: 8px;
+    background: rgba(0,200,83,0.9);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+    z-index: 10;
+  }
+  .active-badge.show { display: block; }
+
+  /* MODALS */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 99998;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal-box {
+    background: #263238;
+    border-radius: 24px 24px 0 0;
+    padding: 24px 20px 40px;
+    width: 100%;
+    max-width: 430px;
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .modal-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: #E8F5E9;
+    margin-bottom: 4px;
+    text-align: center;
+  }
+  .modal-sub {
+    font-size: 12px;
+    color: #80CBC4;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .modal-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #2E3D44;
+  }
+  .modal-row:last-of-type { border-bottom: none; }
+  .modal-row-label { font-size: 12px; color: #80CBC4; font-weight: 600; }
+  .modal-row-value { font-size: 13px; color: #E8F5E9; font-weight: 700; }
+  .modal-row-value.green { color: #00C853; }
+  .modal-row-value.red { color: #EF5350; }
+  .modal-btn-row { display: flex; gap: 10px; margin-top: 20px; }
+  .modal-btn-cancel {
+    flex: 1; padding: 13px;
+    background: transparent;
+    border: 1.5px solid #546E7A;
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px; font-weight: 700;
+    color: #80CBC4; cursor: pointer;
+  }
+  .modal-btn-confirm {
+    flex: 2; padding: 13px;
+    background: linear-gradient(135deg, #1B5E20, #00C853);
+    border: none;
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px; font-weight: 800;
+    color: #fff; cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,200,83,0.3);
+  }
+  .recharge-input {
+    width: 100%;
+    background: #1C2833;
+    border: 1.5px solid #2E3D44;
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px; font-weight: 700;
+    color: #00C853;
+    outline: none;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .recharge-input:focus { border-color: #00C853; }
+  .balance-note {
+    text-align: center;
+    font-size: 11px;
+    color: #546E7A;
+    margin-bottom: 16px;
+  }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    background: #1A2328;
+    border-top: 1px solid #2E3D44;
+    padding: 10px 0 14px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    max-width: 430px;
+    margin: 0 auto;
+  }
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 4px 16px;
+    border-radius: 12px;
+    transition: background 0.2s;
+  }
+  .nav-item:active { background: #2E3D44; }
+  .nav-icon svg { width: 22px; height: 22px; fill: #546E7A; }
+  .nav-label { font-size: 10px; font-weight: 600; color: #546E7A; }
+  .nav-item.active .nav-label { color: #00C853; }
+  .nav-item.active .nav-icon svg { fill: #00C853; }
+</style>
 </head>
 <body>
-
-<div id="connecting-screen">
-  <div class="connecting-logo">NOBLECAPITAL</div>
-  <div class="connecting-spinner"><span></span><span></span><span></span></div>
-  <div class="connecting-text">Connecting...</div>
-</div>
-
-<div id="auth-screen">
-  <div style="width:100%;max-width:430px;">
-    <div class="auth-header">
-      <div class="auth-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.5 1L2 6v2h19V6M16 10v7h3v-7M2 19v2h19v-2M11 10v7h3v-7M6 10v7h3v-7"/></svg></div>
-      <div class="auth-logo">NOBLECAPITAL</div>
-      <div class="auth-tagline">Invest Smart. Earn Daily.</div>
-    </div>
-
-    <div class="auth-tabs">
-      <div class="auth-tab active" id="tab-register" onclick="switchAuth('register')">Register</div>
-      <div class="auth-tab" id="tab-login" onclick="switchAuth('login')">Login</div>
-    </div>
-
-    <div class="auth-form active" id="form-register">
-      <div class="bonus-banner">
-        <div class="bonus-icon">🎁</div>
-        <div class="bonus-text">Registration Bonus<br><span class="bonus-amount">UGX 2,600</span> credited instantly!</div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Full Name</label>
-        <input type="text" class="form-input" id="reg-name" placeholder="John Doe">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Phone Number</label>
-        <div class="phone-row">
-          <select class="country-code" id="reg-code">
-            <option value="+256">🇺🇬 +256</option>
-            <option value="+254">🇰🇪 +254</option>
-          </select>
-          <input type="tel" class="form-input phone-input" id="reg-phone" placeholder="700123456">
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Country</label>
-        <div class="select-wrap">
-          <select class="country-select" id="reg-country">
-            <option value="Uganda">Uganda</option>
-            <option value="Kenya">Kenya</option>
-          </select>
-        </div>
-      </div>
-      <button class="auth-btn" onclick="doRegister()">Create Account</button>
-      <div class="error-msg" id="reg-error"></div>
-      <div class="auth-switch">Already have account? <a onclick="switchAuth('login')">Login</a></div>
-    </div>
-
-    <div class="auth-form" id="form-login">
-      <div class="form-group">
-        <label class="form-label">Phone Number</label>
-        <div class="phone-row">
-          <select class="country-code" id="login-code">
-            <option value="+256">🇺🇬 +256</option>
-            <option value="+254">🇰🇪 +254</option>
-          </select>
-          <input type="tel" class="form-input phone-input" id="login-phone" placeholder="700123456">
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Password (set during registration)</label>
-        <input type="password" class="form-input" id="login-pass" placeholder="••••••">
-      </div>
-      <button class="auth-btn" onclick="doLogin()">Sign In</button>
-      <div class="error-msg" id="login-error"></div>
-      <div class="auth-switch">No account yet? <a onclick="switchAuth('register')">Register</a></div>
-    </div>
-  </div>
-</div>
-
-<div id="success-overlay" class="success-overlay">
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="success-overlay">
   <div class="success-box">
-    <div class="success-check"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
+    <div class="success-check">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+    </div>
     <div class="success-title">Welcome to NOBLECAPITAL!</div>
-    <div class="success-bonus" id="success-bonus">+ UGX 2,600</div>
+    <div class="success-bonus">+ UGX 2,600</div>
     <div class="success-msg">Registration successful! Your bonus has been credited to your SPN Account. Start investing today!</div>
     <button class="success-btn" onclick="enterDashboard()">Go to Dashboard</button>
   </div>
 </div>
 
-<div id="main-app" style="display:none;">
-  <div class="header">
-    <div class="logo">NOBLECAPITAL</div>
-    <button class="notif-btn" onclick="openModal('modal-records')"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V2h-3v2.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg></button>
+<!-- CONNECTING SCREEN -->
+<div id="connecting-screen">
+  <div class="connecting-logo">NOBLECAPITAL</div>
+  <div class="connecting-spinner">
+    <span></span><span></span><span></span>
+  </div>
+  <div class="connecting-text">Connecting...</div>
+</div>
+
+<!-- AUTH SCREEN -->
+<div id="auth-screen" style="display:none;">
+  <div class="auth-header">
+    <div class="auth-icon">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.5 1L2 6v2h19V6M16 10v7h3v-7M2 19v2h19v-2M11 10v7h3v-7M6 10v7h3v-7"/>
+      </svg>
+    </div>
+    <div class="auth-logo">NOBLECAPITAL</div>
+    <div class="auth-tagline">Invest Smart. Earn Daily.</div>
   </div>
 
+  <div class="auth-tabs">
+    <div class="auth-tab active" id="tab-register" onclick="switchAuth('register')">Register</div>
+    <div class="auth-tab" id="tab-login" onclick="switchAuth('login')">Login</div>
+  </div>
+
+  <!-- REGISTER FORM -->
+  <div class="auth-form active" id="form-register">
+    <div class="bonus-banner">
+      <div class="bonus-icon">
+        <svg viewBox="0 0 24 24" width="28" height="28" xmlns="http://www.w3.org/2000/svg" style="fill:#FFD700"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/></svg>
+      </div>
+      <div class="bonus-text">
+        Registration Bonus<br>
+        <span class="bonus-amount">UGX 2,600</span> credited instantly!
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Full Name</label>
+      <input type="text" class="form-input" id="reg-name" placeholder="Enter your full name">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Country</label>
+      <div class="select-wrap">
+        <select class="country-select" id="reg-country" onchange="updateCode()">
+          <option value="">Select country</option>
+          <option value="+256" data-flag="🇺🇬">Uganda (+256)</option>
+          <option value="+255" data-flag="🇹🇿">Tanzania (+255)</option>
+          <option value="+243" data-flag="🇨🇩">DR Congo (+243)</option>
+          <option value="+27"  data-flag="🇿🇦">South Africa (+27)</option>
+          <option value="+237" data-flag="🇨🇲">Cameroon (+237)</option>
+          <option value="+234" data-flag="🇳🇬">Nigeria (+234)</option>
+          <option value="+254" data-flag="🇰🇪">Kenya (+254)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Phone Number (for withdrawals)</label>
+      <div class="phone-row">
+        <input type="text" class="country-code" id="reg-code" value="" placeholder="+___" readonly>
+        <input type="tel" class="form-input phone-input" id="reg-phone" placeholder="712345678" maxlength="9">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input type="password" class="form-input" id="reg-password" placeholder="Create a password">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Referral Code (optional)</label>
+      <input type="text" class="form-input" id="reg-referral" placeholder="Enter referral code">
+    </div>
+
+    <button class="auth-btn" onclick="doRegister()">Create Account</button>
+    <div class="auth-switch">Already have an account? <a onclick="switchAuth('login')">Login here</a></div>
+  </div>
+
+  <!-- LOGIN FORM -->
+  <div class="auth-form" id="form-login">
+
+    <div class="form-group">
+      <label class="form-label">Phone Number</label>
+      <input type="tel" class="form-input" id="login-phone" placeholder="712345678" maxlength="9">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input type="password" class="form-input" id="login-password" placeholder="Enter your password">
+    </div>
+
+    <button class="auth-btn" onclick="doLogin()">Login</button>
+    <div class="auth-switch">Don't have an account? <a onclick="switchAuth('register')">Register here</a></div>
+  </div>
+</div>
+
+<div class="phone" id="main-app" style="display:none;">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="lang-btn">
+      <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
+        <rect width="60" height="30" fill="#012169"/>
+        <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/>
+        <path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="4"/>
+        <path d="M30,0 V30 M0,15 H60" stroke="#fff" stroke-width="10"/>
+        <path d="M30,0 V30 M0,15 H60" stroke="#C8102E" stroke-width="6"/>
+      </svg>
+      <span>English</span>
+    </div>
+    <div class="logo">NOBLECAPITAL</div>
+    <div class="notif-btn">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ===== HOME PAGE ===== -->
   <div class="page active" id="page-home">
+
     <div class="banner">
-      <div class="banner-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.5 1L2 6v2h19V6M16 10v7h3v-7M2 19v2h19v-2M11 10v7h3v-7M6 10v7h3v-7"/></svg></div>
-      <div class="banner-logo">NC</div>
-      <h2>Welcome Back</h2>
-      <p id="banner-name">—</p>
+      <div class="banner-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.5 1L2 6v2h19V6M16 10v7h3v-7M2 19v2h19v-2M11 10v7h3v-7M6 10v7h3v-7"/>
+        </svg>
+      </div>
+      <div class="banner-logo">NOBLECAPITAL</div>
+      <h2>WELCOME</h2>
+      <p>New Opportunities And Challenges Work<br>Together To Create A Better Future</p>
     </div>
 
     <div class="actions-wrap">
       <div class="actions-grid">
-        <div class="action-btn" onclick="openModal('modal-recharge')">
-          <div class="action-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 6h-2v12h2zm4-6H7c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V2c0-1.1-.9-2-2-2z"/></svg></div>
-          <span class="action-label">Deposit</span>
+        <div class="action-btn" onclick="openRecharge()">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 18v1c0 1.1-.9 2-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14c1.1 0 2 .9 2 2v1h-9a2 2 0 00-2 2v8a2 2 0 002 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+          </div>
+          <span class="action-label">Recharge</span>
         </div>
-        <div class="action-btn" onclick="openModal('modal-withdraw')">
-          <div class="action-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"/></svg></div>
+        <div class="action-btn" onclick="openWithdraw()">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.11 0-2 .89-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+          </div>
           <span class="action-label">Withdraw</span>
         </div>
-        <div class="action-btn" onclick="openModal('modal-invite')">
-          <div class="action-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.89 1.97 1.74 1.97 2.95V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
-          <span class="action-label">Invite</span>
+        <div class="action-btn" onclick="openRecords()">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 0a1 1 0 110 2 1 1 0 010-2zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+          </div>
+          <span class="action-label">Records</span>
         </div>
-        <div class="action-btn" onclick="switchPage('products')">
-          <div class="action-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 12h-2v-2h-2v2h-2v2h2v2h2v-2h2v-2zm-8-6H9v2H7V6H5v2h2v2h2V8h2V6zm-8 7h6v5H3v-5z"/></svg></div>
-          <span class="action-label">Machines</span>
+        <div class="action-btn" onclick="openInvite()">
+          <div class="action-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          </div>
+          <span class="action-label">Invite</span>
         </div>
       </div>
     </div>
 
     <div class="accounts-wrap">
       <div class="account-card">
-        <div class="account-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/></svg></div>
+        <div class="account-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.5 1L2 6v2h19V6M16 10v7h3v-7M2 19v2h19v-2M11 10v7h3v-7M6 10v7h3v-7"/></svg>
+        </div>
         <div class="account-info">
-          <div class="account-name">SPN Balance</div>
-          <div class="account-balance" id="spn-balance">UGX 0.00</div>
+          <span class="account-name">SPN Account</span>
+          <span class="account-balance" id="spn-balance">UGX 0.00</span>
         </div>
       </div>
       <div class="account-card">
-        <div class="account-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg></div>
+        <div class="account-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/></svg>
+        </div>
         <div class="account-info">
-          <div class="account-name">Income Balance</div>
-          <div class="account-balance" id="income-balance">UGX 0.00</div>
+          <span class="account-name">Income Account</span>
+          <span class="account-balance" id="income-balance">UGX 0.00</span>
         </div>
       </div>
       <div class="account-card">
-        <div class="account-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg></div>
+        <div class="account-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.11 0-2 .89-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+        </div>
         <div class="account-info">
-          <div class="account-name">Withdrawn</div>
-          <div class="account-balance" id="withdrawn-balance">UGX 0.00</div>
+          <span class="account-name">Withdrawn</span>
+          <span class="account-balance" id="withdrawn-balance">UGX 0.00</span>
         </div>
       </div>
     </div>
 
-    <div class="products-wrap">
-      <div class="section-head">📊 Active Machines</div>
-      <div id="active-machines-list" style="font-size:13px;color:#546E7A;text-align:center;padding:20px;">Loading machines...</div>
-    </div>
-  </div>
+  </div><!-- end home page -->
 
+  <!-- ===== PRODUCTS PAGE ===== -->
   <div class="page" id="page-products">
     <div class="products-wrap">
-      <div class="section-head">💻 Investment Machines</div>
-      <div id="machines-list"></div>
-    </div>
-  </div>
+      <div class="section-head">Mining Machines</div>
 
-  <div class="page" id="page-about">
-    <div style="padding:20px;">
-      <div style="background:#263238;border-radius:14px;padding:20px;border:1px solid #2E3D44;margin-bottom:16px;">
-        <div style="font-size:16px;font-weight:800;color:#E8F5E9;margin-bottom:12px;">About NOBLECAPITAL</div>
-        <div style="font-size:13px;color:#B2DFDB;line-height:1.8;">
-          NOBLECAPITAL is a leading investment platform helping users in Uganda and Kenya grow their wealth through smart, automated investment machines.
-          <br><br>
-          <strong>Why Choose Us?</strong>
-          <br>✓ Daily earnings from 10% returns
-          <br>✓ Instant registration bonus
-          <br>✓ Flexible deposit & withdrawal
-          <br>✓ Referral rewards program
-          <br>✓ Secure & transparent
+      <!-- NOB 1 -->
+      <div class="machine-card nob1">
+        <div class="machine-visual nob1">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="glow-ring"></div>
+          <span class="active-badge" id="badge-nob1">Active ×0</span>
+          <div class="machine-svg">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="20" width="60" height="40" rx="6"/>
+              <rect x="15" y="25" width="30" height="30" rx="3"/>
+              <line x1="50" y1="30" x2="65" y2="30"/><line x1="50" y1="38" x2="65" y2="38"/>
+              <line x1="50" y1="46" x2="65" y2="46"/><circle cx="57" cy="54" r="4"/>
+              <rect x="28" y="10" width="6" height="10"/><rect x="46" y="10" width="6" height="10"/>
+            </svg>
+          </div>
+          <span class="machine-badge">STARTER</span>
+        </div>
+        <div class="machine-body">
+          <div class="machine-name">NOB 1</div>
+          <div class="machine-stats">
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 50,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 5,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 150,000</div></div>
+          </div>
+          <button class="buy-btn" onclick="confirmBuy('nob1','NOB 1',50000,5000)">Buy NOB 1</button>
         </div>
       </div>
+
+      <!-- NOB 2 -->
+      <div class="machine-card nob2">
+        <div class="machine-visual nob2">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="glow-ring"></div>
+          <span class="active-badge" id="badge-nob2">Active ×0</span>
+          <div class="machine-svg">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="18" width="64" height="44" rx="8"/>
+              <rect x="14" y="24" width="28" height="32" rx="4"/>
+              <circle cx="56" cy="32" r="8"/><circle cx="56" cy="32" r="4"/>
+              <line x1="48" y1="50" x2="64" y2="50"/><line x1="48" y1="56" x2="64" y2="56"/>
+              <rect x="20" y="8" width="8" height="10"/><rect x="52" y="8" width="8" height="10"/>
+            </svg>
+          </div>
+          <span class="machine-badge">BASIC</span>
+        </div>
+        <div class="machine-body">
+          <div class="machine-name">NOB 2</div>
+          <div class="machine-stats">
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 150,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 15,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 450,000</div></div>
+          </div>
+          <button class="buy-btn" onclick="confirmBuy('nob2','NOB 2',150000,15000)">Buy NOB 2</button>
+        </div>
+      </div>
+
+      <!-- NOB 3 -->
+      <div class="machine-card nob3">
+        <div class="machine-visual nob3">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="glow-ring"></div>
+          <span class="active-badge" id="badge-nob3">Active ×0</span>
+          <div class="machine-svg">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <rect x="6" y="16" width="68" height="48" rx="10"/>
+              <rect x="12" y="22" width="32" height="36" rx="4"/>
+              <circle cx="60" cy="35" r="10"/><circle cx="60" cy="35" r="6"/><circle cx="60" cy="35" r="2"/>
+              <line x1="50" y1="52" x2="70" y2="52"/><line x1="50" y1="58" x2="70" y2="58"/>
+            </svg>
+          </div>
+          <span class="machine-badge">PRO</span>
+        </div>
+        <div class="machine-body">
+          <div class="machine-name">NOB 3</div>
+          <div class="machine-stats">
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 500,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 50,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 1,500,000</div></div>
+          </div>
+          <button class="buy-btn" onclick="confirmBuy('nob3','NOB 3',500000,50000)">Buy NOB 3</button>
+        </div>
+      </div>
+
+      <!-- NOB 4 -->
+      <div class="machine-card nob4">
+        <div class="machine-visual nob4">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="glow-ring"></div>
+          <span class="active-badge" id="badge-nob4">Active ×0</span>
+          <div class="machine-svg">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <rect x="5" y="14" width="70" height="52" rx="12"/>
+              <rect x="11" y="20" width="34" height="40" rx="5"/>
+              <circle cx="62" cy="34" r="12"/><circle cx="62" cy="34" r="8"/><circle cx="62" cy="34" r="3"/>
+              <line x1="52" y1="52" x2="72" y2="52"/><line x1="52" y1="58" x2="72" y2="58"/>
+              <rect x="22" y="5" width="10" height="9"/><rect x="48" y="5" width="10" height="9"/>
+            </svg>
+          </div>
+          <span class="machine-badge">ELITE</span>
+        </div>
+        <div class="machine-body">
+          <div class="machine-name">NOB 4</div>
+          <div class="machine-stats">
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 1,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 100,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 3,000,000</div></div>
+          </div>
+          <button class="buy-btn" onclick="confirmBuy('nob4','NOB 4',1000000,100000)">Buy NOB 4</button>
+        </div>
+      </div>
+
+      <!-- NOB 5 -->
+      <div class="machine-card nob5">
+        <div class="machine-visual nob5">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="glow-ring"></div>
+          <span class="active-badge" id="badge-nob5">Active ×0</span>
+          <div class="machine-svg">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="12" width="64" height="56" rx="10"/>
+              <circle cx="40" cy="40" r="20"/><circle cx="40" cy="40" r="14"/><circle cx="40" cy="40" r="5"/>
+              <line x1="40" y1="20" x2="40" y2="26"/><line x1="40" y1="54" x2="40" y2="60"/>
+              <line x1="20" y1="40" x2="26" y2="40"/><line x1="54" y1="40" x2="60" y2="40"/>
+              <rect x="20" y="4" width="8" height="8"/><rect x="52" y="4" width="8" height="8"/>
+            </svg>
+          </div>
+          <span class="machine-badge">MASTER</span>
+        </div>
+        <div class="machine-body">
+          <div class="machine-name">NOB 5</div>
+          <div class="machine-stats">
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 2,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 200,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 6,000,000</div></div>
+          </div>
+          <button class="buy-btn" onclick="confirmBuy('nob5','NOB 5',2000000,200000)">Buy NOB 5</button>
+        </div>
+      </div>
+
+      <!-- NOB 6 -->
+      <div class="machine-card nob6">
+        <div class="machine-visual nob6">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="glow-ring"></div>
+          <span class="active-badge" id="badge-nob6">Active ×0</span>
+          <div class="machine-svg">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <rect x="6" y="10" width="68" height="60" rx="12"/>
+              <polygon points="40,16 55,30 55,50 40,64 25,50 25,30"/>
+              <polygon points="40,24 50,34 50,46 40,56 30,46 30,34"/>
+              <circle cx="40" cy="40" r="5"/>
+              <line x1="40" y1="10" x2="40" y2="16"/><line x1="40" y1="64" x2="40" y2="70"/>
+            </svg>
+          </div>
+          <span class="machine-badge">LEGEND</span>
+        </div>
+        <div class="machine-body">
+          <div class="machine-name">NOB 6</div>
+          <div class="machine-stats">
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 5,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 500,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 15,000,000</div></div>
+          </div>
+          <button class="buy-btn" onclick="confirmBuy('nob6','NOB 6',5000000,500000)">Buy NOB 6</button>
+        </div>
+      </div>
+
+      <!-- NOB 7 -->
+      <div class="machine-card nob7">
+        <div class="machine-visual nob7">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="glow-ring"></div>
+          <span class="active-badge" id="badge-nob7">Active ×0</span>
+          <div class="machine-svg">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="8" width="72" height="64" rx="14"/>
+              <rect x="12" y="16" width="24" height="48" rx="4"/>
+              <circle cx="56" cy="28" r="14"/><circle cx="56" cy="28" r="9"/><circle cx="56" cy="28" r="4"/>
+              <line x1="44" y1="52" x2="68" y2="52"/><line x1="44" y1="58" x2="68" y2="58"/><line x1="44" y1="64" x2="68" y2="64"/>
+              <rect x="18" y="4" width="12" height="8"/><rect x="50" y="4" width="12" height="8"/>
+            </svg>
+          </div>
+          <span class="machine-badge">SUPREME</span>
+        </div>
+        <div class="machine-body">
+          <div class="machine-name">NOB 7</div>
+          <div class="machine-stats">
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 10,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 1,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 30,000,000</div></div>
+          </div>
+          <button class="buy-btn" onclick="confirmBuy('nob7','NOB 7',10000000,1000000)">Buy NOB 7</button>
+        </div>
+      </div>
+
+      <!-- NOB 8 -->
+      <div class="machine-card nob8">
+        <div class="machine-visual nob8">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="glow-ring"></div>
+          <span class="active-badge" id="badge-nob8">Active ×0</span>
+          <div class="machine-svg">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="10" width="72" height="60" rx="6"/>
+              <rect x="10" y="16" width="20" height="48" rx="3"/>
+              <line x1="36" y1="20" x2="36" y2="64"/>
+              <rect x="38" y="18" width="30" height="10" rx="2"/>
+              <rect x="38" y="32" width="30" height="10" rx="2"/>
+              <rect x="38" y="46" width="30" height="10" rx="2"/>
+              <line x1="14" y1="4" x2="14" y2="10"/><line x1="24" y1="4" x2="24" y2="10"/>
+              <line x1="60" y1="4" x2="60" y2="10"/>
+            </svg>
+          </div>
+          <span class="machine-badge">TITAN</span>
+        </div>
+        <div class="machine-body">
+          <div class="machine-name">NOB 8</div>
+          <div class="machine-stats">
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 20,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 2,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 60,000,000</div></div>
+          </div>
+          <button class="buy-btn" onclick="confirmBuy('nob8','NOB 8',20000000,2000000)">Buy NOB 8</button>
+        </div>
+      </div>
+
+      <!-- NOB 9 -->
+      <div class="machine-card nob9">
+        <div class="machine-visual nob9">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="glow-ring"></div>
+          <span class="active-badge" id="badge-nob9">Active ×0</span>
+          <div class="machine-svg">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="8" width="72" height="64" rx="8"/>
+              <rect x="10" y="14" width="18" height="52" rx="3"/>
+              <rect x="32" y="14" width="18" height="52" rx="3"/>
+              <line x1="54" y1="14" x2="54" y2="66"/>
+              <line x1="60" y1="18" x2="70" y2="18"/><line x1="60" y1="28" x2="70" y2="28"/>
+              <line x1="60" y1="38" x2="70" y2="38"/><line x1="60" y1="48" x2="70" y2="48"/>
+              <line x1="60" y1="58" x2="70" y2="58"/>
+              <rect x="14" y="2" width="10" height="6"/><rect x="34" y="2" width="10" height="6"/>
+            </svg>
+          </div>
+          <span class="machine-badge">GALAXY</span>
+        </div>
+        <div class="machine-body">
+          <div class="machine-name">NOB 9</div>
+          <div class="machine-stats">
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 50,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 5,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 150,000,000</div></div>
+          </div>
+          <button class="buy-btn" onclick="confirmBuy('nob9','NOB 9',50000000,5000000)">Buy NOB 9</button>
+        </div>
+      </div>
+
+      <!-- NOB 10 -->
+      <div class="machine-card nob10">
+        <div class="machine-visual nob10">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          <div class="glow-ring"></div>
+          <span class="active-badge" id="badge-nob10">Active ×0</span>
+          <div class="machine-svg">
+            <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="6" width="76" height="68" rx="10"/>
+              <rect x="8" y="12" width="14" height="56" rx="3"/>
+              <rect x="26" y="12" width="14" height="56" rx="3"/>
+              <rect x="44" y="12" width="14" height="56" rx="3"/>
+              <line x1="62" y1="12" x2="62" y2="68"/>
+              <line x1="64" y1="16" x2="74" y2="16"/><line x1="64" y1="24" x2="74" y2="24"/>
+              <line x1="64" y1="32" x2="74" y2="32"/><line x1="64" y1="40" x2="74" y2="40"/>
+              <line x1="64" y1="48" x2="74" y2="48"/><line x1="64" y1="56" x2="74" y2="56"/>
+              <rect x="10" y="0" width="10" height="6"/><rect x="28" y="0" width="10" height="6"/>
+              <rect x="46" y="0" width="10" height="6"/>
+            </svg>
+          </div>
+          <span class="machine-badge">OMEGA</span>
+        </div>
+        <div class="machine-body">
+          <div class="machine-name">NOB 10</div>
+          <div class="machine-stats">
+            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">UGX 100,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Daily Income</div><div class="stat-value hi">UGX 10,000,000</div></div>
+            <div class="stat-item"><div class="stat-label">Duration</div><div class="stat-value">30 Days</div></div>
+            <div class="stat-item"><div class="stat-label">Total Return</div><div class="stat-value">UGX 300,000,000</div></div>
+          </div>
+          <button class="buy-btn" onclick="confirmBuy('nob10','NOB 10',100000000,10000000)">Buy NOB 10</button>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- end products page -->
+
+  <!-- ===== ABOUT PAGE ===== -->
+  <div class="page" id="page-about">
+    <div style="padding:40px 20px; text-align:center; color:#80CBC4;">
+      <div style="font-size:40px; margin-bottom:16px;">
+        <svg viewBox="0 0 24 24" width="60" height="60" xmlns="http://www.w3.org/2000/svg" style="fill:#00C853;">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+        </svg>
+      </div>
+      <div style="font-size:18px; font-weight:800; color:#E8F5E9; margin-bottom:8px;">About NOBLECAPITAL</div>
+      <div style="font-size:12px; line-height:1.7; color:#80CBC4;">Coming soon...</div>
     </div>
   </div>
 
+  <!-- ===== PROFILE PAGE ===== -->
   <div class="page" id="page-profile">
-    <div style="padding:20px;">
+
+    <!-- Profile Header -->
+    <div style="background:linear-gradient(135deg,#0D1F1E 0%,#1B5E20 50%,#00C853 100%);padding:30px 20px 24px;text-align:center;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:radial-gradient(circle,rgba(255,255,255,0.1) 0%,transparent 70%);border-radius:50%;"></div>
+      <div style="width:72px;height:72px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
+        <svg viewBox="0 0 24 24" width="38" height="38" xmlns="http://www.w3.org/2000/svg" style="fill:#FFD700;">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
+      </div>
+      <div id="profile-name-display" style="font-size:18px;font-weight:800;color:#fff;letter-spacing:0.5px;margin-bottom:4px;">—</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.7);font-weight:500;">Member</div>
+    </div>
+
+    <!-- Info Cards -->
+    <div style="padding:20px 16px;">
+
+      <!-- Full Name -->
       <div style="background:#263238;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #2E3D44;display:flex;align-items:center;gap:14px;">
-        <div style="width:42px;height:42px;background:linear-gradient(145deg,#2E7D32,#1B5E20);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg" style="fill:#fff;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+        <div style="width:42px;height:42px;background:linear-gradient(145deg,#2E7D32,#1B5E20);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg" style="fill:#fff;">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </svg>
+        </div>
         <div>
           <div style="font-size:10px;font-weight:700;color:#546E7A;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">Full Name</div>
           <div id="profile-name" style="font-size:15px;font-weight:700;color:#E8F5E9;">—</div>
         </div>
       </div>
+
+      <!-- Phone Number -->
       <div style="background:#263238;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #2E3D44;display:flex;align-items:center;gap:14px;">
-        <div style="width:42px;height:42px;background:linear-gradient(145deg,#2E7D32,#1B5E20);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg" style="fill:#fff;"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/></svg></div>
+        <div style="width:42px;height:42px;background:linear-gradient(145deg,#2E7D32,#1B5E20);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg" style="fill:#fff;">
+            <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/>
+          </svg>
+        </div>
         <div>
           <div style="font-size:10px;font-weight:700;color:#546E7A;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">Phone Number</div>
           <div id="profile-phone" style="font-size:15px;font-weight:700;color:#E8F5E9;">—</div>
         </div>
       </div>
+
+      <!-- Date Registered -->
       <div style="background:#263238;border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid #2E3D44;display:flex;align-items:center;gap:14px;">
-        <div style="width:42px;height:42px;background:linear-gradient(145deg,#2E7D32,#1B5E20);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg" style="fill:#fff;"><path d="M19 3h-1V1h-2v2H8V1H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg></div>
+        <div style="width:42px;height:42px;background:linear-gradient(145deg,#2E7D32,#1B5E20);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg" style="fill:#fff;">
+            <path d="M19 3h-1V1h-2v2H8V1H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+          </svg>
+        </div>
         <div>
           <div style="font-size:10px;font-weight:700;color:#546E7A;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">Date Registered</div>
           <div id="profile-date" style="font-size:15px;font-weight:700;color:#E8F5E9;">—</div>
         </div>
       </div>
+
+      <!-- Total Earned -->
       <div style="background:linear-gradient(135deg,#1B3A1B,#1B5E20);border-radius:14px;padding:16px;margin-bottom:12px;border:1px solid rgba(0,200,83,0.3);display:flex;align-items:center;gap:14px;">
-        <div style="width:42px;height:42px;background:linear-gradient(145deg,#00C853,#1B5E20);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg" style="fill:#fff;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/></svg></div>
+        <div style="width:42px;height:42px;background:linear-gradient(145deg,#00C853,#1B5E20);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg" style="fill:#fff;">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/>
+          </svg>
+        </div>
         <div>
           <div style="font-size:10px;font-weight:700;color:#69F0AE;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:3px;">Total Earned</div>
-          <div id="profile-earned" style="font-size:18px;font-weight:800;color:var(--green);">UGX 0.00</div>
+          <div id="profile-earned" style="font-size:18px;font-weight:800;color:#00C853;">UGX 2,600</div>
         </div>
       </div>
-      <button onclick="doLogout()" style="width:100%;padding:14px;background:transparent;border:1.5px solid #C62828;border-radius:14px;font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;color:#EF5350;cursor:pointer;margin-top:8px;">Logout</button>
+
+      <!-- Logout Button -->
+      <button onclick="doLogout()" style="width:100%;padding:14px;background:transparent;border:1.5px solid #C62828;border-radius:14px;font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;color:#EF5350;cursor:pointer;margin-top:8px;">
+        Logout
+      </button>
+
     </div>
   </div>
 
+  <!-- BOTTOM NAV -->
   <div class="bottom-nav">
     <div class="nav-item active" id="nav-home" onclick="switchPage('home')">
-      <div class="nav-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></div>
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      </div>
       <span class="nav-label">Home</span>
     </div>
     <div class="nav-item" id="nav-products" onclick="switchPage('products')">
-      <div class="nav-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6h-2.18c.07-.44.18-.86.18-1a3 3 0 00-6 0c0 .14.11.56.18 1H10c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1h10c.55 0 1-.45 1-1V7c0-.55-.45-1-1-1zm-6-1a1 1 0 112 0c0 .14-.1.46-.18 1h-1.64C14.1 5.46 14 5.14 14 5zM4 19h16v2H4zM4 14h16v3H4zM4 9h4v3H4z"/></svg></div>
-      <span class="nav-label">Machines</span>
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6h-2.18c.07-.44.18-.86.18-1a3 3 0 00-6 0c0 .14.11.56.18 1H10c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1h10c.55 0 1-.45 1-1V7c0-.55-.45-1-1-1zm-6-1a1 1 0 112 0c0 .14-.1.46-.18 1h-1.64C14.1 5.46 14 5.14 14 5zM4 19h16v2H4zM4 14h16v3H4zM4 9h4v3H4z"/></svg>
+      </div>
+      <span class="nav-label">Products</span>
     </div>
     <div class="nav-item" id="nav-about" onclick="switchPage('about')">
-      <div class="nav-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg></div>
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+      </div>
       <span class="nav-label">About</span>
     </div>
     <div class="nav-item" id="nav-profile" onclick="switchPage('profile')">
-      <div class="nav-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+      <div class="nav-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+      </div>
       <span class="nav-label">Profile</span>
     </div>
   </div>
 
+  <!-- RECHARGE MODAL -->
   <div class="modal-overlay" id="modal-recharge">
     <div class="modal-box">
       <div class="modal-title">Recharge SPN Account</div>
       <div class="modal-sub">Enter amount to deposit (UGX)</div>
-      <input type="number" class="recharge-input" id="recharge-amount" placeholder="10,000" min="10000">
-      <div class="balance-note" id="recharge-balance-note">SPN Balance: UGX 0.00</div>
+      <input type="number" class="recharge-input" id="recharge-amount" placeholder="0" min="1000">
+      <div class="balance-note" id="recharge-balance-note">SPN Balance: UGX 0</div>
       <div class="modal-btn-row">
         <button class="modal-btn-cancel" onclick="closeModal('modal-recharge')">Cancel</button>
         <button class="modal-btn-confirm" onclick="doRecharge()">Deposit</button>
@@ -499,6 +1500,7 @@
     </div>
   </div>
 
+  <!-- BUY CONFIRM MODAL -->
   <div class="modal-overlay" id="modal-buy">
     <div class="modal-box">
       <div class="modal-title" id="buy-modal-title">Confirm Purchase</div>
@@ -530,19 +1532,44 @@
     </div>
   </div>
 
+  <!-- BUY SUCCESS MODAL -->
+  <div class="modal-overlay" id="modal-buy-success">
+    <div class="modal-box" style="text-align:center;">
+      <div style="width:60px;height:60px;background:linear-gradient(135deg,#1B5E20,#00C853);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+        <svg viewBox="0 0 24 24" width="30" height="30" xmlns="http://www.w3.org/2000/svg" style="fill:#fff;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+      </div>
+      <div class="modal-title" id="buy-success-title">Purchase Successful!</div>
+      <div style="font-size:12px;color:#80CBC4;margin:8px 0 20px;line-height:1.6;" id="buy-success-msg">Your machine is now active and earning daily!</div>
+      <button class="modal-btn-confirm" style="width:100%;" onclick="closeModal('modal-buy-success')">Great!</button>
+    </div>
+  </div>
+
+  <!-- WITHDRAW MODAL -->
   <div class="modal-overlay" id="modal-withdraw">
     <div class="modal-box">
-      <div class="modal-title">Withdraw Earnings</div>
-      <div class="modal-sub">Request a withdrawal</div>
+      <div class="modal-title">Withdraw Funds</div>
+      <div class="modal-sub">Funds sent to your registered number</div>
+
+      <div style="margin-bottom:14px;">
+        <div class="form-label" style="font-size:10px;font-weight:700;color:#546E7A;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Send To</div>
+        <div style="background:#1C2833;border:1.5px solid #2E3D44;border-radius:12px;padding:13px 16px;display:flex;align-items:center;gap:10px;">
+          <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg" style="fill:#00C853;flex-shrink:0;"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
+          <span id="withdraw-phone-display" style="font-size:14px;font-weight:700;color:#E8F5E9;">—</span>
+          <span style="font-size:10px;color:#546E7A;margin-left:auto;">Registered</span>
+        </div>
+      </div>
+
       <div style="margin-bottom:6px;">
         <div class="form-label" style="font-size:10px;font-weight:700;color:#546E7A;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Amount (UGX)</div>
         <input type="number" class="recharge-input" id="withdraw-amount" placeholder="Min. 6,000" min="6000">
       </div>
       <div class="balance-note" id="withdraw-balance-note">Income Balance: UGX 0.00</div>
+
       <div class="modal-row" style="margin-top:4px;">
         <span class="modal-row-label">Minimum withdrawal</span>
         <span class="modal-row-value">UGX 6,000</span>
       </div>
+
       <div class="modal-btn-row">
         <button class="modal-btn-cancel" onclick="closeModal('modal-withdraw')">Cancel</button>
         <button class="modal-btn-confirm" onclick="doWithdraw()">Withdraw</button>
@@ -550,18 +1577,37 @@
     </div>
   </div>
 
+  <!-- WITHDRAW SUCCESS MODAL -->
+  <div class="modal-overlay" id="modal-withdraw-success">
+    <div class="modal-box" style="text-align:center;">
+      <div style="width:60px;height:60px;background:linear-gradient(135deg,#1B5E20,#00C853);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+        <svg viewBox="0 0 24 24" width="30" height="30" xmlns="http://www.w3.org/2000/svg" style="fill:#fff;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+      </div>
+      <div class="modal-title">Withdrawal Submitted!</div>
+      <div style="font-size:13px;font-weight:800;color:#00C853;margin:8px 0 4px;" id="withdraw-success-amount">—</div>
+      <div style="font-size:12px;color:#80CBC4;margin-bottom:20px;line-height:1.6;">Your withdrawal request has been submitted and will be processed shortly.</div>
+      <button class="modal-btn-confirm" style="width:100%;" onclick="closeModal('modal-withdraw-success')">Done</button>
+    </div>
+  </div>
+  <!-- INVITE MODAL -->
   <div class="modal-overlay" id="modal-invite">
     <div class="modal-box">
       <div class="modal-title">Invite Friends</div>
       <div class="modal-sub">Share your referral link & earn together</div>
+
+      <!-- Referral code display -->
       <div style="background:#1C2833;border:1.5px solid rgba(0,200,83,0.3);border-radius:12px;padding:12px 16px;margin-bottom:12px;text-align:center;">
         <div style="font-size:10px;font-weight:700;color:#546E7A;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Your Referral Code</div>
-        <div id="invite-code-display" style="font-size:22px;font-weight:900;color:var(--green);letter-spacing:3px;">—</div>
+        <div id="invite-code-display" style="font-size:22px;font-weight:900;color:#00C853;letter-spacing:3px;">—</div>
       </div>
+
+      <!-- Referral link -->
       <div style="background:#1C2833;border:1.5px solid #2E3D44;border-radius:12px;padding:12px 16px;margin-bottom:16px;">
         <div style="font-size:10px;font-weight:700;color:#546E7A;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Referral Link</div>
         <div id="invite-link-display" style="font-size:11px;color:#80CBC4;word-break:break-all;line-height:1.5;">—</div>
       </div>
+
+      <!-- Stats row -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
         <div style="background:#1C2833;border-radius:12px;padding:12px;text-align:center;border:1px solid #2E3D44;">
           <div style="font-size:10px;font-weight:700;color:#546E7A;text-transform:uppercase;margin-bottom:4px;">Referred</div>
@@ -569,373 +1615,518 @@
         </div>
         <div style="background:#1C2833;border-radius:12px;padding:12px;text-align:center;border:1px solid #2E3D44;">
           <div style="font-size:10px;font-weight:700;color:#546E7A;text-transform:uppercase;margin-bottom:4px;">Bonus Earned</div>
-          <div style="font-size:14px;font-weight:800;color:var(--green);" id="invite-bonus">UGX 0.00</div>
+          <div style="font-size:14px;font-weight:800;color:#00C853;" id="invite-bonus">UGX 0</div>
         </div>
       </div>
+
+      <!-- Buttons -->
       <div class="modal-btn-row">
-        <button class="modal-btn-cancel" id="invite-copy-btn" onclick="copyInviteLink()">Copy Link</button>
-        <button class="modal-btn-confirm" onclick="shareInviteLink()">Share</button>
+        <button class="modal-btn-cancel" id="invite-copy-btn" onclick="copyInviteLink()">
+          Copy Link
+        </button>
+        <button class="modal-btn-confirm" onclick="shareInviteLink()">
+          Share
+        </button>
       </div>
       <button class="modal-btn-cancel" style="width:100%;margin-top:10px;" onclick="closeModal('modal-invite')">Close</button>
     </div>
   </div>
-
+  <!-- RECORDS MODAL -->
   <div class="modal-overlay" id="modal-records" style="align-items:flex-end;">
     <div class="modal-box" style="max-height:85vh;overflow-y:auto;">
       <div class="modal-title">My Records</div>
       <div class="modal-sub">Your transaction history</div>
+
       <div class="records-tabs">
         <div class="records-tab active" id="rtab-deposits" onclick="switchRecordsTab('deposits')">Deposits</div>
         <div class="records-tab" id="rtab-withdrawals" onclick="switchRecordsTab('withdrawals')">Withdrawals</div>
         <div class="records-tab" id="rtab-bonuses" onclick="switchRecordsTab('bonuses')">Bonuses</div>
       </div>
+
+      <!-- Deposits list -->
       <div class="records-list" id="rlist-deposits"></div>
+      <!-- Withdrawals list -->
       <div class="records-list" id="rlist-withdrawals" style="display:none;"></div>
+      <!-- Bonuses list -->
       <div class="records-list" id="rlist-bonuses" style="display:none;"></div>
+
       <button class="modal-btn-cancel" style="width:100%;margin-top:16px;" onclick="closeModal('modal-records')">Close</button>
     </div>
   </div>
-</div>
 
+</div><!-- end main-app -->
+
+<!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, set, get, update, push, onValue, serverTimestamp, remove }
+  import { getDatabase, ref, set, get, update, push, onValue, serverTimestamp }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
+  // ── CONFIG ──
   const firebaseConfig = {
-    apiKey: "AIzaSyBxPPHLA0wbcZeKcvJE-dBR-nMMWDDo6LA",
-    authDomain: "noblecapital-591c5.firebaseapp.com",
-    projectId: "noblecapital-591c5",
-    storageBucket: "noblecapital-591c5.firebasestorage.app",
-    messagingSenderId: "392805555718",
-    appId: "1:392805555718:web:6e833d666a88230f576d87",
-    databaseURL: "https://noblecapital-591c5-default-rtdb.europe-west1.firebaseio.com"
+    apiKey: "AIzaSyBj6377a-ZDszHFPYRE57bXzHrnRp0L2kI",
+    authDomain: "noblecapital-7b2ad.firebaseapp.com",
+    databaseURL: "https://noblecapital-7b2ad-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "noblecapital-7b2ad",
+    storageBucket: "noblecapital-7b2ad.firebasestorage.app",
+    messagingSenderId: "186213527199",
+    appId: "1:186213527199:web:f193d9e22305b0b09a3caa"
   };
-
   const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+  const db  = getDatabase(app);
 
-  let currentUser = null;
-  let state = { spn: 0, income: 0, withdrawn: 0, totalEarned: 0, machines: {}, deposits: {}, withdrawals: {}, bonuses: {} };
-  let selectedMachine = null;
+  // ── STATE ──
+  let currentUser = null; // { uid, name, phone, code, country, date }
+  let state = { spn:0, income:0, withdrawn:0, totalEarned:0, machines:{} };
+  let earningsTimer = null;
 
-  const MACHINES = [
-    { id: 'nob1', name: 'Green Machine', price: 5000, daily: 500, class: 'nob1' },
-    { id: 'nob2', name: 'Gold Machine', price: 7500, daily: 750, class: 'nob2' },
-    { id: 'nob3', name: 'Cyan Machine', price: 10000, daily: 1000, class: 'nob3' },
-    { id: 'nob4', name: 'Purple Machine', price: 12500, daily: 1250, class: 'nob4' },
-    { id: 'nob5', name: 'Red Machine', price: 15000, daily: 1500, class: 'nob5' },
-    { id: 'nob6', name: 'Teal Machine', price: 17500, daily: 1750, class: 'nob6' },
-    { id: 'nob7', name: 'Blue Machine', price: 20000, daily: 2000, class: 'nob7' },
-    { id: 'nob8', name: 'Orange Machine', price: 25000, daily: 2500, class: 'nob8' },
-    { id: 'nob9', name: 'Magenta Machine', price: 30000, daily: 3000, class: 'nob9' },
-    { id: 'nob10', name: 'Sky Machine', price: 35000, daily: 3500, class: 'nob10' }
-  ];
-
-  function fmt(n) { return 'UGX ' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-
-  function hideConnecting() { document.getElementById('connecting-screen').style.display = 'none'; }
-
-  function showAuthScreen() {
-    hideConnecting();
-    document.getElementById('auth-screen').style.display = 'flex';
-    document.getElementById('main-app').style.display = 'none';
+  function fmt(n) {
+    return 'UGX ' + Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   }
-
-  function showMainApp() {
-    hideConnecting();
-    document.getElementById('auth-screen').style.display = 'none';
-    document.getElementById('main-app').style.display = 'flex';
-    updateBalances();
-    listenToUserState();
-    renderMachinesList();
-    renderActiveMachines();
-  }
-
-  window.switchAuth = function(tab) {
-    document.getElementById('form-register').classList.toggle('active', tab === 'register');
-    document.getElementById('form-login').classList.toggle('active', tab === 'login');
-    document.getElementById('tab-register').classList.toggle('active', tab === 'register');
-    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
-  };
-
-  window.switchPage = function(page) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    document.getElementById('page-' + page).classList.add('active');
-    document.getElementById('nav-' + page)?.classList.add('active');
-  };
-
-  window.switchRecordsTab = function(tab) {
-    document.querySelectorAll('.records-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.records-list').forEach(l => l.style.display = 'none');
-    document.getElementById('rtab-' + tab).classList.add('active');
-    document.getElementById('rlist-' + tab).style.display = 'block';
-  };
-
-  window.openModal = function(id) { document.getElementById(id).classList.add('show'); };
-  window.closeModal = function(id) { document.getElementById(id).classList.remove('show'); };
 
   function updateBalances() {
-    document.getElementById('spn-balance').textContent = fmt(state.spn);
-    document.getElementById('income-balance').textContent = fmt(state.income);
+    document.getElementById('spn-balance').textContent      = fmt(state.spn);
+    document.getElementById('income-balance').textContent   = fmt(state.income);
     document.getElementById('withdrawn-balance').textContent = fmt(state.withdrawn);
-    document.getElementById('profile-earned').textContent = fmt(state.totalEarned);
-    if (currentUser) {
-      document.getElementById('profile-name').textContent = currentUser.name || '—';
-      document.getElementById('profile-phone').textContent = (currentUser.code || '') + ' ' + (currentUser.phone || '—');
-      document.getElementById('profile-date').textContent = currentUser.date || '—';
-      document.getElementById('recharge-balance-note').textContent = 'SPN Balance: ' + fmt(state.spn);
-      document.getElementById('withdraw-balance-note').textContent = 'Income Balance: ' + fmt(state.income);
-    }
+    document.getElementById('profile-earned').textContent   = fmt(state.totalEarned);
   }
 
-  function listenToUserState() {
+  // ── FIREBASE HELPERS ──
+  function uidFromPhone(phone) {
+    return 'u_' + phone.replace(/\D/g,'');
+  }
+
+  async function saveUserState() {
     if (!currentUser) return;
-    onValue(ref(db, 'users/' + currentUser.uid), snap => {
-      if (!snap.exists()) return;
-      const d = snap.val();
-      state.spn = d.spn || 0;
-      state.income = d.income || 0;
-      state.withdrawn = d.withdrawn || 0;
-      state.totalEarned = d.totalEarned || 0;
-      state.machines = d.machines || {};
-      state.deposits = d.deposits || {};
-      state.withdrawals = d.withdrawals || {};
-      state.bonuses = d.bonuses || {};
-      updateBalances();
-      renderActiveMachines();
-      renderRecordsList();
+    await update(ref(db, 'users/' + currentUser.uid), {
+      spn: state.spn,
+      income: state.income,
+      withdrawn: state.withdrawn,
+      totalEarned: state.totalEarned,
+      machines: state.machines
     });
   }
 
-  function renderMachinesList() {
-    const html = MACHINES.map(m => {
-      const owned = state.machines[m.id] || { qty: 0, daily: 0 };
-      const badge = owned.qty > 0 ? `<div class="active-badge show">×${owned.qty}</div>` : '';
-      return `<div class="machine-card ${m.class}" style="position:relative;">
-        ${badge}
-        <div class="machine-visual ${m.class}">
-          <div class="glow-ring"></div>
-          <div class="machine-svg"><svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="10" rx="2"/><circle cx="12" cy="13" r="3"/></svg></div>
-          <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-        </div>
-        <div class="machine-body">
-          <div class="machine-name">${m.name}</div>
-          <div class="machine-stats">
-            <div class="stat-item"><div class="stat-label">Price</div><div class="stat-value hi">${fmt(m.price)}</div></div>
-            <div class="stat-item"><div class="stat-label">Daily</div><div class="stat-value hi">${fmt(m.daily)}</div></div>
-          </div>
-          <button class="buy-btn" onclick="selectMachine(${JSON.stringify(m).replace(/"/g, '&quot;')})">Buy Machine</button>
-        </div>
-      </div>`;
-    }).join('');
-    document.getElementById('machines-list').innerHTML = html;
+  function listenUserState(uid) {
+    onValue(ref(db, 'users/' + uid), snap => {
+      if (!snap.exists()) return;
+      const d = snap.val();
+      state.spn        = d.spn        || 0;
+      state.income     = d.income     || 0;
+      state.withdrawn  = d.withdrawn  || 0;
+      state.totalEarned= d.totalEarned|| 0;
+      state.machines   = d.machines   || {};
+      updateBalances();
+      // Restore badges
+      Object.keys(state.machines).forEach(id => updateBadge(id));
+    });
   }
 
-  function renderActiveMachines() {
-    const active = Object.entries(state.machines).filter(([, m]) => m.qty > 0);
-    if (!active.length) {
-      document.getElementById('active-machines-list').innerHTML = '<div style="text-align:center;padding:20px;color:#546E7A;">No active machines yet</div>';
-      return;
+  // ── DAILY EARNINGS (server-side simulation via lastEarned timestamp) ──
+  async function processDailyEarnings(uid) {
+    const snap = await get(ref(db, 'users/' + uid + '/lastEarned'));
+    const last = snap.exists() ? snap.val() : 0;
+    const now  = Date.now();
+    const daysPassed = Math.floor((now - last) / (1000 * 60 * 60 * 24));
+    if (daysPassed >= 1) {
+      let earned = 0;
+      Object.values(state.machines).forEach(m => { earned += (m.daily || 0) * (m.qty || 0); });
+      if (earned > 0) {
+        state.income      += earned * daysPassed;
+        state.totalEarned += earned * daysPassed;
+        await update(ref(db, 'users/' + uid), {
+          income: state.income,
+          totalEarned: state.totalEarned,
+          lastEarned: now
+        });
+        updateBalances();
+      }
     }
-    const html = active.map(([id, m]) => {
-      const mach = MACHINES.find(x => x.id === id);
-      return `<div class="machine-card ${id}" style="margin-bottom:12px;">
-        <div class="machine-visual ${id}"><div class="glow-ring"></div><div class="machine-svg"><svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="10" rx="2"/><circle cx="12" cy="13" r="3"/></svg></div></div>
-        <div class="machine-body">
-          <div class="machine-name">${mach?.name || 'Machine'}</div>
-          <div class="machine-stats">
-            <div class="stat-item"><div class="stat-label">Qty</div><div class="stat-value hi">×${m.qty}</div></div>
-            <div class="stat-item"><div class="stat-label">Daily</div><div class="stat-value hi">${fmt(m.daily * m.qty)}</div></div>
-          </div>
-        </div>
-      </div>`;
-    }).join('');
-    document.getElementById('active-machines-list').innerHTML = html;
   }
 
-  function renderRecordsList() {
-    const deposits = Object.values(state.deposits).reverse();
-    const withdrawals = Object.values(state.withdrawals).reverse();
-    const bonuses = Object.values(state.bonuses || {}).reverse();
-
-    document.getElementById('rlist-deposits').innerHTML = deposits.length ? deposits.map(d => `<div class="record-item">
-      <div class="record-left">
-        <div class="record-dot deposit"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-        <div><div class="record-desc">Deposit - ${d.status}</div><div class="record-date">${d.date}</div></div>
-      </div>
-      <div class="record-amount green">${fmt(d.amount)}</div>
-    </div>`).join('') : '<div class="record-empty">No deposits</div>';
-
-    document.getElementById('rlist-withdrawals').innerHTML = withdrawals.length ? withdrawals.map(w => `<div class="record-item">
-      <div class="record-left">
-        <div class="record-dot withdraw"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 13H5v-2h14v2z"/></svg></div>
-        <div><div class="record-desc">Withdrawal - ${w.status}</div><div class="record-date">${w.date}</div></div>
-      </div>
-      <div class="record-amount red">${fmt(w.amount)}</div>
-    </div>`).join('') : '<div class="record-empty">No withdrawals</div>';
-
-    document.getElementById('rlist-bonuses').innerHTML = bonuses.length ? bonuses.map(b => `<div class="record-item">
-      <div class="record-left">
-        <div class="record-dot bonus"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c5.5 0 10 4.5 10 10s-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2m0-2C6.48 0 2 4.48 2 10s4.48 10 10 10 10-4.48 10-10S17.52 0 12 0zm3.5 7c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm3.5 9.1c2.7 0 5.3-1.4 6.8-3.7.4-.6.1-1.3-.5-1.6-.6-.4-1.3-.1-1.6.5C16.8 13.1 14.5 14.5 12 14.5s-4.8-1.4-6.2-3.7c-.4-.6-1-1-1.6-.5-.6.4-.9 1-.5 1.6 1.5 2.4 4.1 3.7 6.8 3.7z"/></svg></div>
-        <div><div class="record-desc">Bonus</div><div class="record-date">${b.date}</div></div>
-      </div>
-      <div class="record-amount green">${fmt(b.amount)}</div>
-    </div>`).join('') : '<div class="record-empty">No bonuses</div>';
-  }
-
-  window.selectMachine = function(m) {
-    selectedMachine = m;
-    document.getElementById('buy-modal-name').textContent = m.name;
-    document.getElementById('buy-modal-price').textContent = fmt(m.price);
-    document.getElementById('buy-modal-daily').textContent = fmt(m.daily);
-    document.getElementById('buy-modal-balance').textContent = fmt(state.spn);
-    const after = Math.max(0, state.spn - m.price);
-    document.getElementById('buy-modal-after').textContent = fmt(after);
-    openModal('modal-buy');
+  // ── AUTH ──
+  window.switchAuth = function(tab) {
+    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    document.getElementById('form-' + tab).classList.add('active');
   };
 
-  window.doBuy = async function() {
-    if (!selectedMachine || state.spn < selectedMachine.price) { alert('Insufficient balance'); return; }
-    const newSpn = state.spn - selectedMachine.price;
-    const mId = selectedMachine.id;
-    const owned = state.machines[mId] || { qty: 0, daily: 0 };
-    const newMach = { qty: (owned.qty || 0) + 1, daily: selectedMachine.daily, purchased: new Date().toLocaleDateString('en-GB') };
-    state.machines[mId] = newMach;
-    state.spn = newSpn;
-    await update(ref(db, 'users/' + currentUser.uid), { spn: newSpn, machines: state.machines });
-    await push(ref(db, 'transactions'), { uid: currentUser.uid, type: 'buy', machine: mId, amount: selectedMachine.price, date: new Date().toLocaleDateString('en-GB') });
-    closeModal('modal-buy');
-    updateBalances();
-    renderActiveMachines();
-    alert('Machine purchased! You now earn ' + fmt(newMach.daily) + ' daily.');
-  };
-
-  window.doRecharge = async function() {
-    const amt = parseInt(document.getElementById('recharge-amount').value);
-    if (!amt || amt < 10000) { alert('Minimum deposit: UGX 10,000'); return; }
-    const key = push(ref(db, 'deposits')).key;
-    const dep = { uid: currentUser.uid, user: currentUser.name, phone: currentUser.phone, amount: amt, status: 'Pending', date: new Date().toLocaleDateString('en-GB') };
-    await set(ref(db, 'deposits/' + key), dep);
-    state.deposits[key] = dep;
-    state.spn += amt;
-    await update(ref(db, 'users/' + currentUser.uid), { spn: state.spn, deposits: state.deposits });
-    closeModal('modal-recharge');
-    document.getElementById('recharge-amount').value = '';
-    alert('Deposit request submitted. Awaiting admin approval.');
-    updateBalances();
-  };
-
-  window.doWithdraw = async function() {
-    const amt = parseInt(document.getElementById('withdraw-amount').value);
-    if (!amt || amt < 6000 || amt > state.income) { alert('Invalid amount. Min 6,000 UGX, max your income.'); return; }
-    const key = push(ref(db, 'withdrawals')).key;
-    const wit = { uid: currentUser.uid, user: currentUser.name, phone: currentUser.phone, amount: amt, status: 'Pending', date: new Date().toLocaleDateString('en-GB') };
-    await set(ref(db, 'withdrawals/' + key), wit);
-    state.withdrawals[key] = wit;
-    await update(ref(db, 'users/' + currentUser.uid), { withdrawals: state.withdrawals });
-    closeModal('modal-withdraw');
-    document.getElementById('withdraw-amount').value = '';
-    alert('Withdrawal request submitted. Awaiting admin approval.');
+  window.updateCode = function() {
+    const sel = document.getElementById('reg-country');
+    document.getElementById('reg-code').value = sel.value || '';
   };
 
   window.doRegister = async function() {
-    const name = document.getElementById('reg-name').value.trim();
-    const phone = document.getElementById('reg-phone').value.trim();
-    const code = document.getElementById('reg-code').value;
-    const country = document.getElementById('reg-country').value;
-    const errEl = document.getElementById('reg-error');
-    errEl.style.display = 'none';
+    const name     = document.getElementById('reg-name').value.trim();
+    const country  = document.getElementById('reg-country').value;
+    const phone    = document.getElementById('reg-phone').value.trim();
+    const password = document.getElementById('reg-password').value.trim();
+    const refCode  = document.getElementById('reg-referral').value.trim();
+    if (!name)               { alert('Please enter your full name.'); return; }
+    if (!country)            { alert('Please select your country.'); return; }
+    if (phone.length < 9)    { alert('Please enter a valid 9-digit phone number.'); return; }
+    if (!password || password.length < 4) { alert('Password must be at least 4 characters.'); return; }
 
-    if (!name || !phone) { errEl.textContent = 'Fill all fields'; errEl.style.display = 'block'; return; }
+    const uid = uidFromPhone(phone);
+    // Check if phone already registered
+    const existing = await get(ref(db, 'users/' + uid));
+    if (existing.exists()) { alert('This phone number is already registered. Please login.'); return; }
 
-    const uid = 'u_' + phone.replace(/\D/g, '');
-    const snap = await get(ref(db, 'users/' + uid));
-    if (snap.exists()) { errEl.textContent = 'Phone already registered'; errEl.style.display = 'block'; return; }
-
-    const user = {
-      uid, name, phone, code, country, date: new Date().toLocaleDateString('en-GB'),
-      spn: 2600, income: 0, withdrawn: 0, totalEarned: 2600, machines: {},
-      bonuses: { reg_bonus: { amount: 2600, date: new Date().toLocaleDateString('en-GB') } }
+    const date = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'long', year:'numeric' });
+    const userData = {
+      uid, name, phone, code: country, country: getCountryName(country),
+      password, date, registered: Date.now(),
+      spn: 0, income: 2600, withdrawn: 0, totalEarned: 2600,
+      machines: {}, lastEarned: Date.now(),
+      refCode: 'NC' + phone.substring(0,6).toUpperCase(),
+      referredBy: refCode || null, status: 'Active'
     };
 
-    await set(ref(db, 'users/' + uid), user);
-    currentUser = user;
-    state.spn = 2600;
-    state.totalEarned = 2600;
-    state.bonuses = user.bonuses;
-    localStorage.setItem('nc_user', JSON.stringify({ uid }));
+    await set(ref(db, 'users/' + uid), userData);
 
-    document.getElementById('success-bonus').textContent = '+ UGX 2,600';
+    // Referral bonus for inviter
+    if (refCode) {
+      const inviterSnap = await get(ref(db, 'users'));
+      inviterSnap.forEach(child => {
+        if (child.val().refCode === refCode) {
+          const inv = child.val();
+          update(ref(db, 'users/' + child.key), {
+            income: (inv.income||0) + 1000,
+            totalEarned: (inv.totalEarned||0) + 1000
+          });
+          push(ref(db, 'users/' + child.key + '/bonuses'), {
+            desc: 'Referral Bonus — ' + name,
+            amount: 1000,
+            date: new Date().toLocaleDateString('en-GB')
+          });
+        }
+      });
+    }
+
+    currentUser = userData;
+    window._userData = userData;
     document.getElementById('success-overlay').classList.add('show');
+  };
+
+  window.doLogin = async function() {
+    const phone    = document.getElementById('login-phone').value.trim();
+    const password = document.getElementById('login-password').value.trim();
+    if (phone.length < 9) { alert('Please enter your 9-digit phone number.'); return; }
+    if (!password)        { alert('Please enter your password.'); return; }
+
+    const uid  = uidFromPhone(phone);
+    const snap = await get(ref(db, 'users/' + uid));
+    if (!snap.exists())              { alert('Phone number not registered.'); return; }
+    if (snap.val().password !== password) { alert('Incorrect password.'); return; }
+
+    currentUser  = snap.val();
+    window._userData = currentUser;
+    state.spn         = currentUser.spn        || 0;
+    state.income      = currentUser.income     || 0;
+    state.withdrawn   = currentUser.withdrawn  || 0;
+    state.totalEarned = currentUser.totalEarned|| 0;
+    state.machines    = currentUser.machines   || {};
+    await processDailyEarnings(uid);
+    enterDashboard();
   };
 
   window.enterDashboard = function() {
     document.getElementById('success-overlay').classList.remove('show');
-    showMainApp();
-  };
-
-  window.doLogin = async function() {
-    const phone = document.getElementById('login-phone').value.trim();
-    const errEl = document.getElementById('login-error');
-    errEl.style.display = 'none';
-
-    if (!phone) { errEl.textContent = 'Enter phone number'; errEl.style.display = 'block'; return; }
-
-    const uid = 'u_' + phone.replace(/\D/g, '');
-    const snap = await get(ref(db, 'users/' + uid));
-    if (!snap.exists()) { errEl.textContent = 'Phone not registered'; errEl.style.display = 'block'; return; }
-
-    currentUser = snap.val();
-    localStorage.setItem('nc_user', JSON.stringify({ uid }));
-    showMainApp();
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('main-app').style.display = 'flex';
+    const u = currentUser;
+    if (u) {
+      // Save session
+      localStorage.setItem('nc_user_session', JSON.stringify({ uid: u.uid }));
+      const masked = u.code + ' ' + u.phone.substring(0,2) + 'XX XXX ' + u.phone.substring(6);
+      document.getElementById('profile-name').textContent         = u.name;
+      document.getElementById('profile-name-display').textContent = u.name;
+      document.getElementById('profile-phone').textContent        = masked;
+      document.getElementById('profile-date').textContent         = u.date;
+      listenUserState(u.uid);
+      listenRecords(u.uid);
+    }
+    updateBalances();
   };
 
   window.doLogout = function() {
-    localStorage.removeItem('nc_user');
+    if (earningsTimer) clearInterval(earningsTimer);
+    localStorage.removeItem('nc_user_session');
     currentUser = null;
-    state = { spn: 0, income: 0, withdrawn: 0, totalEarned: 0, machines: {}, deposits: {}, withdrawals: {}, bonuses: {} };
-    document.getElementById('reg-name').value = '';
-    document.getElementById('reg-phone').value = '';
-    document.getElementById('reg-country').value = 'Uganda';
-    document.getElementById('login-phone').value = '';
-    document.getElementById('login-pass').value = '';
-    showAuthScreen();
+    window._userData = null;
+    state = { spn:0, income:0, withdrawn:0, totalEarned:0, machines:{} };
+    document.getElementById('main-app').style.display  = 'none';
+    document.getElementById('auth-screen').style.display = 'flex';
+    switchAuth('login');
+  };
+
+  function getCountryName(code) {
+    const map = {'+256':'Uganda','+255':'Tanzania','+243':'DR Congo','+27':'South Africa','+237':'Cameroon','+234':'Nigeria','+254':'Kenya'};
+    return map[code] || code;
+  }
+
+  // ── RECHARGE ──
+  window.openRecharge = function() {
+    document.getElementById('recharge-amount').value = '';
+    document.getElementById('recharge-balance-note').textContent = 'SPN Balance: ' + fmt(state.spn);
+    document.getElementById('modal-recharge').classList.add('show');
+  };
+
+  window.doRecharge = async function() {
+    const amt = parseFloat(document.getElementById('recharge-amount').value);
+    if (!amt || amt < 1000) { alert('Minimum deposit is UGX 1,000'); return; }
+    state.spn += amt;
+    const depRef = push(ref(db, 'users/' + currentUser.uid + '/deposits'));
+    await set(depRef, { desc:'Deposit', amount:amt, date:new Date().toLocaleDateString('en-GB'), status:'Pending' });
+    // Also push to global deposits for admin
+    await push(ref(db, 'deposits'), {
+      uid: currentUser.uid, user: currentUser.name,
+      phone: currentUser.code + currentUser.phone,
+      amount: amt, date: new Date().toLocaleDateString('en-GB'), status:'Pending'
+    });
+    await update(ref(db, 'users/' + currentUser.uid), { spn: state.spn });
+    updateBalances();
+    closeModal('modal-recharge');
+    alert('Deposit submitted! ' + fmt(amt) + ' added to SPN Account. Pending admin approval.');
+  };
+
+  // ── WITHDRAW ──
+  window.openWithdraw = function() {
+    const u = currentUser;
+    document.getElementById('withdraw-phone-display').textContent = u ? (u.code + ' ' + u.phone) : '—';
+    document.getElementById('withdraw-amount').value = '';
+    document.getElementById('withdraw-balance-note').textContent = 'Income Balance: ' + fmt(state.income);
+    document.getElementById('modal-withdraw').classList.add('show');
+  };
+
+  window.doWithdraw = async function() {
+    const amt = parseFloat(document.getElementById('withdraw-amount').value);
+    if (!amt || amt < 6000)    { alert('Minimum withdrawal is UGX 6,000'); return; }
+    if (amt > state.income)    { alert('Insufficient Income balance.\nAvailable: ' + fmt(state.income)); return; }
+    state.income    -= amt;
+    state.withdrawn += amt;
+    const witRef = push(ref(db, 'users/' + currentUser.uid + '/withdrawals'));
+    await set(witRef, { desc:'Withdrawal', amount:amt, date:new Date().toLocaleDateString('en-GB'), status:'Pending' });
+    await push(ref(db, 'withdrawals'), {
+      uid: currentUser.uid, user: currentUser.name,
+      phone: currentUser.code + currentUser.phone,
+      amount: amt, date: new Date().toLocaleDateString('en-GB'), status:'Pending'
+    });
+    await update(ref(db, 'users/' + currentUser.uid), { income: state.income, withdrawn: state.withdrawn });
+    updateBalances();
+    closeModal('modal-withdraw');
+    document.getElementById('withdraw-success-amount').textContent = fmt(amt) + ' withdrawn';
+    document.getElementById('modal-withdraw-success').classList.add('show');
+  };
+
+  // ── BUY MACHINE ──
+  let _pendingBuy = null;
+
+  window.confirmBuy = function(id, name, price, daily) {
+    _pendingBuy = { id, name, price, daily };
+    const after = state.spn - price;
+    document.getElementById('buy-modal-name').textContent    = name;
+    document.getElementById('buy-modal-price').textContent   = fmt(price);
+    document.getElementById('buy-modal-daily').textContent   = fmt(daily) + ' / day';
+    document.getElementById('buy-modal-balance').textContent = fmt(state.spn);
+    document.getElementById('buy-modal-after').textContent   = after >= 0 ? fmt(after) : '⚠ Insufficient';
+    document.getElementById('buy-modal-after').className     = 'modal-row-value ' + (after >= 0 ? 'green' : 'red');
+    document.getElementById('modal-buy').classList.add('show');
+  };
+
+  window.doBuy = async function() {
+    if (!_pendingBuy) return;
+    const { id, name, price, daily } = _pendingBuy;
+    if (state.spn < price) { closeModal('modal-buy'); alert('Insufficient SPN balance. Please recharge first.'); return; }
+    state.spn -= price;
+    if (!state.machines[id]) state.machines[id] = { qty:0, daily:daily, name:name };
+    state.machines[id].qty++;
+    state.income      += daily;
+    state.totalEarned += daily;
+    updateBadge(id);
+    await update(ref(db, 'users/' + currentUser.uid), {
+      spn: state.spn, income: state.income,
+      totalEarned: state.totalEarned,
+      ['machines/' + id]: state.machines[id]
+    });
+    // Log to global machines
+    await push(ref(db, 'machines'), {
+      uid: currentUser.uid, user: currentUser.name,
+      machine: name, qty: state.machines[id].qty,
+      daily: daily, date: new Date().toLocaleDateString('en-GB'), status:'Active'
+    });
+    updateBalances();
+    closeModal('modal-buy');
+    const qty = state.machines[id].qty;
+    document.getElementById('buy-success-title').textContent = name + ' Activated!';
+    document.getElementById('buy-success-msg').textContent =
+      'You now have ' + qty + ' × ' + name + ' active.\n' +
+      fmt(daily) + ' instant profit credited!\nEarning ' + fmt(daily * qty) + ' every day.';
+    document.getElementById('modal-buy-success').classList.add('show');
+    _pendingBuy = null;
+  };
+
+  function updateBadge(id) {
+    const m = state.machines[id];
+    const badge = document.getElementById('badge-' + id);
+    if (badge && m && m.qty > 0) {
+      badge.textContent = 'Active ×' + m.qty;
+      badge.classList.add('show');
+    }
+  }
+
+  window.closeModal = function(id) {
+    document.getElementById(id).classList.remove('show');
+  };
+
+  // ── RECORDS (realtime) ──
+  function listenRecords(uid) {
+    onValue(ref(db, 'users/' + uid + '/deposits'), snap => {
+      const items = [];
+      if (snap.exists()) snap.forEach(c => items.unshift({ ...c.val() }));
+      window._deposits = items;
+    });
+    onValue(ref(db, 'users/' + uid + '/withdrawals'), snap => {
+      const items = [];
+      if (snap.exists()) snap.forEach(c => items.unshift({ ...c.val() }));
+      window._withdrawals = items;
+    });
+    onValue(ref(db, 'users/' + uid + '/bonuses'), snap => {
+      const items = [{ desc:'Registration Bonus', amount:2600, date: currentUser.date }];
+      if (snap.exists()) snap.forEach(c => items.unshift({ ...c.val() }));
+      window._bonuses = items;
+    });
+  }
+
+  window.openRecords = function() {
+    switchRecordsTab('deposits');
+    document.getElementById('modal-records').classList.add('show');
+  };
+
+  window.switchRecordsTab = function(tab) {
+    ['deposits','withdrawals','bonuses'].forEach(t => {
+      document.getElementById('rtab-' + t).classList.toggle('active', t === tab);
+      document.getElementById('rlist-' + t).style.display = t === tab ? 'block' : 'none';
+    });
+    renderRecordsList(tab);
+  };
+
+  function renderRecordsList(tab) {
+    const list  = document.getElementById('rlist-' + tab);
+    const map   = { deposits: window._deposits||[], withdrawals: window._withdrawals||[], bonuses: window._bonuses||[] };
+    const items = map[tab];
+    const icons = {
+      deposits:    '<path d="M21 18v1c0 1.1-.9 2-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14c1.1 0 2 .9 2 2v1h-9a2 2 0 00-2 2v8a2 2 0 002 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>',
+      withdrawals: '<path d="M20 4H4c-1.11 0-2 .89-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>',
+      bonuses:     '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/>'
+    };
+    const dotClass = { deposits:'deposit', withdrawals:'withdraw', bonuses:'bonus' };
+    const amtClass = { deposits:'green', withdrawals:'red', bonuses:'green' };
+    const prefix   = { deposits:'+ ', withdrawals:'- ', bonuses:'+ ' };
+    if (!items.length) { list.innerHTML = '<div class="record-empty">No ' + tab + ' yet</div>'; return; }
+    list.innerHTML = items.map(r => `
+      <div class="record-item">
+        <div class="record-left">
+          <div class="record-dot ${dotClass[tab]}">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">${icons[tab]}</svg>
+          </div>
+          <div>
+            <div class="record-desc">${r.desc}</div>
+            <div class="record-date">${r.date}${r.status ? ' · <span style="color:'+(r.status==='Approved'?'#00C853':r.status==='Rejected'?'#EF5350':'#FFB300')+'">' + r.status + '</span>' : ''}</div>
+          </div>
+        </div>
+        <div class="record-amount ${amtClass[tab]}">${prefix[tab]}${fmt(r.amount)}</div>
+      </div>`).join('');
+  }
+
+  // ── INVITE ──
+  window.openInvite = function() {
+    const u = currentUser;
+    const code = u ? u.refCode : 'NC000000';
+    const link = 'https://noblecapitallearn.github.io/?ref=' + code;
+    document.getElementById('invite-code-display').textContent = code;
+    document.getElementById('invite-link-display').textContent = link;
+    document.getElementById('modal-invite').classList.add('show');
   };
 
   window.copyInviteLink = function() {
     const link = document.getElementById('invite-link-display').textContent;
-    navigator.clipboard.writeText(link);
-    alert('Referral link copied!');
+    navigator.clipboard ? navigator.clipboard.writeText(link).then(() => {
+      const btn = document.getElementById('invite-copy-btn');
+      btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = 'Copy Link'; }, 2000);
+    }) : (()=>{
+      const el = document.createElement('textarea'); el.value = link;
+      document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el);
+      const btn = document.getElementById('invite-copy-btn'); btn.textContent = 'Copied!';
+      setTimeout(() => { btn.textContent = 'Copy Link'; }, 2000);
+    })();
   };
 
   window.shareInviteLink = function() {
     const link = document.getElementById('invite-link-display').textContent;
-    if (navigator.share) {
-      navigator.share({ title: 'NOBLECAPITAL', text: 'Join me and earn!', url: link });
-    } else {
-      alert('Share: ' + link);
-    }
+    const code = document.getElementById('invite-code-display').textContent;
+    const text = '🏦 Join NOBLECAPITAL and start earning daily!\n\nUse my referral code: ' + code + '\n\nRegister here: ' + link;
+    navigator.share ? navigator.share({ title:'NOBLECAPITAL', text, url:link }) : copyInviteLink();
   };
 
+  // ── NAV ──
+  window.switchPage = function(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    document.getElementById('nav-' + name).classList.add('active');
+  };
+
+  function hideConnecting() {
+    document.getElementById('connecting-screen').style.display = 'none';
+  }
+
+  // ── ON LOAD ──
   window.addEventListener('DOMContentLoaded', async () => {
-    const saved = localStorage.getItem('nc_user');
+    window._deposits = []; window._withdrawals = [];
+    window._bonuses  = [{ desc:'Registration Bonus', amount:2600, date: new Date().toLocaleDateString('en-GB') }];
+
+    // Check referral param FIRST — always open register tab if ref present
+    const params = new URLSearchParams(window.location.search);
+    const refParam = params.get('ref');
+    if (refParam) {
+      document.getElementById('reg-referral').value = refParam;
+      localStorage.removeItem('nc_user_session');
+      hideConnecting();
+      document.getElementById('auth-screen').style.display = 'flex';
+      switchAuth('register');
+      return;
+    }
+
+    // Restore session if exists
+    const saved = localStorage.getItem('nc_user_session');
     if (saved) {
       try {
         const { uid } = JSON.parse(saved);
         const snap = await get(ref(db, 'users/' + uid));
         if (snap.exists()) {
           currentUser = snap.val();
-          showMainApp();
+          window._userData = currentUser;
+          state.spn         = currentUser.spn         || 0;
+          state.income      = currentUser.income      || 0;
+          state.withdrawn   = currentUser.withdrawn   || 0;
+          state.totalEarned = currentUser.totalEarned || 0;
+          state.machines    = currentUser.machines    || {};
+          await processDailyEarnings(uid);
+          hideConnecting();
+          enterDashboard();
           return;
         }
-      } catch (e) {}
-      localStorage.removeItem('nc_user');
+      } catch(e) {}
+      localStorage.removeItem('nc_user_session');
     }
-    showAuthScreen();
+
+    // No session — show login
+    hideConnecting();
+    document.getElementById('auth-screen').style.display = 'flex';
   });
 </script>
-
 </body>
 </html>
