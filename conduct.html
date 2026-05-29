@@ -25,132 +25,67 @@
   body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
   code,input,select{font-family:'JetBrains Mono',monospace;}
 
-  /* ── CONNECTING ── */
-  #connecting-screen{
-    position:fixed;inset:0;background:var(--bg);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;
-  }
+  #connecting-screen{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99999;}
   .connecting-logo{font-size:20px;font-weight:800;letter-spacing:2px;color:var(--text);margin-bottom:10px;}
   .connecting-badge{font-size:10px;font-weight:700;color:var(--green);letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;}
   .connecting-dots{display:flex;gap:10px;margin-bottom:16px;}
-  .connecting-dots span{
-    width:12px;height:12px;background:var(--green);border-radius:50%;
-    animation:cdot 1.2s ease-in-out infinite;
-  }
+  .connecting-dots span{width:12px;height:12px;background:var(--green);border-radius:50%;animation:cdot 1.2s ease-in-out infinite;}
   .connecting-dots span:nth-child(2){animation-delay:0.2s;}
   .connecting-dots span:nth-child(3){animation-delay:0.4s;}
   @keyframes cdot{0%,80%,100%{transform:scale(0.6);opacity:0.4;}40%{transform:scale(1);opacity:1;}}
   .connecting-text{font-size:12px;color:var(--muted);letter-spacing:1px;font-weight:600;}
 
-  /* ── LOGIN ── */
-  #login-screen{
-    min-height:100vh;display:none;align-items:center;justify-content:center;
-    background:radial-gradient(ellipse at 50% 0%, rgba(0,200,83,0.12) 0%, transparent 60%), var(--bg);
-  }
-  .login-box{
-    background:var(--surface);border:1px solid var(--border);border-radius:20px;
-    padding:40px 36px;width:100%;max-width:380px;
-    box-shadow:0 0 60px rgba(0,200,83,0.08);
-  }
-  .login-logo{
-    display:flex;align-items:center;gap:10px;margin-bottom:32px;
-  }
-  .login-logo-icon{
-    width:40px;height:40px;background:var(--green);border-radius:10px;
-    display:flex;align-items:center;justify-content:center;
-  }
+  #login-screen{min-height:100vh;display:none;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 0%,rgba(0,200,83,0.12) 0%,transparent 60%),var(--bg);}
+  .login-box{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:40px 36px;width:100%;max-width:380px;box-shadow:0 0 60px rgba(0,200,83,0.08);}
+  .login-logo{display:flex;align-items:center;gap:10px;margin-bottom:32px;}
+  .login-logo-icon{width:40px;height:40px;background:var(--green);border-radius:10px;display:flex;align-items:center;justify-content:center;}
   .login-logo-icon svg{width:22px;height:22px;fill:var(--bg);}
   .login-logo-text{font-size:16px;font-weight:800;letter-spacing:1px;color:var(--text);}
   .login-logo-badge{font-size:9px;font-weight:700;color:var(--green);letter-spacing:2px;text-transform:uppercase;}
   .login-title{font-size:24px;font-weight:800;margin-bottom:6px;}
   .login-sub{font-size:13px;color:var(--muted);margin-bottom:28px;}
-  .admin-input{
-    width:100%;background:var(--card);border:1px solid var(--border);border-radius:10px;
-    padding:13px 16px;font-size:14px;color:var(--text);outline:none;
-    transition:border-color 0.2s;margin-bottom:12px;
-  }
+  .admin-input{width:100%;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 16px;font-size:14px;color:var(--text);outline:none;transition:border-color 0.2s;margin-bottom:12px;}
   .admin-input:focus{border-color:var(--green);}
   .admin-input::placeholder{color:#2E7D32;}
-  .login-btn{
-    width:100%;padding:14px;background:var(--green);border:none;border-radius:10px;
-    font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--bg);
-    cursor:pointer;letter-spacing:0.5px;transition:opacity 0.2s;
-  }
+  .login-btn{width:100%;padding:14px;background:var(--green);border:none;border-radius:10px;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--bg);cursor:pointer;letter-spacing:0.5px;transition:opacity 0.2s;}
   .login-btn:hover{opacity:0.9;}
   .login-error{color:var(--red);font-size:12px;text-align:center;margin-top:10px;display:none;}
 
-  /* ── MAIN LAYOUT ── */
   #admin-app{display:none;}
   .admin-layout{display:flex;min-height:100vh;}
 
-  /* SIDEBAR */
-  .sidebar{
-    width:220px;background:var(--surface);border-right:1px solid var(--border);
-    display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;
-  }
-  .sidebar-logo{
-    padding:20px 18px;border-bottom:1px solid var(--border);
-    display:flex;align-items:center;gap:10px;
-  }
-  .sidebar-logo-icon{
-    width:32px;height:32px;background:var(--green);border-radius:8px;
-    display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  }
+  .sidebar{width:220px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;}
+  .sidebar-logo{padding:20px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+  .sidebar-logo-icon{width:32px;height:32px;background:var(--green);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
   .sidebar-logo-icon svg{width:18px;height:18px;fill:var(--bg);}
   .sidebar-logo-text{font-size:13px;font-weight:800;letter-spacing:1px;}
   .sidebar-logo-sub{font-size:9px;color:var(--green);letter-spacing:2px;font-weight:700;}
   .sidebar-nav{flex:1;padding:16px 10px;overflow-y:auto;}
-  .nav-section-label{
-    font-size:9px;font-weight:700;color:var(--subtle);letter-spacing:2px;
-    text-transform:uppercase;padding:0 8px;margin-bottom:6px;margin-top:14px;
-  }
+  .nav-section-label{font-size:9px;font-weight:700;color:var(--subtle);letter-spacing:2px;text-transform:uppercase;padding:0 8px;margin-bottom:6px;margin-top:14px;}
   .nav-section-label:first-child{margin-top:0;}
-  .sidebar-item{
-    display:flex;align-items:center;gap:10px;padding:10px 10px;border-radius:8px;
-    cursor:pointer;transition:all 0.15s;margin-bottom:2px;font-size:13px;font-weight:600;color:var(--muted);
-  }
+  .sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 10px;border-radius:8px;cursor:pointer;transition:all 0.15s;margin-bottom:2px;font-size:13px;font-weight:600;color:var(--muted);}
   .sidebar-item svg{width:16px;height:16px;fill:currentColor;flex-shrink:0;}
   .sidebar-item:hover{background:var(--green-glow);color:var(--green);}
   .sidebar-item.active{background:var(--green-glow);color:var(--green);border:1px solid rgba(0,200,83,0.2);}
-  .sidebar-item .badge{
-    margin-left:auto;background:var(--green);color:var(--bg);
-    font-size:9px;font-weight:800;padding:2px 6px;border-radius:10px;
-  }
+  .sidebar-item .badge{margin-left:auto;background:var(--green);color:var(--bg);font-size:9px;font-weight:800;padding:2px 6px;border-radius:10px;}
   .sidebar-item .badge.red{background:var(--red);color:#fff;}
   .sidebar-bottom{padding:14px 10px;border-top:1px solid var(--border);}
 
-  /* MAIN CONTENT */
   .main-content{margin-left:220px;flex:1;display:flex;flex-direction:column;}
-  .topbar{
-    background:var(--surface);border-bottom:1px solid var(--border);
-    padding:14px 24px;display:flex;align-items:center;justify-content:space-between;
-    position:sticky;top:0;z-index:50;
-  }
+  .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
   .topbar-title{font-size:18px;font-weight:800;color:var(--text);}
   .topbar-right{display:flex;align-items:center;gap:12px;}
   .topbar-admin{font-size:12px;color:var(--muted);}
-  .logout-btn{
-    background:transparent;border:1px solid var(--border);border-radius:8px;
-    padding:7px 14px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;
-    color:var(--muted);cursor:pointer;transition:all 0.2s;
-  }
+  .logout-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:all 0.2s;}
   .logout-btn:hover{border-color:var(--red);color:var(--red);}
   .content-body{padding:24px;flex:1;}
 
-  /* PANELS */
   .panel{display:none;}
   .panel.active{display:block;}
 
-  /* STAT CARDS */
   .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
-  .stat-card{
-    background:var(--card);border:1px solid var(--border);border-radius:14px;
-    padding:18px;position:relative;overflow:hidden;
-  }
-  .stat-card::before{
-    content:'';position:absolute;top:0;right:0;width:60px;height:60px;
-    border-radius:0 14px 0 60px;opacity:0.08;
-  }
+  .stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;position:relative;overflow:hidden;}
+  .stat-card::before{content:'';position:absolute;top:0;right:0;width:60px;height:60px;border-radius:0 14px 0 60px;opacity:0.08;}
   .stat-card.green::before{background:var(--green);}
   .stat-card.gold::before{background:var(--gold);}
   .stat-card.red::before{background:var(--red);}
@@ -163,111 +98,62 @@
   .stat-value.blue{color:var(--blue);}
   .stat-sub{font-size:11px;color:var(--subtle);margin-top:4px;}
 
-  /* TABLE */
   .table-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
-  .table-header{
-    padding:16px 20px;border-bottom:1px solid var(--border);
-    display:flex;align-items:center;justify-content:space-between;
-  }
+  .table-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
   .table-title{font-size:14px;font-weight:800;color:var(--text);}
   .table-wrap{overflow-x:auto;}
   table{width:100%;border-collapse:collapse;}
   thead tr{background:var(--surface);}
-  th{
-    padding:10px 16px;text-align:left;font-size:10px;font-weight:700;
-    color:var(--subtle);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;
-  }
+  th{padding:10px 16px;text-align:left;font-size:10px;font-weight:700;color:var(--subtle);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;}
   td{padding:12px 16px;font-size:13px;color:var(--text);border-bottom:1px solid var(--border);vertical-align:middle;}
   tr:last-child td{border-bottom:none;}
   tr:hover td{background:rgba(0,200,83,0.03);}
-  .chip{
-    display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;
-  }
+  .chip{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
   .chip.green{background:rgba(0,200,83,0.15);color:var(--green);}
   .chip.gold{background:rgba(255,179,0,0.15);color:var(--gold);}
   .chip.red{background:rgba(239,83,80,0.15);color:var(--red);}
   .chip.blue{background:rgba(68,138,255,0.15);color:var(--blue);}
   .chip.gray{background:rgba(100,100,100,0.2);color:#999;}
 
-  /* ACTION BUTTONS */
-  .act-btn{
-    padding:5px 12px;border-radius:6px;font-family:'Syne',sans-serif;
-    font-size:11px;font-weight:700;cursor:pointer;border:none;transition:opacity 0.2s;
-  }
+  .act-btn{padding:5px 12px;border-radius:6px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;cursor:pointer;border:none;transition:opacity 0.2s;}
   .act-btn:hover{opacity:0.8;}
   .act-btn.approve{background:rgba(0,200,83,0.15);color:var(--green);border:1px solid rgba(0,200,83,0.3);}
   .act-btn.reject{background:rgba(239,83,80,0.12);color:var(--red);border:1px solid rgba(239,83,80,0.3);}
   .act-btn.view{background:rgba(68,138,255,0.12);color:var(--blue);border:1px solid rgba(68,138,255,0.3);}
 
-  /* FORM CARD */
   .form-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;}
   .form-card h3{font-size:14px;font-weight:800;margin-bottom:16px;}
   .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
   .form-group label{display:block;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
-  .admin-select{
-    width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;
-    padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text);
-    outline:none;appearance:none;cursor:pointer;
-  }
+  .admin-select{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text);outline:none;appearance:none;cursor:pointer;}
   .admin-select:focus{border-color:var(--green);}
-  .submit-btn{
-    padding:11px 24px;background:var(--green);border:none;border-radius:8px;
-    font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--bg);cursor:pointer;
-  }
+  .submit-btn{padding:11px 24px;background:var(--green);border:none;border-radius:8px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:var(--bg);cursor:pointer;}
   .submit-btn:hover{opacity:0.9;}
   .submit-btn.danger{background:var(--red);color:#fff;}
 
-  /* ANNOUNCE */
-  .announce-textarea{
-    width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;
-    padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text);
-    outline:none;resize:vertical;min-height:80px;margin-bottom:12px;
-  }
+  .announce-textarea{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text);outline:none;resize:vertical;min-height:80px;margin-bottom:12px;}
   .announce-textarea:focus{border-color:var(--green);}
 
-  /* EMPTY */
   .empty-state{text-align:center;padding:40px;color:var(--subtle);font-size:13px;}
 
-  /* MOBILE */
-  .hamburger {
-    display: none;
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 6px 10px;
-    font-size: 18px;
-    cursor: pointer;
-    color: var(--text);
-    margin-right: 10px;
-  }
-  .sidebar-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    z-index: 99;
-  }
-  .sidebar-overlay.show { display: block; }
+  .hamburger{display:none;background:transparent;border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:18px;cursor:pointer;color:var(--text);margin-right:10px;}
+  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:99;}
+  .sidebar-overlay.show{display:block;}
 
   @media(max-width:768px){
-    .hamburger { display: block; }
-    .sidebar {
-      transform: translateX(-100%);
-      transition: transform 0.25s ease;
-      z-index: 100;
-    }
-    .sidebar.open { transform: translateX(0); }
-    .main-content { margin-left: 0; }
-    .stats-grid { grid-template-columns: 1fr 1fr; }
-    .form-row { grid-template-columns: 1fr; }
-    .topbar { padding: 12px 14px; }
-    .content-body { padding: 14px; }
+    .hamburger{display:block;}
+    .sidebar{transform:translateX(-100%);transition:transform 0.25s ease;z-index:100;}
+    .sidebar.open{transform:translateX(0);}
+    .main-content{margin-left:0;}
+    .stats-grid{grid-template-columns:1fr 1fr;}
+    .form-row{grid-template-columns:1fr;}
+    .topbar{padding:12px 14px;}
+    .content-body{padding:14px;}
   }
 </style>
 </head>
 <body>
 
-<!-- ── CONNECTING ── -->
 <div id="connecting-screen">
   <div class="connecting-logo">NOBLECAPITAL</div>
   <div class="connecting-badge">Admin Panel</div>
@@ -275,42 +161,30 @@
   <div class="connecting-text">Connecting...</div>
 </div>
 
-<!-- ── LOGIN ── -->
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">
-      <div class="login-logo-icon">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-      </div>
+      <div class="login-logo-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
       <div>
         <div class="login-logo-text">NOBLECAPITAL</div>
         <div class="login-logo-badge">Admin Panel</div>
       </div>
     </div>
 
-    <!-- Auth tabs -->
     <div style="display:flex;background:var(--card);border-radius:10px;padding:4px;margin-bottom:24px;gap:4px;">
-      <div id="atab-login" onclick="switchAdminTab('login')"
-        style="flex:1;padding:9px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;border-radius:8px;background:var(--green);color:var(--bg);">
-        Login
-      </div>
-      <div id="atab-register" onclick="switchAdminTab('register')"
-        style="flex:1;padding:9px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;border-radius:8px;color:var(--muted);">
-        Register
-      </div>
+      <div id="atab-login" onclick="switchAdminTab('login')" style="flex:1;padding:9px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;border-radius:8px;background:var(--green);color:var(--bg);">Login</div>
+      <div id="atab-register" onclick="switchAdminTab('register')" style="flex:1;padding:9px;text-align:center;font-size:13px;font-weight:700;cursor:pointer;border-radius:8px;color:var(--muted);">Register</div>
     </div>
 
-    <!-- LOGIN FORM -->
     <div id="aform-login">
       <div class="login-title">Welcome back</div>
       <div class="login-sub" style="margin-bottom:20px;">Sign in to manage the platform</div>
       <input type="text" class="admin-input" id="admin-user" placeholder="Username">
       <input type="password" class="admin-input" id="admin-pass" placeholder="Password">
       <button class="login-btn" onclick="adminLogin()">Sign In</button>
-      <div class="login-error" id="login-error">Invalid credentials. Try again.</div>
+      <div class="login-error" id="login-error">Invalid credentials</div>
     </div>
 
-    <!-- REGISTER FORM -->
     <div id="aform-register" style="display:none;">
       <div class="login-title">Create Admin</div>
       <div class="login-sub" id="reg-sub" style="margin-bottom:20px;">Maximum 2 admins allowed</div>
@@ -324,17 +198,13 @@
   </div>
 </div>
 
-<!-- ── ADMIN APP ── -->
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 <div id="admin-app">
 <div class="admin-layout">
 
-  <!-- SIDEBAR -->
   <div class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <div class="sidebar-logo-icon">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-      </div>
+      <div class="sidebar-logo-icon"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
       <div>
         <div class="sidebar-logo-text">NOBLECAPITAL</div>
         <div class="sidebar-logo-sub">Admin</div>
@@ -343,48 +213,28 @@
 
     <div class="sidebar-nav">
       <div class="nav-section-label">Overview</div>
-      <div class="sidebar-item active" onclick="showPanel('dashboard');closeSidebar()">
-        📊 Dashboard
-      </div>
+      <div class="sidebar-item active" onclick="showPanel('dashboard');closeSidebar()">📊 Dashboard</div>
 
       <div class="nav-section-label">Users</div>
-      <div class="sidebar-item" onclick="showPanel('users');closeSidebar()">
-        👥 All Users
-        <span class="badge" id="badge-users">0</span>
-      </div>
+      <div class="sidebar-item" onclick="showPanel('users');closeSidebar()">👥 All Users <span class="badge" id="badge-users">0</span></div>
 
       <div class="nav-section-label">Finance</div>
-      <div class="sidebar-item" onclick="showPanel('deposits');closeSidebar()">
-        💰 Deposits
-        <span class="badge red" id="badge-deposits">0</span>
-      </div>
-      <div class="sidebar-item" onclick="showPanel('withdrawals');closeSidebar()">
-        💸 Withdrawals
-        <span class="badge red" id="badge-withdrawals">0</span>
-      </div>
+      <div class="sidebar-item" onclick="showPanel('deposits');closeSidebar()">💰 Deposits <span class="badge red" id="badge-deposits">0</span></div>
+      <div class="sidebar-item" onclick="showPanel('withdrawals');closeSidebar()">💸 Withdrawals <span class="badge red" id="badge-withdrawals">0</span></div>
 
       <div class="nav-section-label">Machines</div>
-      <div class="sidebar-item" onclick="showPanel('machines');closeSidebar()">
-        🖥️ Active Machines
-      </div>
+      <div class="sidebar-item" onclick="showPanel('machines');closeSidebar()">🖥️ Active Machines</div>
 
       <div class="nav-section-label">Tools</div>
-      <div class="sidebar-item" onclick="showPanel('announce');closeSidebar()">
-        📢 Announcements
-      </div>
-      <div class="sidebar-item" onclick="showPanel('settings');closeSidebar()">
-        ⚙️ Settings
-      </div>
+      <div class="sidebar-item" onclick="showPanel('announce');closeSidebar()">📢 Announcements</div>
+      <div class="sidebar-item" onclick="showPanel('settings');closeSidebar()">⚙️ Settings</div>
     </div>
 
     <div class="sidebar-bottom">
-      <div class="sidebar-item" onclick="adminLogout()" style="color:var(--red);">
-        🚪 Logout
-      </div>
+      <div class="sidebar-item" onclick="adminLogout()" style="color:var(--red);">🚪 Logout</div>
     </div>
   </div>
 
-  <!-- MAIN CONTENT -->
   <div class="main-content">
     <div class="topbar">
       <div style="display:flex;align-items:center;">
@@ -399,7 +249,6 @@
 
     <div class="content-body">
 
-      <!-- ── DASHBOARD ── -->
       <div class="panel active" id="panel-dashboard">
         <div class="stats-grid">
           <div class="stat-card green">
@@ -452,15 +301,12 @@
         </div>
       </div>
 
-      <!-- ── USERS ── -->
       <div class="panel" id="panel-users">
         <div class="table-card">
           <div class="table-header">
             <span class="table-title">All Users</span>
             <div style="display:flex;align-items:center;gap:10px;">
-              <input type="text" id="user-search" placeholder="Search name or phone..." oninput="filterUsers()"
-                style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 12px;
-                font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);outline:none;width:200px;">
+              <input type="text" id="user-search" placeholder="Search name or phone..." oninput="filterUsers()" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);outline:none;width:200px;">
               <span class="chip green" id="total-users-chip">0 users</span>
             </div>
           </div>
@@ -473,7 +319,6 @@
         </div>
       </div>
 
-      <!-- ── DEPOSITS ── -->
       <div class="panel" id="panel-deposits">
         <div class="table-card">
           <div class="table-header">
@@ -489,7 +334,6 @@
         </div>
       </div>
 
-      <!-- ── WITHDRAWALS ── -->
       <div class="panel" id="panel-withdrawals">
         <div class="table-card">
           <div class="table-header">
@@ -505,7 +349,6 @@
         </div>
       </div>
 
-      <!-- ── MACHINES ── -->
       <div class="panel" id="panel-machines">
         <div class="table-card">
           <div class="table-header">
@@ -521,7 +364,6 @@
         </div>
       </div>
 
-      <!-- ── ANNOUNCEMENTS ── -->
       <div class="panel" id="panel-announce">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
           <div class="form-card">
@@ -542,14 +384,11 @@
           </div>
           <div class="table-card">
             <div class="table-header"><span class="table-title">Sent Announcements</span></div>
-            <div id="announcements-list" style="padding:16px;">
-              <div class="empty-state">No announcements sent</div>
-            </div>
+            <div id="announcements-list" style="padding:16px;"><div class="empty-state">No announcements sent</div></div>
           </div>
         </div>
       </div>
 
-      <!-- ── SETTINGS ── -->
       <div class="panel" id="panel-settings">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
           <div class="form-card">
@@ -557,7 +396,7 @@
             <div class="form-row">
               <div class="form-group">
                 <label>Min Deposit (UGX)</label>
-                <input type="number" class="admin-input" id="set-min-deposit" value="1000">
+                <input type="number" class="admin-input" id="set-min-deposit" value="10000">
               </div>
               <div class="form-group">
                 <label>Min Withdrawal (UGX)</label>
@@ -606,38 +445,38 @@
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyBj6377a-ZDszHFPYRE57bXzHrnRp0L2kI",
-    authDomain: "noblecapital-7b2ad.firebaseapp.com",
-    databaseURL: "https://noblecapital-7b2ad-default-rtdb.europe-west1.firebasedatabase.app",
-    projectId: "noblecapital-7b2ad",
-    storageBucket: "noblecapital-7b2ad.firebasestorage.app",
-    messagingSenderId: "186213527199",
-    appId: "1:186213527199:web:f193d9e22305b0b09a3caa"
+    apiKey: "AIzaSyBxPPHLA0wbcZeKcvJE-dBR-nMMWDDo6LA",
+    authDomain: "noblecapital-591c5.firebaseapp.com",
+    projectId: "noblecapital-591c5",
+    storageBucket: "noblecapital-591c5.firebasestorage.app",
+    messagingSenderId: "392805555718",
+    appId: "1:392805555718:web:6e833d666a88230f576d87",
+    databaseURL: "https://noblecapital-591c5-default-rtdb.europe-west1.firebaseio.com"
   };
+
   const app = initializeApp(firebaseConfig);
-  const db  = getDatabase(app);
+  const db = getDatabase(app);
 
   let currentAdmin = null;
   let allUsers = {}, allDeposits = {}, allWithdrawals = {}, allMachines = {};
 
-  function fmtUGX(n) { return 'UGX ' + Number(n||0).toLocaleString(); }
+  function fmtUGX(n) { return 'UGX ' + Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
 
-  // ── TAB SWITCH ──
   window.switchAdminTab = function(tab) {
-    document.getElementById('aform-login').style.display    = tab === 'login'    ? 'block' : 'none';
+    document.getElementById('aform-login').style.display = tab === 'login' ? 'block' : 'none';
     document.getElementById('aform-register').style.display = tab === 'register' ? 'block' : 'none';
     const loginTab = document.getElementById('atab-login');
-    const regTab   = document.getElementById('atab-register');
-    loginTab.style.background = tab === 'login'    ? 'var(--green)' : 'transparent';
-    loginTab.style.color      = tab === 'login'    ? 'var(--bg)'    : 'var(--muted)';
-    regTab.style.background   = tab === 'register' ? 'var(--green)' : 'transparent';
-    regTab.style.color        = tab === 'register' ? 'var(--bg)'    : 'var(--muted)';
+    const regTab = document.getElementById('atab-register');
+    loginTab.style.background = tab === 'login' ? 'var(--green)' : 'transparent';
+    loginTab.style.color = tab === 'login' ? 'var(--bg)' : 'var(--muted)';
+    regTab.style.background = tab === 'register' ? 'var(--green)' : 'transparent';
+    regTab.style.color = tab === 'register' ? 'var(--bg)' : 'var(--muted)';
   };
 
   window.toggleSidebar = function() {
-    const sidebar  = document.getElementById('sidebar');
-    const overlay  = document.getElementById('sidebar-overlay');
-    const isOpen   = sidebar.classList.contains('open');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const isOpen = sidebar.classList.contains('open');
     sidebar.classList.toggle('open', !isOpen);
     overlay.classList.toggle('show', !isOpen);
   };
@@ -647,20 +486,16 @@
     document.getElementById('sidebar-overlay').classList.remove('show');
   };
 
-  function hideConnecting() {
-    document.getElementById('connecting-screen').style.display = 'none';
-  }
+  function hideConnecting() { document.getElementById('connecting-screen').style.display = 'none'; }
 
-  // ── SHOW APP ──
   function showAdminApp() {
     hideConnecting();
     document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('admin-app').style.display    = 'block';
+    document.getElementById('admin-app').style.display = 'block';
     document.getElementById('topbar-admin-name').textContent = currentAdmin.name || 'Admin';
     startListeners();
   }
 
-  // ── SESSION PERSISTENCE ──
   window.addEventListener('DOMContentLoaded', async () => {
     const saved = localStorage.getItem('nc_admin_session');
     if (saved) {
@@ -672,37 +507,32 @@
           showAdminApp();
           return;
         }
-      } catch(e) {}
+      } catch (e) {}
       localStorage.removeItem('nc_admin_session');
     }
     hideConnecting();
     document.getElementById('login-screen').style.display = 'flex';
   });
+
   window.adminRegister = async function() {
-    const name    = document.getElementById('reg-admin-name').value.trim();
-    const user    = document.getElementById('reg-admin-user').value.trim();
-    const pass    = document.getElementById('reg-admin-pass').value.trim();
+    const name = document.getElementById('reg-admin-name').value.trim();
+    const user = document.getElementById('reg-admin-user').value.trim();
+    const pass = document.getElementById('reg-admin-pass').value.trim();
     const confirm = document.getElementById('reg-admin-confirm').value.trim();
-    const errEl   = document.getElementById('reg-error');
+    const errEl = document.getElementById('reg-error');
     errEl.style.display = 'none';
 
-    if (!name)           { errEl.textContent = 'Enter your full name.';        errEl.style.display='block'; return; }
-    if (!user)           { errEl.textContent = 'Enter a username.';            errEl.style.display='block'; return; }
-    if (pass.length < 6) { errEl.textContent = 'Password min 6 characters.';  errEl.style.display='block'; return; }
-    if (pass !== confirm){ errEl.textContent = 'Passwords do not match.';      errEl.style.display='block'; return; }
+    if (!name) { errEl.textContent = 'Enter your full name.'; errEl.style.display = 'block'; return; }
+    if (!user) { errEl.textContent = 'Enter a username.'; errEl.style.display = 'block'; return; }
+    if (pass.length < 6) { errEl.textContent = 'Password min 6 characters.'; errEl.style.display = 'block'; return; }
+    if (pass !== confirm) { errEl.textContent = 'Passwords do not match.'; errEl.style.display = 'block'; return; }
 
-    // Check admin count
     const snap = await get(ref(db, 'admins'));
     const count = snap.exists() ? Object.keys(snap.val()).length : 0;
-    if (count >= 2) {
-      errEl.textContent = 'Maximum 2 admins already registered.';
-      errEl.style.display = 'block';
-      return;
-    }
-    // Check username taken
+    if (count >= 2) { errEl.textContent = 'Maximum 2 admins already registered.'; errEl.style.display = 'block'; return; }
     if (snap.exists()) {
       const taken = Object.values(snap.val()).some(a => a.username === user);
-      if (taken) { errEl.textContent = 'Username already taken.'; errEl.style.display='block'; return; }
+      if (taken) { errEl.textContent = 'Username already taken.'; errEl.style.display = 'block'; return; }
     }
 
     const uid = 'admin_' + Date.now();
@@ -713,7 +543,6 @@
     showAdminApp();
   };
 
-  // ── LOGIN ──
   window.adminLogin = async function() {
     const user = document.getElementById('admin-user').value.trim();
     const pass = document.getElementById('admin-pass').value.trim();
@@ -738,15 +567,14 @@
     showAdminApp();
   };
 
-  document.getElementById('admin-pass').addEventListener('keydown', e => {
-    if (e.key === 'Enter') adminLogin();
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && document.activeElement.id === 'admin-pass') adminLogin();
   });
 
-  // ── LOGOUT ──
   window.adminLogout = function() {
     localStorage.removeItem('nc_admin_session');
     currentAdmin = null;
-    document.getElementById('admin-app').style.display    = 'none';
+    document.getElementById('admin-app').style.display = 'none';
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('admin-user').value = '';
     document.getElementById('admin-pass').value = '';
@@ -754,19 +582,21 @@
     switchAdminTab('login');
   };
 
-  // ── REALTIME LISTENERS ──
   function startListeners() {
     onValue(ref(db, 'users'), snap => {
       allUsers = snap.exists() ? snap.val() : {};
-      updateStats(); renderCurrentPanel();
+      updateStats();
+      renderCurrentPanel();
     });
     onValue(ref(db, 'deposits'), snap => {
       allDeposits = snap.exists() ? snap.val() : {};
-      updateBadges(); renderCurrentPanel();
+      updateBadges();
+      renderCurrentPanel();
     });
     onValue(ref(db, 'withdrawals'), snap => {
       allWithdrawals = snap.exists() ? snap.val() : {};
-      updateBadges(); renderCurrentPanel();
+      updateBadges();
+      renderCurrentPanel();
     });
     onValue(ref(db, 'machines'), snap => {
       allMachines = snap.exists() ? snap.val() : {};
@@ -778,36 +608,31 @@
   let currentPanel = 'dashboard';
 
   function renderCurrentPanel() {
-    if      (currentPanel === 'dashboard')    renderDashboard();
-    else if (currentPanel === 'users')        renderUsers();
-    else if (currentPanel === 'deposits')     renderDeposits();
-    else if (currentPanel === 'withdrawals')  renderWithdrawals();
-    else if (currentPanel === 'machines')     renderMachines();
+    if (currentPanel === 'dashboard') renderDashboard();
+    else if (currentPanel === 'users') renderUsers();
+    else if (currentPanel === 'deposits') renderDeposits();
+    else if (currentPanel === 'withdrawals') renderWithdrawals();
+    else if (currentPanel === 'machines') renderMachines();
   }
 
   function updateStats() {
-    const users    = Object.values(allUsers);
-    const deps     = Object.values(allDeposits);
-    const wits     = Object.values(allWithdrawals);
+    const users = Object.values(allUsers);
+    const deps = Object.values(allDeposits);
+    const wits = Object.values(allWithdrawals);
     const machines = Object.values(allMachines);
-    document.getElementById('stat-users').textContent       = users.length;
-    document.getElementById('stat-deposits').textContent    = fmtUGX(deps.filter(d=>d.status==='Approved').reduce((s,d)=>s+d.amount,0));
-    document.getElementById('stat-withdrawals').textContent = fmtUGX(wits.filter(w=>w.status==='Approved').reduce((s,w)=>s+w.amount,0));
-    document.getElementById('stat-machines').textContent    = machines.reduce((s,m)=>s+(m.qty||1),0);
+    document.getElementById('stat-users').textContent = users.length;
+    document.getElementById('stat-deposits').textContent = fmtUGX(deps.filter(d => d.status === 'Approved').reduce((s, d) => s + d.amount, 0));
+    document.getElementById('stat-withdrawals').textContent = fmtUGX(wits.filter(w => w.status === 'Approved').reduce((s, w) => s + w.amount, 0));
+    document.getElementById('stat-machines').textContent = Object.values(allMachines).reduce((s, m) => s + (m.qty || 1), 0);
   }
 
   function updateBadges() {
-    document.getElementById('badge-users').textContent       = Object.keys(allUsers).length;
-    document.getElementById('badge-deposits').textContent    = Object.values(allDeposits).filter(d=>d.status==='Pending').length;
-    document.getElementById('badge-withdrawals').textContent = Object.values(allWithdrawals).filter(w=>w.status==='Pending').length;
+    document.getElementById('badge-users').textContent = Object.keys(allUsers).length;
+    document.getElementById('badge-deposits').textContent = Object.values(allDeposits).filter(d => d.status === 'Pending').length;
+    document.getElementById('badge-withdrawals').textContent = Object.values(allWithdrawals).filter(w => w.status === 'Pending').length;
   }
 
-  // ── NAVIGATION ──
-  const panelTitles = {
-    dashboard:'Dashboard', users:'All Users', deposits:'Deposits',
-    withdrawals:'Withdrawals', machines:'Active Machines',
-    announce:'Announcements', settings:'Settings'
-  };
+  const panelTitles = { dashboard: 'Dashboard', users: 'All Users', deposits: 'Deposits', withdrawals: 'Withdrawals', machines: 'Active Machines', announce: 'Announcements', settings: 'Settings' };
 
   window.showPanel = function(name) {
     currentPanel = name;
@@ -815,22 +640,21 @@
     document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
     document.getElementById('panel-' + name).classList.add('active');
     document.querySelectorAll('.sidebar-item').forEach(i => {
-      if (i.getAttribute('onclick') && i.getAttribute('onclick').includes("'" + name + "'"))
-        i.classList.add('active');
+      if (i.getAttribute('onclick') && i.getAttribute('onclick').includes("'" + name + "'")) i.classList.add('active');
     });
     document.getElementById('topbar-title').textContent = panelTitles[name] || name;
     renderCurrentPanel();
   };
 
-  // ── DASHBOARD ──
   function renderDashboard() {
-    updateStats(); updateBadges();
-    const pendingDep = Object.entries(allDeposits).filter(([,d])=>d.status==='Pending');
-    const pendingWit = Object.entries(allWithdrawals).filter(([,w])=>w.status==='Pending');
+    updateStats();
+    updateBadges();
+    const pendingDep = Object.entries(allDeposits).filter(([, d]) => d.status === 'Pending');
+    const pendingWit = Object.entries(allWithdrawals).filter(([, w]) => w.status === 'Pending');
     document.getElementById('pending-dep-count').textContent = pendingDep.length + ' pending';
     document.getElementById('pending-wit-count').textContent = pendingWit.length + ' pending';
     document.getElementById('dash-deposits-tbody').innerHTML = pendingDep.length ?
-      pendingDep.map(([key,d]) => `<tr>
+      pendingDep.map(([key, d]) => `<tr>
         <td>${d.user}</td>
         <td style="color:var(--gold);font-weight:700;">${fmtUGX(d.amount)}</td>
         <td style="color:var(--subtle);">${d.date}</td>
@@ -840,7 +664,7 @@
         </td></tr>`).join('') :
       '<tr><td colspan="4" class="empty-state">No pending deposits</td></tr>';
     document.getElementById('dash-withdrawals-tbody').innerHTML = pendingWit.length ?
-      pendingWit.map(([key,w]) => `<tr>
+      pendingWit.map(([key, w]) => `<tr>
         <td>${w.user}</td>
         <td style="color:var(--red);font-weight:700;">${fmtUGX(w.amount)}</td>
         <td style="color:var(--subtle);">${w.date}</td>
@@ -851,139 +675,118 @@
       '<tr><td colspan="4" class="empty-state">No pending withdrawals</td></tr>';
   }
 
-  // ── USERS ──
   function renderUsers() {
-    const users = Object.values(allUsers).sort((a,b)=>(a.name||'').localeCompare(b.name||''));
-    const q = (document.getElementById('user-search')||{}).value||'';
-    const filtered = q ? users.filter(u=>(u.name||'').toLowerCase().includes(q.toLowerCase())||(u.phone||'').includes(q)) : users;
+    const users = Object.values(allUsers).sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+    const q = (document.getElementById('user-search') || {}).value || '';
+    const filtered = q ? users.filter(u => (u.name || '').toLowerCase().includes(q.toLowerCase()) || (u.phone || '').includes(q)) : users;
     document.getElementById('total-users-chip').textContent = filtered.length + ' users';
     document.getElementById('users-tbody').innerHTML = filtered.length ?
-      filtered.map((u,i) => `<tr>
-        <td style="color:var(--subtle);">${i+1}</td>
-        <td style="font-weight:700;">${u.name||'—'}</td>
-        <td style="font-family:'JetBrains Mono',monospace;font-size:12px;">${(u.code||'')+' '+(u.phone||'')}</td>
-        <td>${u.country||'—'}</td>
+      filtered.map((u, i) => `<tr>
+        <td style="color:var(--subtle);">${i + 1}</td>
+        <td style="font-weight:700;">${u.name || '—'}</td>
+        <td style="font-family:'JetBrains Mono',monospace;font-size:12px;">${(u.code || '') + ' ' + (u.phone || '')}</td>
+        <td>${u.country || '—'}</td>
         <td style="color:var(--gold);font-family:'JetBrains Mono',monospace;">${fmtUGX(u.spn)}</td>
         <td style="color:var(--green);font-family:'JetBrains Mono',monospace;">${fmtUGX(u.income)}</td>
-        <td style="color:var(--subtle);">${u.date||'—'}</td>
-        <td><span class="chip green">${u.status||'Active'}</span></td>
+        <td style="color:var(--subtle);">${u.date || '—'}</td>
+        <td><span class="chip green">${u.status || 'Active'}</span></td>
       </tr>`).join('') :
       '<tr><td colspan="8" class="empty-state">No users found</td></tr>';
   }
+
   window.filterUsers = function() { renderUsers(); };
 
-  // ── DEPOSITS ──
   function renderDeposits() {
     const deps = Object.entries(allDeposits);
     document.getElementById('all-deposits-chip').textContent = deps.length + ' records';
     document.getElementById('deposits-tbody').innerHTML = deps.length ?
-      deps.map(([key,d],i) => `<tr>
-        <td style="color:var(--subtle);">${i+1}</td>
-        <td style="font-weight:700;">${d.user||'—'}</td>
-        <td style="font-family:'JetBrains Mono',monospace;font-size:12px;">${d.phone||'—'}</td>
+      deps.map(([key, d], i) => `<tr>
+        <td style="color:var(--subtle);">${i + 1}</td>
+        <td style="font-weight:700;">${d.user || '—'}</td>
+        <td style="font-family:'JetBrains Mono',monospace;font-size:12px;">${d.phone || '—'}</td>
         <td style="color:var(--gold);font-weight:700;">${fmtUGX(d.amount)}</td>
-        <td style="color:var(--subtle);">${d.date||'—'}</td>
-        <td><span class="chip ${d.status==='Approved'?'green':d.status==='Rejected'?'red':'gold'}">${d.status}</span></td>
-        <td>${d.status==='Pending'?`
+        <td style="color:var(--subtle);">${d.date || '—'}</td>
+        <td><span class="chip ${d.status === 'Approved' ? 'green' : d.status === 'Rejected' ? 'red' : 'gold'}">${d.status}</span></td>
+        <td>${d.status === 'Pending' ? `
           <button class="act-btn approve" onclick="approveDeposit('${key}','${d.uid}',${d.amount})">Approve</button>
           <button class="act-btn reject" onclick="rejectDeposit('${key}','${d.uid}',${d.amount})" style="margin-left:4px;">Reject</button>
-        `:'<span style="color:var(--subtle);font-size:12px;">Done</span>'}</td>
+        ` : '<span style="color:var(--subtle);font-size:12px;">Done</span>'}</td>
       </tr>`).join('') :
       '<tr><td colspan="7" class="empty-state">No deposit records</td></tr>';
   }
 
-  // ── WITHDRAWALS ──
   function renderWithdrawals() {
     const wits = Object.entries(allWithdrawals);
     document.getElementById('all-withdrawals-chip').textContent = wits.length + ' records';
     document.getElementById('withdrawals-tbody').innerHTML = wits.length ?
-      wits.map(([key,w],i) => `<tr>
-        <td style="color:var(--subtle);">${i+1}</td>
-        <td style="font-weight:700;">${w.user||'—'}</td>
-        <td style="font-family:'JetBrains Mono',monospace;font-size:12px;">${w.phone||'—'}</td>
+      wits.map(([key, w], i) => `<tr>
+        <td style="color:var(--subtle);">${i + 1}</td>
+        <td style="font-weight:700;">${w.user || '—'}</td>
+        <td style="font-family:'JetBrains Mono',monospace;font-size:12px;">${w.phone || '—'}</td>
         <td style="color:var(--red);font-weight:700;">${fmtUGX(w.amount)}</td>
-        <td style="color:var(--subtle);">${w.date||'—'}</td>
-        <td><span class="chip ${w.status==='Approved'?'green':w.status==='Rejected'?'red':'gold'}">${w.status}</span></td>
-        <td>${w.status==='Pending'?`
+        <td style="color:var(--subtle);">${w.date || '—'}</td>
+        <td><span class="chip ${w.status === 'Approved' ? 'green' : w.status === 'Rejected' ? 'red' : 'gold'}">${w.status}</span></td>
+        <td>${w.status === 'Pending' ? `
           <button class="act-btn approve" onclick="approveWithdrawal('${key}','${w.uid}',${w.amount})">Approve</button>
           <button class="act-btn reject" onclick="rejectWithdrawal('${key}','${w.uid}',${w.amount})" style="margin-left:4px;">Reject</button>
-        `:'<span style="color:var(--subtle);font-size:12px;">Done</span>'}</td>
+        ` : '<span style="color:var(--subtle);font-size:12px;">Done</span>'}</td>
       </tr>`).join('') :
       '<tr><td colspan="7" class="empty-state">No withdrawal records</td></tr>';
   }
 
-  // ── MACHINES ──
   function renderMachines() {
-    const machines = Object.values(allMachines);
-    document.getElementById('machines-chip').textContent = machines.reduce((s,m)=>s+(m.qty||1),0) + ' active';
+    const machines = Object.entries(allMachines);
+    document.getElementById('machines-chip').textContent = machines.reduce((s, [, m]) => s + (m.qty || 1), 0) + ' active';
     document.getElementById('machines-tbody').innerHTML = machines.length ?
-      machines.map((m,i) => `<tr>
-        <td style="color:var(--subtle);">${i+1}</td>
-        <td style="font-weight:700;">${m.user||'—'}</td>
-        <td style="color:var(--blue);font-weight:700;">${m.machine||'—'}</td>
-        <td style="text-align:center;"><span class="chip blue">×${m.qty||1}</span></td>
+      machines.map(([id, m], i) => `<tr>
+        <td style="color:var(--subtle);">${i + 1}</td>
+        <td style="font-weight:700;">${m.user || '—'}</td>
+        <td style="color:var(--blue);font-weight:700;">${m.machine || '—'}</td>
+        <td style="text-align:center;"><span class="chip blue">×${m.qty || 1}</span></td>
         <td style="color:var(--green);">${fmtUGX(m.daily)}/day</td>
-        <td style="color:var(--subtle);">${m.date||'—'}</td>
-        <td><span class="chip green">${m.status||'Active'}</span></td>
+        <td style="color:var(--subtle);">${m.date || '—'}</td>
+        <td><span class="chip green">${m.status || 'Active'}</span></td>
       </tr>`).join('') :
       '<tr><td colspan="7" class="empty-state">No active machines</td></tr>';
   }
 
-  // ── APPROVE/REJECT DEPOSITS ──
   window.approveDeposit = async function(key, uid, amount) {
-    await update(ref(db, 'deposits/' + key), { status:'Approved' });
-    const snap = await get(ref(db, 'users/' + uid + '/deposits'));
-    if (snap.exists()) snap.forEach(c => {
-      if (c.val().amount === amount && c.val().status === 'Pending')
-        update(ref(db, 'users/' + uid + '/deposits/' + c.key), { status:'Approved' });
-    });
+    await update(ref(db, 'deposits/' + key), { status: 'Approved' });
+    const snap = await get(ref(db, 'users/' + uid));
+    if (snap.exists()) {
+      const user = snap.val();
+      await update(ref(db, 'users/' + uid), { spn: (user.spn || 0) + amount });
+    }
     alert('Deposit approved: ' + fmtUGX(amount));
   };
 
   window.rejectDeposit = async function(key, uid, amount) {
     if (!confirm('Reject deposit of ' + fmtUGX(amount) + '?')) return;
-    await update(ref(db, 'deposits/' + key), { status:'Rejected' });
-    const snap = await get(ref(db, 'users/' + uid));
-    if (snap.exists()) await update(ref(db, 'users/' + uid), { spn: Math.max(0,(snap.val().spn||0) - amount) });
-    const dSnap = await get(ref(db, 'users/' + uid + '/deposits'));
-    if (dSnap.exists()) dSnap.forEach(c => {
-      if (c.val().amount === amount && c.val().status === 'Pending')
-        update(ref(db, 'users/' + uid + '/deposits/' + c.key), { status:'Rejected' });
-    });
+    await update(ref(db, 'deposits/' + key), { status: 'Rejected' });
+    alert('Deposit rejected');
   };
 
-  // ── APPROVE/REJECT WITHDRAWALS ──
   window.approveWithdrawal = async function(key, uid, amount) {
-    await update(ref(db, 'withdrawals/' + key), { status:'Approved' });
-    const snap = await get(ref(db, 'users/' + uid + '/withdrawals'));
-    if (snap.exists()) snap.forEach(c => {
-      if (c.val().amount === amount && c.val().status === 'Pending')
-        update(ref(db, 'users/' + uid + '/withdrawals/' + c.key), { status:'Approved' });
-    });
+    await update(ref(db, 'withdrawals/' + key), { status: 'Approved' });
+    const snap = await get(ref(db, 'users/' + uid));
+    if (snap.exists()) {
+      const user = snap.val();
+      await update(ref(db, 'users/' + uid), { income: Math.max(0, (user.income || 0) - amount), withdrawn: (user.withdrawn || 0) + amount });
+    }
     alert('Withdrawal approved: ' + fmtUGX(amount));
   };
 
   window.rejectWithdrawal = async function(key, uid, amount) {
     if (!confirm('Reject withdrawal of ' + fmtUGX(amount) + '?')) return;
-    await update(ref(db, 'withdrawals/' + key), { status:'Rejected' });
-    const snap = await get(ref(db, 'users/' + uid));
-    if (snap.exists()) await update(ref(db, 'users/' + uid), {
-      income: (snap.val().income||0) + amount,
-      withdrawn: Math.max(0,(snap.val().withdrawn||0) - amount)
-    });
-    const wSnap = await get(ref(db, 'users/' + uid + '/withdrawals'));
-    if (wSnap.exists()) wSnap.forEach(c => {
-      if (c.val().amount === amount && c.val().status === 'Pending')
-        update(ref(db, 'users/' + uid + '/withdrawals/' + c.key), { status:'Rejected' });
-    });
+    await update(ref(db, 'withdrawals/' + key), { status: 'Rejected' });
+    alert('Withdrawal rejected');
   };
 
-  // ── ANNOUNCEMENTS ──
   window.sendAnnouncement = function() {
-    const msg  = document.getElementById('announce-text').value.trim();
+    const msg = document.getElementById('announce-text').value.trim();
     const type = document.getElementById('announce-type').value;
     if (!msg) { alert('Please enter a message.'); return; }
-    const colors = { info:'blue', warning:'gold', success:'green' };
+    const colors = { info: 'blue', warning: 'gold', success: 'green' };
     const date = new Date().toLocaleDateString('en-GB');
     const list = document.getElementById('announcements-list');
     const item = document.createElement('div');
@@ -998,22 +801,23 @@
     alert('Announcement sent!');
   };
 
-  // ── SETTINGS ──
   window.saveSettings = function() { alert('Settings saved!'); };
+
   window.changePassword = async function() {
     const curr = document.getElementById('set-curr-pass').value;
-    const n    = document.getElementById('set-new-pass').value;
-    const c    = document.getElementById('set-confirm-pass').value;
+    const n = document.getElementById('set-new-pass').value;
+    const c = document.getElementById('set-confirm-pass').value;
     if (curr !== currentAdmin.password) { alert('Current password incorrect.'); return; }
-    if (n !== c)    { alert('Passwords do not match.'); return; }
+    if (n !== c) { alert('Passwords do not match.'); return; }
     if (n.length < 6) { alert('Password min 6 characters.'); return; }
     await update(ref(db, 'admins/' + currentAdmin.uid), { password: n });
     currentAdmin.password = n;
     alert('Password updated!');
     document.getElementById('set-curr-pass').value = '';
-    document.getElementById('set-new-pass').value  = '';
+    document.getElementById('set-new-pass').value = '';
     document.getElementById('set-confirm-pass').value = '';
   };
 </script>
+
 </body>
 </html>
