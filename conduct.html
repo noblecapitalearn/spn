@@ -937,6 +937,12 @@
       if (c.val().amount === amount && c.val().status === 'Pending')
         update(ref(db, 'users/' + uid + '/deposits/' + c.key), { status:'Approved' });
     });
+    // Add approved amount to user's SPN balance
+    const userSnap = await get(ref(db, 'users/' + uid));
+    if (userSnap.exists()) {
+      const currentSpn = userSnap.val().spn || 0;
+      await update(ref(db, 'users/' + uid), { spn: currentSpn + amount });
+    }
     alert('Deposit approved: ' + fmtUGX(amount));
   };
 
