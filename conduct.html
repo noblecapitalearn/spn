@@ -796,7 +796,7 @@
     else if (currentPanel === 'deposits')     renderDeposits();
     else if (currentPanel === 'withdrawals')  renderWithdrawals();
     else if (currentPanel === 'machines')     renderMachines();
-    else if (currentPanel === 'products-set') renderProducts();
+    else if (currentPanel === 'products-set') renderMachinesPanel();
   }
 
   function updateStats() {
@@ -1223,14 +1223,6 @@
     alert(machineLabels[id] + ' published successfully!');
   };
 
-  // Load machines panel when tab is clicked
-  const originalShowPanel = window.showPanel;
-  window.showPanel = function(name) {
-    originalShowPanel(name);
-    if (name === 'products-set') {
-      setTimeout(() => renderMachinesPanel(), 100);
-    }
-  };
 </script>
 </body>
 </html>
