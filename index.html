@@ -1743,7 +1743,7 @@
 
   let productsData = {};
   function listenProducts() {
-    onValue(ref(db, 'products'), snap => {
+    onValue(ref(db, 'machines'), snap => {
       if (snap.exists()) {
         productsData = snap.val();
         updateMachineButtons();
@@ -1752,15 +1752,27 @@
   }
 
   function updateMachineButtons() {
-    const productIds = ['nob1','nob2','nob3','nob4','nob5','nob6','nob7','nob8','nob9','nob10'];
-    productIds.forEach(id => {
+    const machineIds = ['nob1','nob2','nob3','nob4','nob5','nob6','nob7','nob8','nob9','nob10'];
+    machineIds.forEach(id => {
       if (productsData[id]) {
-        const p = productsData[id];
-        document.getElementById('price-' + id).textContent = 'UGX ' + p.price.toLocaleString();
-        document.getElementById('daily-' + id).textContent = 'UGX ' + p.daily.toLocaleString() + ' / day';
-        document.getElementById('duration-' + id).textContent = p.duration + ' Days';
-        document.getElementById('total-' + id).textContent = 'UGX ' + p.total.toLocaleString();
-        document.getElementById('btn-' + id).onclick = () => confirmBuy(id, 'NOB ' + id.slice(3).toUpperCase(), p.price, p.daily);
+        const m = productsData[id];
+        document.getElementById('price-' + id).textContent = 'UGX ' + m.price.toLocaleString();
+        document.getElementById('daily-' + id).textContent = 'UGX ' + m.daily.toLocaleString() + ' / day';
+        document.getElementById('duration-' + id).textContent = m.duration + ' Days';
+        document.getElementById('total-' + id).textContent = 'UGX ' + m.total.toLocaleString();
+        document.getElementById('btn-' + id).onclick = () => confirmBuy(id, m.name || 'NOB ' + id.slice(3).toUpperCase(), m.price, m.daily);
+        
+        // Update machine photo from Google Drive
+        if (m.photo) {
+          const photoUrl = 'https://drive.google.com/uc?export=view&id=' + m.photo;
+          const machineCard = document.querySelector('.machine-card.' + id);
+          if (machineCard) {
+            const visual = machineCard.querySelector('.machine-visual');
+            if (visual) {
+              visual.style.backgroundImage = 'url(' + photoUrl + ')';
+            }
+          }
+        }
       }
     });
   }

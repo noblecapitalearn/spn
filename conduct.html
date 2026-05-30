@@ -555,9 +555,9 @@
       <!-- ── PRODUCTS SET ── -->
       <div class="panel" id="panel-products-set">
         <div style="padding:16px;">
-          <h3 style="margin-bottom:20px;">Products Configuration</h3>
-          <div id="products-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;">
-            <!-- Products will be loaded here -->
+          <h3 style="margin-bottom:20px;">📦 Machines Configuration (NOB 1-10)</h3>
+          <div id="machines-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;">
+            <!-- Machines will be loaded here -->
           </div>
         </div>
       </div>
@@ -1119,6 +1119,117 @@
     document.getElementById('set-curr-pass').value = '';
     document.getElementById('set-new-pass').value  = '';
     document.getElementById('set-confirm-pass').value = '';
+  };
+
+  // ── MACHINES MANAGEMENT ──
+  const machines = ['nob1','nob2','nob3','nob4','nob5','nob6','nob7','nob8','nob9','nob10'];
+  const machineLabels = {nob1:'NOB 1',nob2:'NOB 2',nob3:'NOB 3',nob4:'NOB 4',nob5:'NOB 5',nob6:'NOB 6',nob7:'NOB 7',nob8:'NOB 8',nob9:'NOB 9',nob10:'NOB 10'};
+
+  function renderMachinesPanel() {
+    let html = '';
+    machines.forEach(id => {
+      html += `
+        <div style="border:1px solid var(--border);border-radius:12px;padding:16px;background:var(--card);">
+          <h4 style="margin-bottom:12px;color:var(--green);">${machineLabels[id]}</h4>
+          <div style="display:grid;gap:10px;margin-bottom:12px;">
+            <div>
+              <label style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:700;">Name</label>
+              <input type="text" id="name-${id}" class="admin-input" placeholder="Machine Name" style="margin-bottom:0;">
+            </div>
+            <div>
+              <label style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:700;">Price (UGX)</label>
+              <input type="number" id="price-${id}" class="admin-input" placeholder="50000" style="margin-bottom:0;">
+            </div>
+            <div>
+              <label style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:700;">Daily Income (UGX)</label>
+              <input type="number" id="daily-${id}" class="admin-input" placeholder="5000" style="margin-bottom:0;">
+            </div>
+            <div>
+              <label style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:700;">Duration (Days)</label>
+              <input type="number" id="duration-${id}" class="admin-input" placeholder="30" style="margin-bottom:0;">
+            </div>
+            <div>
+              <label style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:700;">Description</label>
+              <input type="text" id="desc-${id}" class="admin-input" placeholder="Describe this machine" style="margin-bottom:0;">
+            </div>
+            <div>
+              <label style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:700;">Google Drive Photo ID</label>
+              <input type="text" id="photo-${id}" class="admin-input" placeholder="Paste FILE_ID here" style="margin-bottom:0;">
+            </div>
+            <div>
+              <label style="font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:700;">Total Return</label>
+              <div style="padding:10px;background:rgba(0,200,83,0.1);border-radius:6px;border:1px solid var(--border);color:var(--green);font-weight:700;font-size:12px;" id="total-${id}">0</div>
+            </div>
+          </div>
+          <button onclick="saveMachine('${id}')" style="width:100%;padding:10px;background:var(--green);border:none;border-radius:6px;color:var(--bg);font-weight:800;cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;">Publish ${machineLabels[id]}</button>
+        </div>
+      `;
+    });
+    document.getElementById('machines-list').innerHTML = html;
+    loadMachines();
+    setupMachineListeners();
+  }
+
+  function setupMachineListeners() {
+    machines.forEach(id => {
+      document.getElementById('daily-' + id).addEventListener('input', () => updateMachineTotal(id));
+      document.getElementById('duration-' + id).addEventListener('input', () => updateMachineTotal(id));
+    });
+  }
+
+  function updateMachineTotal(id) {
+    const daily = parseInt(document.getElementById('daily-' + id).value) || 0;
+    const duration = parseInt(document.getElementById('duration-' + id).value) || 0;
+    const total = daily * duration;
+    document.getElementById('total-' + id).textContent = total.toLocaleString() + ' UGX';
+  }
+
+  async function loadMachines() {
+    const snap = await get(ref(db, 'machines'));
+    if (snap.exists()) {
+      const data = snap.val();
+      machines.forEach(id => {
+        if (data[id]) {
+          document.getElementById('name-' + id).value = data[id].name || '';
+          document.getElementById('price-' + id).value = data[id].price || '';
+          document.getElementById('daily-' + id).value = data[id].daily || '';
+          document.getElementById('duration-' + id).value = data[id].duration || '';
+          document.getElementById('desc-' + id).value = data[id].desc || '';
+          document.getElementById('photo-' + id).value = data[id].photo || '';
+          updateMachineTotal(id);
+        }
+      });
+    }
+  }
+
+  window.saveMachine = async function(id) {
+    const name = document.getElementById('name-' + id).value;
+    const price = parseInt(document.getElementById('price-' + id).value) || 0;
+    const daily = parseInt(document.getElementById('daily-' + id).value) || 0;
+    const duration = parseInt(document.getElementById('duration-' + id).value) || 0;
+    const desc = document.getElementById('desc-' + id).value;
+    const photo = document.getElementById('photo-' + id).value;
+    const total = daily * duration;
+
+    if (!name || !price || !daily || !duration || !photo) {
+      alert('Please fill all fields including Photo ID');
+      return;
+    }
+
+    await set(ref(db, 'machines/' + id), {
+      id, name, price, daily, duration, desc, photo, total,
+      updated: new Date().toLocaleString('en-GB')
+    });
+    alert(machineLabels[id] + ' published successfully!');
+  };
+
+  // Load machines panel when tab is clicked
+  const originalShowPanel = window.showPanel;
+  window.showPanel = function(name) {
+    originalShowPanel(name);
+    if (name === 'products-set') {
+      setTimeout(() => renderMachinesPanel(), 100);
+    }
   };
 </script>
 </body>
